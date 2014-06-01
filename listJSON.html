@@ -1,0 +1,39 @@
+<html>
+<head>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+</head>
+<body>
+
+<span id="release_info" />
+
+<script type="text/javascript">
+// Thanks to Patrick Fisher for the following funk, see: 
+// http://stackoverflow.com/questions/10221229/list-all-keys-and-values-of-json
+function json2txt(obj, path)
+{
+    var txt = '';
+    for (var key in obj)
+    {
+        if (obj.hasOwnProperty(key))
+        {
+            if ('object' == typeof(obj[key]))
+            {
+                txt += json2txt(obj[key], path + (path ? '.' : '') + key);
+            }
+            else
+            {
+                txt += path + '.' + key + '    ' + obj[key] + '<br>';
+            }
+        }
+    }
+    return txt;
+}
+
+$.getJSON('http://pypi.python.org/pypi/Plone/json?callback=?', function(data) {
+     var stringi = json2txt(data, '');
+     $('#release_info').html(stringi);
+ });
+</script>
+
+</body>
+</html>
