@@ -33,6 +33,22 @@ $.getJSON('http://pypi.python.org/pypi/Plone/json?callback=?', function(data) {
      var stringi = json2txt(data, '');
      $('#release_info').html(stringi);
  });
+ /*
+// Example list all Plone-versions:
+function json2txt(obj, path)
+{
+    var txt = '';
+    for (var key in obj) {
+        txt += key + '<br>';
+    }
+   return txt
+}
+ $.getJSON('http://pypi.python.org/pypi/Plone/json?callback=?', function(data) {
+     var stringi = json2txt(data.releases, '');
+     $('#release_info').html(stringi);
+ });
+*/
+
 </script>
 
 </body>
