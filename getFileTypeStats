@@ -1,7 +1,7 @@
 # !/usr/bin/python
 
 # Get some stats about file-types recursively of the directory where you execute:
-# python fileStats.py
+# python getFileTypeStats.py
 
 import os
 
