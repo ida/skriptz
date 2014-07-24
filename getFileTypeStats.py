@@ -5,9 +5,9 @@
 
 import os
 
-wanted_file_types = ['.py','.pt','.cpt', '.xml', '.zpt', '.cpy', '.vpy']
+wanted_file_types = ['.js', '.py','.pt','.cpt', '.xml', '.zpt', '.cpy', '.vpy']
 
-unwanted_file_types = ['.dtml', '.patch', '.props', '.robot', '.ZPL', '.yml', '.c', '.pyc','.png','.txt', '.zcml', '.css', '.js', '.GPL', '.csv', '.in', '.gif', '.jpg', '.cfg', '.mo', '.po', '.pot', '.sample', '.rst', '.pack', '.idx', '.stx', '.swp', '.avi', '.ini', '.metadata', '.ico', '.3gp', '.py_tmpl', '.ini_tmpl', '.bat']
+unwanted_file_types = ['.dtml', '.patch', '.props', '.robot', '.ZPL', '.yml', '.c', '.pyc','.png','.txt', '.zcml', '.css', '.GPL', '.csv', '.in', '.gif', '.jpg', '.cfg', '.mo', '.po', '.pot', '.sample', '.rst', '.pack', '.idx', '.stx', '.swp', '.avi', '.ini', '.metadata', '.ico', '.3gp', '.py_tmpl', '.ini_tmpl', '.bat']
 
 defined_file_types = wanted_file_types + unwanted_file_types
 
@@ -15,6 +15,7 @@ py_fy = 0
 pg_tm = 0
 zpgtm = 0
 xml   = 0
+js    = 0
 to_ch = 0
 summ  = 0
 
@@ -41,6 +42,8 @@ for root, dirs, files in os.walk("."):
                     pg_tm += 1
                 elif suff == '.xml':
                     xml   += 1
+                elif suff == '.js':
+                    js    += 1
                 else:
                     print suff
                     to_ch += 1
@@ -54,4 +57,4 @@ for root, dirs, files in os.walk("."):
 
 summ = py_fy + pg_tm + zpgtm + xml + to_ch
 
-print 'We have ' + str(py_fy) + ' python-scripts, ' + str(pg_tm) + ' page-templates, ' + str(zpgtm) + ' zope-templates, ' + str(xml) + ' xml-configs and ' + str(to_ch)  + ' other to check. That is a total of ' + str(summ) + '.'
+print 'We have ' + str(py_fy) + ' python-scripts, ' + str(pg_tm) + ' page-templates, ' + str(zpgtm) + ' zope-templates, ' + str(xml) + ' xml-configs, ' + str(js) +' javascripts and ' + str(to_ch)  + ' other (.cpt, .cpy, .vpy) to check. That is a total of ' + str(summ) + '.'
