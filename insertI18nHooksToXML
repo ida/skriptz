@@ -2,14 +2,37 @@
 
 # Parse an xml-file char for char and
 # insert missing i18n-hooks.
-# TOODO: text comments (are regarded already, just test again)
-# TODO: regard self-closing tags like <img />
 # TODO: tal:content/replace-var-text ->assume i18n is done in delivering py-file
 # TODO: nested tags with each holding text
 
+import re
+
+file_name = 'temp.pt'
+
+extracted_domain = None
+wanted_domain = 'my.domain'
 msg_id = 0
 
-with open('temp.pt') as fin, open('temp.pt.tmp', 'w') as fout:
+hasDomain  = False
+passedFirstTag = False
+transMissing = False
+
+# First, we look quickly, if an i18n:domain has been specified or not.
+# If one is found, we assume it's at the right place (a parent element of
+# the elements holding text to be translated):
+
+with open(file_name) as fin:
+    for line in fin:
+        if line.find('i18n:domain') != -1:
+            # Which domain is it?
+            result = result = re.search('i18n:domain="(.*?)"', line)
+            extracted_domain = result.group(1)
+            if extracted_domain != wanted_domain:
+                hasDomain = True
+            print extracted_domain
+
+
+with open(file_name) as fin, open(file_name + '.tmp', 'w') as fout:
 
     ln_nr = 0
     for line in fin:
@@ -35,6 +58,7 @@ with open('temp.pt') as fin, open('temp.pt.tmp', 'w') as fout:
             # We have an opening-tag and it's not an XML-comment:
             if line[indi] == '<' and line[indi+1] != ('/' or '!'):
 
+
                 hasHook = False
                 needHook = True
                 indi += 1
@@ -42,6 +66,19 @@ with open('temp.pt') as fin, open('temp.pt.tmp', 'w') as fout:
 
                 # As long as tag doesn't close:
                 while (line[indi] != '>'):
+
+
+                    ##################################
+                    #  Apply i18n:domain if missing  #
+                    ##################################
+                    if not hasDomain:
+                        if indi+1 < len(line) and line[indi+1] == '>':
+
+                            if passedFirstTag != True:
+
+                                nuline += ' i18n:domain="' + wanted_domain + '"'
+
+                            passedFirstTag = True
 
 
                     #####################
@@ -53,9 +90,10 @@ with open('temp.pt') as fin, open('temp.pt.tmp', 'w') as fout:
                     indi += 1
                     nuline += line[indi]
 
-                    ##################
-                    # HAS i18n HOOK  #
-                    ##################
+
+                    #########################################
+                    # HAS i18n:translate or i18n:attribute  #
+                    #########################################
                     # We have a hook:
                     if line[indi] == 'i' and line[indi+1] == '1' and line[indi+2] == '8':
                         hasHook = True
@@ -69,6 +107,9 @@ with open('temp.pt') as fin, open('temp.pt.tmp', 'w') as fout:
                             # Apply msg_id:
                             nuline += str(msg_id)
                             msg_id += 1
+                        else:
+                            needHook = False
+
 
                     ###########
                     # HAS TAL #
@@ -77,18 +118,14 @@ with open('temp.pt') as fin, open('temp.pt.tmp', 'w') as fout:
                     if line[indi] == 't' and line[indi+1] == 'a' and line[indi+2] == 'l' and line[indi+3] == ':':
 
                         # Is it a i18n-relevant tal-statement?
-                        # We consider 'content', 'replace', 'attributes' and 'repeat' as relevant,
-                        # which leaves 'define', 'condition', and 'omit-tag' as neglectable:
+                        # We consider 'content', 'replace', and 'attributes' as relevant,
+                        # which leaves 'define', 'condition', 'repeat' and 'omit-tag' as neglectable:
                         if line[indi+4] == 'a':
                             needHook = False
                         if line[indi+4] == 'c' and line[indi+5] == 'o' and  line[indi+6] == 'n' and line[indi+7] == 't':
                             needHook = False
-                        if line[indi+4] == 'r' and line[indi+5] == 'e' and  line[indi+6] == 'p':
+                        if line[indi+4] == 'r' and line[indi+5] == 'e' and  line[indi+6] == 'p' and line[indi+7] == 'l':
                             needHook = False
-                            if line[indi+7] == 'l':
-                                pass#int 'replace'
-                            else:
-                                pass#rint 'repeat'
 
 
                 #####################
@@ -126,20 +163,29 @@ with open('temp.pt') as fin, open('temp.pt.tmp', 'w') as fout:
                         # If text is a linebreak, remove it:
                         if text == '\n':
                             text = ''
-                        # Now, if there is still sth left, flag it:
-                        if text != '':
+                        # We don't have text, set flag:
+                        if text == '':
+                            needHook = False
+                        # We have text:
+                        else:
+
+
+
+                            # There was a i18n:domain specified already,
+                            # are there i18n-hooks missing for strings?
+                            if hasDomain and needHook:
+                                missingTrans = True
 
 
 
 
-
-#############################################################################################
+################NEST###########################################################################
 #check if another opening tag is following right away (nest) and if it also contains text:
                             while andi+1 < len(line) and line[andi+1] == '<':
                                 andi += 1
 
                                 if andi+1<len(line) and line[andi+1] == ('/'):
-                                    print 'closing tag after opening, no nest'
+                                    pass#rint 'closing tag after opening, no nest'
                                 else:
 
                                     # Remove superflous whitespace, max. one:
@@ -160,7 +206,7 @@ with open('temp.pt') as fin, open('temp.pt.tmp', 'w') as fout:
                                         # Now, if there is still sth left:
                                         if text != '':
 
-                                            print 'a tag with text is nested in a tag with text'
+                                            pass#rint 'a tag with text is nested in a tag with text'
 
 #############################################################################################
 
@@ -168,15 +214,19 @@ with open('temp.pt') as fin, open('temp.pt.tmp', 'w') as fout:
                 #   APPLY i18n HOOK   #
                 #######################
 
-                # Apply complete hook, in case needed:
-                # Check, if we have a nest and if the tag didn't contain text:
-                if text != '':
-                    if (hasHook == False) and (needHook == True):
-                        # Remove closing '>' of one char before current pos:
-                        nuline = nuline[:-1]
-                        nuline += ' i18n:translate="' + str(msg_id) + '">'
-                        msg_id += 1
-                        hasHook = True
+
+                # DEV:
+                if not hasDomain:
+
+                    # Apply complete hook, in case needed:
+                    # Check, if we have a nest and if the tag didn't contain text:
+                    if text != '':
+                        if (hasHook == False) and (needHook == True):
+                            # Remove closing '>' of one char before current pos:
+                            nuline = nuline[:-1]
+                            nuline += ' i18n:translate="' + str(msg_id) + '">'
+                            msg_id += 1
+                            hasHook = True
 
 
 
@@ -190,5 +240,7 @@ with open('temp.pt') as fin, open('temp.pt.tmp', 'w') as fout:
         # Finally write composed nuline to workingcopy: #
         #################################################
         fout.write(nuline)
-#EOF
-~
+
+# TODO: has another domain than ours and strs missing trans
+if hasDomain and missingTrans:
+    print "There was a domain found, it's not ours and there are still strings missing a translation-hook."
