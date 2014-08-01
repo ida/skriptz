@@ -1,6 +1,6 @@
-usr/bin/python
+#!/usr/bin/python
 
-# Adds a browser-boilerplate to an egg generated with zopeksel's
+# Adds a browser-boilerplate to an egg generated with zopeksel's 
 # "plone"-template, where "Include profile?" was answered with yes.
 
 import os, shutil
@@ -98,3 +98,26 @@ if not os.path.exists('browser'):
     });\n\
 })(jQuery);')
     js.close()
+# Register a view:
+#browserconf = 'browser/configure.zcml'
+#browserconftmp = browserconf + '.tmp'
+#print 'EGG'
+#print egg_name
+#firstname = egg_name.split('.')[0]
+#lasttname = egg_name.split('.')[1]
+#with open(browserconf) as fin, open(browserconftmp, 'w') as fout:
+#    for line in fin:
+#        # Insert:
+#        if line.find('</configure>'):
+#            fout.write('\
+#<browser:page\n\
+#for="*"\n\
+#name="'+firstname+'_'+lastname+'_view"\n\
+#template="'+firstname+'_'+lastname+'_view.pt"\n\
+#permission="zope2.View"\n\
+#layer=".interfaces.'+interface_name+'"\n\
+#/>\n')
+
+#        fout.write(line)
+    # Overwrite original with workingcopy:
+#    shutil.move(browserconftmp, browserconf)
