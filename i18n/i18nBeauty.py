@@ -26,7 +26,6 @@ for root, dirs, files in os.walk("."):
             if suff in wanted_file_types:
 
                 HAS_DOMAIN = False
-                HAS_TAL = False
 # We specify the parser to use to avoid mess-ups,
 # f.e., if lxml is installed it would be taken,
 # which we don't want because prettify() then
@@ -49,7 +48,7 @@ for root, dirs, files in os.walk("."):
 
                     # HAS_TAL which needs translation ?
                     # We can't get unconform attrs like `tal` directly with `tag.has_attr()`,
-                    # so let's iterate over attrs to see, if it's exist:
+                    # so let's iterate over attrs to see, if it exist:
                     attis = tag.attrs
                     for atti in attis:
                         if atti == ('tal:content' or 'tal:replace'):
