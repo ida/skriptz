@@ -39,7 +39,6 @@ for root, dirs, files in os.walk("."):
 
                     HAS_TAL = False
                     HAS_i18n_ATT = False
-                    NEEDS_i18n_ATT = False
 
                     # Add/replace domain to first tag:
                     if HAS_DOMAIN == False:
