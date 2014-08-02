@@ -43,7 +43,7 @@ for root, dirs, files in os.walk("."):
 
                     # Add/replace domain to first tag:
                     if HAS_DOMAIN == False:
-                        tag['i18n:domain'] = 'amp.translations'
+                        tag['i18n:domain'] = domain
                         HAS_DOMAIN = True
 
                     # HAS_TAL which needs translation ?
