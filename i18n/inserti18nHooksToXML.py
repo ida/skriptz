@@ -224,7 +224,8 @@ with open(file_name) as fin, open(file_name + '.tmp', 'w') as fout:
                         if (hasHook == False) and (needHook == True):
                             # Remove closing '>' of one char before current pos:
                             nuline = nuline[:-1]
-                            nuline += ' i18n:translate="' + str(msg_id) + '">'
+                            #nuline += ' i18n:translate="' + str(msg_id) + '">'
+                            nuline += ' i18n:translate="' + text + '">'
                             msg_id += 1
                             hasHook = True
 

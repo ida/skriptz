@@ -2,7 +2,7 @@
 
 import os
 import shutil
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup # pip install beautifulsoup4
 
 msg_nm = 0
 msg_id = 0
@@ -34,6 +34,13 @@ for root, dirs, files in os.walk("."):
                 food = open(file_path)
                 soup = BeautifulSoup(food, 'html.parser')
                 tags = soup.find_all()
+                
+                # Prettify first:
+                soup = soup.prettify().encode('ascii', 'xmlcharrefreplace')
+                result = open(file_path + '.tmp', 'w')
+                result.write(str(soup))
+                result.close()
+                shutil.move(file_path + '.tmp', file_path)
 
                 for tag in tags:
 
@@ -57,10 +64,31 @@ for root, dirs, files in os.walk("."):
                     # NO TAL:
                     if not HAS_TAL:
                     	if tag.string:
-                            # HAS TXT:
-                    	    if tag.string.strip('\n') != '':
+                            string = tag.string
+                            string = string.replace('\t', '')
+                            string = string.replace('\n', '')
+                            string = string.strip()
+                            nustring = ''
+                            for i in range(len(string)):
+                                if string[i] == ' ':
+                                    if len(string) > i+3 and string[i+1] == ' ':
+                                        if string[i+2] == ' ':
+                                            if string[i+3] == ' ':
+                                                pass
+                                    else:
+                                        nustring += string[i]
+                                else:
+                                    nustring += string[i]
+                            
+                            string = nustring
+                            
+                            
+                            # HAS TXT nas is NOT a VAR:
+                    	    if string != ('') and string[0] != ('$'):
                                 # APPLY i18n:translate
-                                tag['i18n:translate'] = msg_id
+                                #tag['i18n:translate'] = msg_id
+                                tag['i18n:translate'] = tag.string
+                                print ':'+string+':'
                                 msg_id += 1
                     # HAS TAL:
                     else:
@@ -132,11 +160,13 @@ for root, dirs, files in os.walk("."):
                                             
                                             for att in need_atts:
                                                 string += ' ' + att + ';'  
+                                        
+                                        # Finally set i18n_attribute:
                                         tag['i18n:attributes'] = string
                 
                 
-                soup = soup.prettify().encode('ascii', 'xmlcharrefreplace')
-                #result = open(file_name + '.tmp', 'w')
+                #soup = soup.prettify().encode('ascii', 'xmlcharrefreplace')
+                #result = open(file_path + '.tmp', 'w')
                 #result.write(str(soup))
                 #result.close()
-		#shutil.move(file_path + '.tmp', file_path)
+		        #shutil.move(file_path + '.tmp', file_path)
