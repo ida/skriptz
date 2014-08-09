@@ -1,16 +1,35 @@
 # !/usr/bin/python
 
+# Overwrites and adds i18:domain, i18n:translate and
+# i18n:name-attributes for each tag in each file of this
+# directory and creates a POT-file in it.
+#
+# Usecase: Have one translation-egg holding the domain for
+# several eggs, f.e. your dev-eggs.
+#
+# Usage is: Install BeautifulSoup (f.e. with `pip install
+# beautifulsoup4´), replace the domain-variable below with
+# yours, execute ´python applyi18nHooksToTemplates.py` via
+# your Terminal (possibly a bash) in the directory where you
+# want the files to be altered.
+
+# Consider a backup or a  VCS-snapshot (f.e. with git) before
+# doing that, to be able to return to, in case things go haywire.
+
+
 # i18nize templates
 # TODO: Check, if i18n:attributes are missing.
 
 import os
 import shutil
-from bs4 import BeautifulSoup # pip install beautifulsoup4
+from bs4 import BeautifulSoup
 
 msg_id = 0
 msg_name = 0
 wanted_file_types = ['.pt', '.zpt', '.cpt']
 dikt = []
+# In dikt we collect msg_ids, their strings and each file
+# where  a msg_id occurs, for creating the POT-file:
 dikt = [  [ 'example_msg_id', 'example_msg_str', ['file1.pt', 'file2.pt'] ]  ]
 
 for root, dirs, files in os.walk("."):
@@ -18,7 +37,7 @@ for root, dirs, files in os.walk("."):
         file_path = os.path.join(root, file_name)
         splitted_name = os.path.splitext(file_name)
         if len(splitted_name) > 0:
-            suff = splitted_name[1] 
+            suff = splitted_name[1]
             if suff in wanted_file_types:
 
                 food = open(file_path)
@@ -27,9 +46,6 @@ for root, dirs, files in os.walk("."):
                 
                 # For each tag:
                 for tag in tags:
-                    HAS_TXT = False
-                    NEED_TRANS = False
-                    NEED_NAME = False
                     HAS_NAME = False
                     HAS_TRANS = False
                     PAR_HAS_TRANS = False
@@ -37,6 +53,11 @@ for root, dirs, files in os.walk("."):
                     tag_contents = tag.contents 
                     tag_txt = ''
                     
+
+                    #########################
+                    #   Collect tag-infos   #
+                    #########################
+
                     for att in tag.attrs:
                         if att == 'tal:content':
                             HAS_TAL = True
@@ -46,17 +67,25 @@ for root, dirs, files in os.walk("."):
                             HAS_TRANS = True
                         elif att == 'i18n:name':
                             HAS_NAME = True
+                        elif att == 'i18n:domain':
+                            HAS_DOMAIN = True
 
-                    # First, delete all existing hooks:
+
+                    ############################
+                    #   Delete all i18:hooks   #
+                    ############################
+
                     if HAS_TRANS:
                         del tag['i18n:translate']
                     if HAS_NAME:
                         del tag['i18n:name']
+                    if HAS_DOMAIN:
+                        del tag['i18n:domain']
 
 
-                    ####################
-                    #   check parent   #
-                    ####################
+                    ######################
+                    #   Apply i18:name   #
+                    ######################
 
                     for atti in tag.parent.attrs:
                         if atti == 'i18n:translate':
@@ -66,6 +95,7 @@ for root, dirs, files in os.walk("."):
                         tag['i18n:name'] = 'name-' + str(msg_name)
                         msg_name += 1
                     
+
                     ####################
                     #   collect text   #
                     ####################
@@ -86,7 +116,7 @@ for root, dirs, files in os.walk("."):
                         else:
                             for at in content.attrs:
                                 if at == 'i18n:name':
-                                    tag_txt += ' ${' + content["i18n:name"] + '} '
+                                    tag_txt += ' ${' + content[at] + '} '
                                     HAS_NAME = True
                             #if not HAS_NAME:
                             #    tag_txt += ' ${i18n:name} '
@@ -128,6 +158,7 @@ for entry in dikt:
     for fil in entry[2]:
         pot += '# ' + fil + '\n'
     pot += 'msgid="id-' + str(entry[0]) + '"\nmsgstr=""\n\n'
+pot = pot.encode('ascii', 'xmlcharrefreplace') 
 res = open('main.pot', 'w')
-res.write(pot)
+res.write(str(pot))
 res.close()
