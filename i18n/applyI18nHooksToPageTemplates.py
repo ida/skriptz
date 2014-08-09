@@ -19,7 +19,7 @@
 # want the files to be altered.
 #
 # Consider a backup or a VCS-snapshot to be able to return to, 
-# *before* executing thisfile, in case things go haywire.
+# *before* executing this file, in case things go haywire.
 
 
 # TODO: Check, if i18n:attributes are missing.
@@ -28,45 +28,48 @@ import os
 import shutil
 from bs4 import BeautifulSoup
 
+wanted_file_types = ['.pt', '.cpt', '.zpt']
+# Replace this var with the domain you want to apply:
 domain = 'our.domain'
 # Generate msg-ids and -names of increasing number:
 msg_id = 0
 msg_name = 0
 # In dikt we collect msg_ids, their default text
-# strings and each file where the msg-id occurs:
+# and a nested list of each file where the msg-id occurs:
 dikt = []
 
-# Wailk recursively through directory:
+# Walk recursively through directory:
 for root, dirs, files in os.walk("."):
 
     # For each file:
     for file_name in files:
         
-        # Get current file-path:
+        # Get current file-path, for later overwrite:
         file_path = os.path.join(root, file_name)
+        
         # Get suffix:
         splitted_name = os.path.splitext(file_name)
         if len(splitted_name) > 0:
             suff = splitted_name[1]
+            
+            # It's a pagetemplate:
             if suff in wanted_file_types:
 
                 food = open(file_path)
                 soup = BeautifulSoup(food, 'html.parser')
                 tags = soup.find_all()
                 
-                # For each tag:
+                # For each tag in this template:
                 for tag in tags:
+                    
+                    # Ini/reset vars:
                     HAS_NAME = False
                     HAS_TRANS = False
                     PAR_HAS_TRANS = False
                     HAS_TAL = False
                     tag_txt = ''
                     
-
-                    #########################
-                    #   Collect tag-infos   #
-                    #########################
-
+                    # Collect tag-attrs:
                     for att in tag.attrs:
                         if att == 'tal:content':
                             HAS_TAL = True
@@ -79,11 +82,7 @@ for root, dirs, files in os.walk("."):
                         elif att == 'i18n:domain':
                             HAS_DOMAIN = True
 
-
-                    ############################
-                    #   Delete all i18:hooks   #
-                    ############################
-
+                    # Delete all i18-hooks:
                     if HAS_TRANS:
                         del tag['i18n:translate']
                     if HAS_NAME:
@@ -91,24 +90,15 @@ for root, dirs, files in os.walk("."):
                     if HAS_DOMAIN:
                         del tag['i18n:domain']
 
-
-                    ######################
-                    #   Apply i18:name   #
-                    ######################
-
+                    # Apply i18:name:
                     for atti in tag.parent.attrs:
                         if atti == 'i18n:translate':
                             PAR_HAS_TRANS = True
-
                     if PAR_HAS_TRANS:
                         tag['i18n:name'] = 'name-' + str(msg_name)
                         msg_name += 1
-                    
 
-                    ####################
-                    #   Collect text   #
-                    ####################
-
+                    # Collect text:
                     for content in tag.contents:
 # ´tag.contents´returns the tag's texts and child-tags as list-items, e.g.:
 # [u"\n    Tag's starting text\n    ", <childtag> childtext </childtag>', u'\n    ending text of tag\n    ']
@@ -124,7 +114,8 @@ for root, dirs, files in os.walk("."):
                             if string != '':
                                 tag_txt += string
                         
-                        # We have a child-tag, include in tag_txt as var:
+                        # We have a child-tag, include in 
+                        # ´tag_txt´ as var:
                         else:
                             for at in content.attrs:
                                 if at == 'i18n:name':
