@@ -102,10 +102,9 @@ for root, dirs, files in os.walk("."):
                     
 
                     ####################
-                    #   collect text   #
+                    #   Collect text   #
                     ####################
 
-                    # Do I have text?
                     for content in tag_contents:
                     # ´tag.contents´returns its (unicode-)text and 
                     # child-tags as list-items, e.g.:
@@ -142,12 +141,12 @@ for root, dirs, files in os.walk("."):
                                 new_entry = [msg_id, tag_txt, [file_path]]
                                 dikt.append(new_entry)
                                 tag['i18n:translate'] = 'id-' + str(msg_id)
-                                if msg_id < 4: print msg_id, tag.name
                                 msg_id += 1
                             else:
                                 tag['i18n:translate'] = 'id-' + str(dup_msg_id)
 
                     # End of tag, loop to next tag.
+
                 # COOK IT: 
                 soup = soup.prettify().encode('ascii', 'xmlcharrefreplace')
                 result = open(file_path + '.tmp', 'w')
@@ -163,6 +162,6 @@ for entry in dikt:
         pot += '# ' + fil + '\n'
     pot += 'msgid="id-' + str(entry[0]) + '"\nmsgstr=""\n\n'
 pot = pot.encode('ascii', 'xmlcharrefreplace') 
-res = open('main.pot', 'w')
+res = open(domain + '.pot', 'w')
 res.write(str(pot))
 res.close()
