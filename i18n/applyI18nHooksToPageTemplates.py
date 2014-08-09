@@ -127,7 +127,7 @@ for entry in dikt:
     pot += '# ' + entry[1] + '\n'
     for fil in entry[2]:
         pot += '# ' + fil + '\n'
-    pot += 'msgid="' + str(entry[0]) + '"\nmsgstr=""\n\n'
+    pot += 'msgid="id-' + str(entry[0]) + '"\nmsgstr=""\n\n'
 res = open('main.pot', 'w')
 res.write(pot)
 res.close()
