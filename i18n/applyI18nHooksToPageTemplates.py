@@ -10,6 +10,8 @@ from bs4 import BeautifulSoup # pip install beautifulsoup4
 msg_id = 0
 msg_name = 0
 wanted_file_types = ['.pt', '.zpt', '.cpt']
+dikt = []
+dikt = [  [ 'msg_id', 'msg_str', ['file1.pt', 'file2.pt'] ]  ]
 
 for root, dirs, files in os.walk("."):
     for file_name in files:
@@ -25,16 +27,15 @@ for root, dirs, files in os.walk("."):
                 
                 # For each tag:
                 for tag in tags:
-                    
                     HAS_TXT = False
                     NEED_TRANS = False
                     NEED_NAME = False
                     HAS_NAME = False
                     HAS_TRANS = False
                     PAR_HAS_TRANS = False
+                    HAS_TAL = False
                     tag_contents = tag.contents 
                     tag_txt = ''
-                    HAS_TAL = False
                     
                     for att in tag.attrs:
                         if att == 'tal:content':
@@ -52,6 +53,19 @@ for root, dirs, files in os.walk("."):
                     if HAS_NAME:
                         del tag['i18n:name']
 
+
+                    ####################
+                    #   check parent   #
+                    ####################
+
+                    for atti in tag.parent.attrs:
+                        if atti == 'i18n:translate':
+                            PAR_HAS_TRANS = True
+
+                    if PAR_HAS_TRANS:
+                        tag['i18n:name'] = 'name-' + str(msg_name)
+                        msg_name += 1
+                    
                     ####################
                     #   collect text   #
                     ####################
@@ -65,38 +79,47 @@ for root, dirs, files in os.walk("."):
                         if isinstance(content, unicode):
                             # Remove linebreaks:
                             string = content.replace('\n','').strip()
-                            if string != '': tag_txt += string
+                            # Remove superfluous (=more than one between words) spaces:
+                            string = ' '.join(string.split()) # split'n'join: cool! no regex needed :)
+                            if string != '':
+                                tag_txt += string
+                        else:
+                            for at in content.attrs:
+                                if at == 'i18n:name':
+                                    tag_txt += ' ${' + content["i18n:name"] + '} '
+                                    HAS_NAME = True
+                            #if not HAS_NAME:
+                            #    tag_txt += ' ${i18n:name} '
+                        
+                    # HAS TEXT:
                     if tag_txt != '':
-                    #    if not (tag_txt.startswith(' ${') and tag_txt.endswith('} ')):
-                        HAS_TXT = True
-                    
-                    #######################
-                    #   apply i18n-hook   #
-                    #######################
 
-                    for atti in tag.parent.attrs:
-                        if atti == 'i18n:translate':
-                            PAR_HAS_TRANS = True
+                        # APPLY HOOKS:
+                        if not HAS_TAL:
+                            IS_DUP = False
+                            for entry in dikt:
+                                if entry[1] == tag_txt:
+                                    entry[2].append(file_path)
+                                    dup_msg_id = entry[0]
 
-                    if HAS_TXT and not HAS_TAL:
-                        NEED_TRANS = True
-                    if PAR_HAS_TRANS:
-                        NEED_NAME = True
-                    if HAS_TAL:
-                        NEED_NAME = True
-                    
-                    if NEED_TRANS:
-                        tag['i18n:translate'] = 'id-' + str(msg_id)
-                        msg_id += 1
-                    if NEED_NAME:
-                        tag['i18n:name'] = 'name-' + str(msg_name)
-                        msg_name += 1
-           
+                                    IS_DUP = True
+
+                            if not IS_DUP:
+                                new_entry = [msg_id, tag_txt, [file_path]]
+                                dikt.append(new_entry)
+                                tag['i18n:translate'] = 'id-' + str(msg_id)
+                                if msg_id < 4: print msg_id, tag.name
+                                msg_id += 1
+                            else:
+                                tag['i18n:translate'] = 'id-' + str(dup_msg_id)
+
                     # End of tag, loop next. 
-                
                 # COOK IT: 
                 soup = soup.prettify().encode('ascii', 'xmlcharrefreplace')
-                result = open(file_path + '.tmp', 'w')
+                #result = open(file_path + '.tmp', 'w')
+                result = open('tmp-' + file_name, 'w')
                 result.write(str(soup))
                 result.close()
-                shutil.move(file_path + '.tmp', file_path)
+                #shutil.move(file_path + '.tmp', file_path)
+for entry in dikt:
+    pass#rint entry 
