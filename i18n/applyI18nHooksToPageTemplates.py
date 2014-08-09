@@ -55,7 +55,6 @@ for root, dirs, files in os.walk("."):
                     HAS_TRANS = False
                     PAR_HAS_TRANS = False
                     HAS_TAL = False
-                    tag_contents = tag.contents 
                     tag_txt = ''
                     
 
@@ -105,23 +104,24 @@ for root, dirs, files in os.walk("."):
                     #   Collect text   #
                     ####################
 
-                    for content in tag_contents:
-                    # ´tag.contents´returns its (unicode-)text and 
-                    # child-tags as list-items, e.g.:
+                    for content in tag.contents:
+# ´tag.contents´returns its (unicode-)text and child-tags as list-items, e.g.:
 # [u"\n    Tag's starting text\n    ", <childtag> childtext </childtag>', u'\n    ending text of tag\n    ']
-                        # Yes, text please:
+                        
+                        # We have a piece of text:
                         if isinstance(content, unicode):
                             # Remove linebreaks:
                             string = content.replace('\n','').strip()
-                            # Remove superfluous (=more than one between words) spaces:
+                            # Remove superfluous spaces (= any more than one between words):
                             string = ' '.join(string.split()) # split'n'join: cool! no regex needed :)
                             if string != '':
                                 tag_txt += string
+                        
+                        # We have a tag:
                         else:
                             for at in content.attrs:
                                 if at == 'i18n:name':
                                     tag_txt += ' ${' + content[at] + '} '
-                                    HAS_NAME = True
                         
                     # HAS TEXT:
                     if tag_txt != '':
