@@ -6,10 +6,11 @@
 #
 # Overwrites and adds i18:domain, i18n:translate and
 # i18n:name-attributes for each tag in each file of this
-# directory and creates a POT-file in it.
+# directory recursively  and creates a POT-file in it, 
+# named 'our.domain.pot'.
 #
-# Usecase: Have one translation-egg holding the domain for
-# several eggs, f.e. your dev-eggs.
+# Usecase: Have one translation-egg holding the domain and translations
+# for several eggs (f.e. your dev-eggs), centrally.
 #
 # Usage is: Install BeautifulSoup (f.e. with `pip install
 # beautifulsoup4´), replace the domain-variable below with
@@ -17,8 +18,8 @@
 # your Terminal (possibly a bash) in the directory where you
 # want the files to be altered.
 #
-# Consider a backup or a  VCS-snapshot (f.e. with git) before
-# doing that, to be able to return to, in case things go haywire.
+# Consider a backup or a VCS-snapshot to be able to return to, 
+# *before* executing thisfile, in case things go haywire.
 
 
 # TODO: Check, if i18n:attributes are missing.
@@ -28,19 +29,23 @@ import shutil
 from bs4 import BeautifulSoup
 
 domain = 'our.domain'
+# Generate msg-ids and -names of increasing number:
 msg_id = 0
 msg_name = 0
-wanted_file_types = ['.pt', '.zpt', '.cpt']
+# In dikt we collect msg_ids, their default text
+# strings and each file where the msg-id occurs:
 dikt = []
-# In dikt we collect msg_ids, their strings and each file
-# where  a msg_id occurs:
-dikt = [  [ 'example_msg_id', 'example_msg_str', ['file1.pt', 'file2.pt'] ]  ]
 
+# Wailk recursively through directory:
 for root, dirs, files in os.walk("."):
-    for file_name in files:
-        file_path = os.path.join(root, file_name)
-        splitted_name = os.path.splitext(file_name)
 
+    # For each file:
+    for file_name in files:
+        
+        # Get current file-path:
+        file_path = os.path.join(root, file_name)
+        # Get suffix:
+        splitted_name = os.path.splitext(file_name)
         if len(splitted_name) > 0:
             suff = splitted_name[1]
             if suff in wanted_file_types:
@@ -105,30 +110,43 @@ for root, dirs, files in os.walk("."):
                     ####################
 
                     for content in tag.contents:
-# ´tag.contents´returns its (unicode-)text and child-tags as list-items, e.g.:
+# ´tag.contents´returns the tag's texts and child-tags as list-items, e.g.:
 # [u"\n    Tag's starting text\n    ", <childtag> childtext </childtag>', u'\n    ending text of tag\n    ']
                         
                         # We have a piece of text:
                         if isinstance(content, unicode):
-                            # Remove linebreaks:
+                            # Remove linebreaks and 
+                            # preceding or trailing spaces:
                             string = content.replace('\n','').strip()
-                            # Remove superfluous spaces (= any more than one between words):
-                            string = ' '.join(string.split()) # split'n'join: cool! no regex needed :)
+                            # Remove superfluous spaces, meaning 
+                            # any more than one between words:
+                            string = ' '.join(string.split())
                             if string != '':
                                 tag_txt += string
                         
-                        # We have a tag:
+                        # We have a child-tag, include in tag_txt as var:
                         else:
                             for at in content.attrs:
                                 if at == 'i18n:name':
+                                    # Add preceding and ending space:
                                     tag_txt += ' ${' + content[at] + '} '
                         
-                    # HAS TEXT:
+                    # TAG HAS TEXT:
                     if tag_txt != '':
 
-                        # APPLY HOOKS:
+                        # Remove preceding and ending space
+                        # in case text starts or ends with 
+                        # a i18n:name-var, that had added spaces
+                        # two lines of code above:
+                        
+                        tag_txt = tag_txt.strip()
+                        
+                        
+                        # APPLY i18n:translate:
+                        
                         if not HAS_TAL:
-                            IS_DUP = False
+                        
+                            IS_DUP = False # ini
 
                             if dikt != []:
                                 for entry in dikt:
@@ -138,11 +156,14 @@ for root, dirs, files in os.walk("."):
                                         IS_DUP = True
 
                             if not IS_DUP:
+                                # Collekt entry in dikt:
                                 new_entry = [msg_id, tag_txt, [file_path]]
                                 dikt.append(new_entry)
+                                # SET i18n:translate-msgid:
                                 tag['i18n:translate'] = 'id-' + str(msg_id)
                                 msg_id += 1
                             else:
+                                # SET:
                                 tag['i18n:translate'] = 'id-' + str(dup_msg_id)
 
                     # End of tag, loop to next tag.
