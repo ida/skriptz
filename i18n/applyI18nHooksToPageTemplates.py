@@ -1,7 +1,8 @@
 # !/usr/bin/python
 
-# i18nize template.s
+# i18nize templates
 # TODO: Check, if i18n:attributes are missing.
+
 import os
 import shutil
 from bs4 import BeautifulSoup # pip install beautifulsoup4
@@ -85,10 +86,10 @@ for root, dirs, files in os.walk("."):
                         NEED_NAME = True
                     
                     if NEED_TRANS:
-                        tag['i18n:translate'] = 'id' + str(msg_id)
+                        tag['i18n:translate'] = 'id-' + str(msg_id)
                         msg_id += 1
                     elif NEED_NAME:
-                        tag['i18n:name'] = 'name' + str(msg_name)
+                        tag['i18n:name'] = 'name-' + str(msg_name)
                         msg_name += 1
            
                     # End of tag, loop next. 
