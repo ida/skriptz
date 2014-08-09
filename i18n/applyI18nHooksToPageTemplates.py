@@ -11,7 +11,7 @@ msg_id = 0
 msg_name = 0
 wanted_file_types = ['.pt', '.zpt', '.cpt']
 dikt = []
-dikt = [  [ 'msg_id', 'msg_str', ['file1.pt', 'file2.pt'] ]  ]
+dikt = [  [ 'example_msg_id', 'example_msg_str', ['file1.pt', 'file2.pt'] ]  ]
 
 for root, dirs, files in os.walk("."):
     for file_name in files:
@@ -116,10 +116,18 @@ for root, dirs, files in os.walk("."):
                     # End of tag, loop next. 
                 # COOK IT: 
                 soup = soup.prettify().encode('ascii', 'xmlcharrefreplace')
-                #result = open(file_path + '.tmp', 'w')
-                result = open('tmp-' + file_name, 'w')
+                result = open(file_path + '.tmp', 'w')
                 result.write(str(soup))
                 result.close()
-                #shutil.move(file_path + '.tmp', file_path)
+                shutil.move(file_path + '.tmp', file_path)
+
+# Create pot-file of dikt:
+pot = ''
 for entry in dikt:
-    pass#rint entry 
+    pot += '# ' + entry[1] + '\n'
+    for fil in entry[2]:
+        pot += '# ' + fil + '\n'
+    pot += 'msgid="' + str(entry[0]) + '"\nmsgstr=""\n\n'
+res = open('main.pot', 'w')
+res.write(pot)
+res.close()
