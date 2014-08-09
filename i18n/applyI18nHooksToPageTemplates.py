@@ -1,5 +1,9 @@
 # !/usr/bin/python
-
+#
+#
+# i18nize Plone-templates
+# =======================
+#
 # Overwrites and adds i18:domain, i18n:translate and
 # i18n:name-attributes for each tag in each file of this
 # directory and creates a POT-file in it.
@@ -12,30 +16,31 @@
 # yours, execute ´python applyi18nHooksToTemplates.py` via
 # your Terminal (possibly a bash) in the directory where you
 # want the files to be altered.
-
+#
 # Consider a backup or a  VCS-snapshot (f.e. with git) before
 # doing that, to be able to return to, in case things go haywire.
 
 
-# i18nize templates
 # TODO: Check, if i18n:attributes are missing.
 
 import os
 import shutil
 from bs4 import BeautifulSoup
 
+domain = 'our.domain'
 msg_id = 0
 msg_name = 0
 wanted_file_types = ['.pt', '.zpt', '.cpt']
 dikt = []
 # In dikt we collect msg_ids, their strings and each file
-# where  a msg_id occurs, for creating the POT-file:
+# where  a msg_id occurs:
 dikt = [  [ 'example_msg_id', 'example_msg_str', ['file1.pt', 'file2.pt'] ]  ]
 
 for root, dirs, files in os.walk("."):
     for file_name in files:
         file_path = os.path.join(root, file_name)
         splitted_name = os.path.splitext(file_name)
+
         if len(splitted_name) > 0:
             suff = splitted_name[1]
             if suff in wanted_file_types:
@@ -102,7 +107,7 @@ for root, dirs, files in os.walk("."):
 
                     # Do I have text?
                     for content in tag_contents:
-                    # tag.contents returns its (unicode-)text and 
+                    # ´tag.contents´returns its (unicode-)text and 
                     # child-tags as list-items, e.g.:
 # [u"\n    Tag's starting text\n    ", <childtag> childtext </childtag>', u'\n    ending text of tag\n    ']
                         # Yes, text please:
@@ -118,8 +123,6 @@ for root, dirs, files in os.walk("."):
                                 if at == 'i18n:name':
                                     tag_txt += ' ${' + content[at] + '} '
                                     HAS_NAME = True
-                            #if not HAS_NAME:
-                            #    tag_txt += ' ${i18n:name} '
                         
                     # HAS TEXT:
                     if tag_txt != '':
@@ -127,12 +130,13 @@ for root, dirs, files in os.walk("."):
                         # APPLY HOOKS:
                         if not HAS_TAL:
                             IS_DUP = False
-                            for entry in dikt:
-                                if entry[1] == tag_txt:
-                                    entry[2].append(file_path)
-                                    dup_msg_id = entry[0]
 
-                                    IS_DUP = True
+                            if dikt != []:
+                                for entry in dikt:
+                                    if entry[1] == tag_txt:
+                                        entry[2].append(file_path)
+                                        dup_msg_id = entry[0]
+                                        IS_DUP = True
 
                             if not IS_DUP:
                                 new_entry = [msg_id, tag_txt, [file_path]]
@@ -143,7 +147,7 @@ for root, dirs, files in os.walk("."):
                             else:
                                 tag['i18n:translate'] = 'id-' + str(dup_msg_id)
 
-                    # End of tag, loop next. 
+                    # End of tag, loop to next tag.
                 # COOK IT: 
                 soup = soup.prettify().encode('ascii', 'xmlcharrefreplace')
                 result = open(file_path + '.tmp', 'w')
