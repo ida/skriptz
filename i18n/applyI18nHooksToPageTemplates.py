@@ -6,21 +6,23 @@
 #
 # Overwrites and adds i18:domain, i18n:translate and
 # i18n:name-attributes for each tag in each file of this
-# directory recursively  and creates a POT-file in it, 
-# named 'our.domain.pot'.
+# directory recursively, if needed,  and creates a POT-file 
+# in it, named 'our.domain.pot' (change the var below).
 #
-# Usecase: Have one translation-egg holding the domain and translations
-# for several eggs (f.e. your dev-eggs), centrally.
+# Usecase: Have one translation-egg holding the domain and 
+# translations for several eggs (f.e. your dev-eggs), centrally.
 #
-# Usage is: Install BeautifulSoup (f.e. with `pip install
+# Usage: Install BeautifulSoup (f.e. with `pip install
 # beautifulsoup4´), replace the domain-variable below with
 # yours, execute ´python applyi18nHooksToTemplates.py` via
 # your Terminal (possibly a bash) in the directory where you
 # want the files to be altered.
 #
-# Consider a backup or a VCS-snapshot to be able to return to, 
-# *before* executing this file, in case things go haywire.
-
+# Never forget: Backup directory before executing this py-script.
+#
+# Credits: *BeautifulSoup*, an XML-parser, which makes my life
+# so much more enjoyable, and the Plone- and Python-communities 
+# and -founders.
 
 # TODO: Check, if i18n:attributes are missing.
 
@@ -154,12 +156,12 @@ for root, dirs, files in os.walk("."):
                                 tag['i18n:translate'] = 'id-' + str(msg_id)
                                 msg_id += 1
                             else:
-                                # SET:
+                                # SET same msgid of dup-text:
                                 tag['i18n:translate'] = 'id-' + str(dup_msg_id)
 
                     # End of tag, loop to next tag.
 
-                # COOK IT: 
+                # Write altered xml to tmp-files and then overwrite templates with soup: 
                 soup = soup.prettify().encode('ascii', 'xmlcharrefreplace')
                 result = open(file_path + '.tmp', 'w')
                 result.write(str(soup))
