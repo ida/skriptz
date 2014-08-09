@@ -88,7 +88,7 @@ for root, dirs, files in os.walk("."):
                     if NEED_TRANS:
                         tag['i18n:translate'] = 'id-' + str(msg_id)
                         msg_id += 1
-                    elif NEED_NAME:
+                    if NEED_NAME:
                         tag['i18n:name'] = 'name-' + str(msg_name)
                         msg_name += 1
            
