@@ -46,6 +46,8 @@ for root, dirs, files in os.walk("."):
                 # For each tag:
                 for tag in tags:
                     
+                    HAS_DOMAIN = False
+                    
                     ###################
                     #   i18n:domain   #
                     ###################
@@ -54,6 +56,10 @@ for root, dirs, files in os.walk("."):
                     # and nowhere else, because though shallt not have 
                     # other domains than mine besides me, the allmighty
                     # domain.
+
+                    for att in tag.attrs:
+                        if att == 'i18n:domain':
+                            HAS_DOMAIN = True
 
                     # Remove domain of all tags:
                     if HAS_DOMAIN:
