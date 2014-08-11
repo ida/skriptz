@@ -29,11 +29,11 @@
 
 import os
 import shutil
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, Comment
 
 wanted_file_types = ['.pt', '.cpt', '.zpt']
 # Replace this var with the domain you want to apply:
-domain = 'our.domain'
+domain = 'our.translations'
 # Generate msg-ids and -names of increasing number:
 msg_id = 0
 msg_name = 0
@@ -66,6 +66,7 @@ for root, dirs, files in os.walk("."):
                 for tag in tags:
                     
                     # Ini/reset vars:
+                    HAS_DOMAIN = False
                     HAS_NAME = False
                     HAS_TRANS = False
                     PAR_HAS_TRANS = False
@@ -106,24 +107,26 @@ for root, dirs, files in os.walk("."):
 # ´tag.contents´returns the tag's texts and child-tags as list-items, e.g.:
 # [u"\n    Tag's starting text\n    ", <childtag> childtext </childtag>', u'\n    ending text of tag\n    ']
                         
-                        # We have a piece of text:
-                        if isinstance(content, unicode):
-                            # Remove linebreaks and 
-                            # preceding or trailing spaces:
-                            string = content.replace('\n','').strip()
-                            # Remove superfluous spaces, meaning 
-                            # any more than one between words:
-                            string = ' '.join(string.split())
-                            if string != '':
-                                tag_txt += string
-                        
-                        # We have a child-tag, include in 
-                        # ´tag_txt´ as var:
-                        else:
-                            for at in content.attrs:
-                                if at == 'i18n:name':
-                                    # Add preceding and ending space:
-                                    tag_txt += ' ${' + content[at] + '} '
+                        # Exclude comments:
+                        if not isinstance(content, Comment):
+                            # We have a piece of text and it's not a comment:
+                            if isinstance(content, unicode):
+                                # Remove linebreaks and:
+                                # preceding or trailing spaces:
+                                string = content.replace('\n','').strip()
+                                # Remove superfluous spaces, meaning 
+                                # any more than one between words:
+                                string = ' '.join(string.split())
+                                if string != '':
+                                    tag_txt += string
+                            
+                            # We have a child-tag, include in 
+                            # ´tag_txt´ as var:
+                            else:
+                                for at in content.attrs:
+                                    if at == 'i18n:name':
+                                        # Add preceding and ending space:
+                                        tag_txt += ' ${' + content[at] + '} '
                         
                     # TAG HAS TEXT:
                     if tag_txt != '':
@@ -150,12 +153,14 @@ for root, dirs, files in os.walk("."):
                                         IS_DUP = True
 
                             if not IS_DUP:
-                                # Collekt entry in dikt:
-                                new_entry = [msg_id, tag_txt, [file_path]]
-                                dikt.append(new_entry)
-                                # SET i18n:translate-msgid:
-                                tag['i18n:translate'] = 'id-' + str(msg_id)
-                                msg_id += 1
+                                # Exclude one-var-only-strings, like '${var_name}':
+                                if not ( tag_txt.find('}') == 1 and tag_txt.startswith('${') and tag_txt.endswith('}') ):
+                                    # Collekt entry in dikt:
+                                    new_entry = [msg_id, tag_txt, [file_path]]
+                                    dikt.append(new_entry)
+                                    # SET i18n:translate-msgid:
+                                    tag['i18n:translate'] = 'id-' + str(msg_id)
+                                    msg_id += 1
                             else:
                                 # SET same msgid of dup-text:
                                 tag['i18n:translate'] = 'id-' + str(dup_msg_id)
