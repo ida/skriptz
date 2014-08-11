@@ -33,7 +33,7 @@ from bs4 import BeautifulSoup, Comment
 
 wanted_file_types = ['.pt', '.cpt', '.zpt']
 # Replace this var with the domain you want to apply:
-domain = 'our.translations'
+domain = 'amp.translations'
 # Generate msg-ids and -names of increasing number:
 msg_id = 0
 msg_name = 0
@@ -66,7 +66,6 @@ for root, dirs, files in os.walk("."):
                 for tag in tags:
                     
                     # Ini/reset vars:
-                    HAS_DOMAIN = False
                     HAS_NAME = False
                     HAS_TRANS = False
                     PAR_HAS_TRANS = False
@@ -83,16 +82,12 @@ for root, dirs, files in os.walk("."):
                             HAS_TRANS = True
                         elif att == 'i18n:name':
                             HAS_NAME = True
-                        elif att == 'i18n:domain':
-                            HAS_DOMAIN = True
 
                     # Delete all i18-hooks:
                     if HAS_TRANS:
                         del tag['i18n:translate']
                     if HAS_NAME:
                         del tag['i18n:name']
-                    if HAS_DOMAIN:
-                        del tag['i18n:domain']
 
                     # Apply i18:name:
                     for atti in tag.parent.attrs:
@@ -107,9 +102,9 @@ for root, dirs, files in os.walk("."):
 # ´tag.contents´returns the tag's texts and child-tags as list-items, e.g.:
 # [u"\n    Tag's starting text\n    ", <childtag> childtext </childtag>', u'\n    ending text of tag\n    ']
                         
-                        # Exclude comments:
-                        if not isinstance(content, Comment):
-                            # We have a piece of text and it's not a comment:
+                        # Exclude comments and script- and style-tags:
+                        if not isinstance(content, Comment) and tag.name != 'script' and tag.name != 'style':
+                            # We have a piece of text:
                             if isinstance(content, unicode):
                                 # Remove linebreaks and:
                                 # preceding or trailing spaces:
@@ -154,7 +149,7 @@ for root, dirs, files in os.walk("."):
 
                             if not IS_DUP:
                                 # Exclude one-var-only-strings, like '${var_name}':
-                                if not ( tag_txt.find('}') == 1 and tag_txt.startswith('${') and tag_txt.endswith('}') ):
+                                if not ( (tag_txt.find('}') > 1) and (tag_txt.startswith('$')) and (tag_txt.endswith('}')) ):
                                     # Collekt entry in dikt:
                                     new_entry = [msg_id, tag_txt, [file_path]]
                                     dikt.append(new_entry)
