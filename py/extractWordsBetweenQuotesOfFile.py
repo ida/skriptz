@@ -31,7 +31,7 @@ def getWords(string):
                         # If word derived of a triple, we need to remove,
                         # the first two characters, which are quots collected 
                         # of the opening triple-quote-include-deli-loop:
-                                word = word[2:]
+                                #word = word[2:]
                                 TRIP = False
                             else:
                                 TRIP = True
@@ -45,6 +45,7 @@ def getWords(string):
                 if not TRIP:
                      
                     # WORD ENDS:
+                    WORD = False
                     deli = None
                 
                     # Collect word in list, ignore linebreaks:
@@ -61,15 +62,14 @@ def getWords(string):
             # If no deli set, set it, STARTING DELI:
             if not deli:
                 deli = char
-        # Char is not a deli and we are not in a triple quoted word:
-        else:
-            if deli and not TRIP:
-            # A deli is set, we are in a word:
-            #if deli:
-                # Collect char:
+                WORD = True
+        
+            # Deli not same as starting deli:
+            else:
                 word += char
-            # We are in triple, collect this char:
-            elif TRIP:
+        # Char is not a deli:
+        else:
+            if WORD or TRIP:
                 word += char
         
         pos += 1
