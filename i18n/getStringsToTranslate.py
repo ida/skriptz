@@ -1,6 +1,7 @@
 # !/usr/bin/python
 
 # Get strings between '' or ""
+# Handle triplequotes
 
 import os
 
@@ -17,6 +18,9 @@ preceding_line = ''
 END_TRIP = False
 START_TRIP = False
 KLASS = False
+EXCLUDE = False
+UNICODE = False
+ROUNDBRACKET = False
 
 # Walk recursively through directory:
 for root, dirs, files in os.walk("."):
@@ -54,10 +58,10 @@ for root, dirs, files in os.walk("."):
                                             word = 'KLASS: ' + word
                                             exclude_words.append(word)
                                     
-                                    if word not in exclude_words:
+                                    if word not in exclude_words and not EXCLUDE:
                                         
                                         words.append(word)
-                                    
+                                    if EXCLUDE: EXCLUDE = False                       
                                     word = ''
                                 
                                 # Collect chars in word:
@@ -67,16 +71,34 @@ for root, dirs, files in os.walk("."):
                             else:
                                 IN_WORD = True
                                 delimiter = char
+                                
+                                # WORD STARTS: 
+                            
                                 # Triple quotes?
                                 if len(line) > i+1:
                                     if line[i+1] == delimiter:
                                         if len(line) > i+2:
                                             if line[i+2] == delimiter:
                                                 START_TRIP = True
-                                                if preceding_line.startswith('class'):
-                                                    KLASS = True
                                             else: START_TRIP = False
-                        
+                                
+                                # Preceding char:
+                                if i-1 >= 0:
+                                    # Preceding square-bracket?
+                                    if line[i-1] == '[':
+                                        EXCLUDE = True
+                                    # Preceding unicode-decla?
+                                    elif line[i-1] == 'u':
+                                        UNICODE = True
+                                    # Preceding round bracket?
+                                    elif line[i-1] == '(':
+                                        ROUNDBRACKET = True
+                                    # Pre-preceding char:
+                                    if i-2 >= 0:
+                                        # i18n-hook?
+                                        if line[i-2] == '_':
+                                            print line
+
                         # NO DELI, collect char, if IN_WORD:
                         elif IN_WORD:
                             word += char
@@ -91,10 +113,10 @@ for root, dirs, files in os.walk("."):
                     line = fil.readline()
 ###################################################
             for word in words:
-                print ':'+word+':'
+#                print ':'+word+':'
                 pass
             #print len(words)
-            #print file_path
-            print exclude_words
+#            print file_path
+            #print exclude_words
             exit()
 ###################################################
