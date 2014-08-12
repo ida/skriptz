@@ -21,7 +21,6 @@ TRIP = False
 KLASS = False
 EXCLUDE = False
 UNICODE = False
-ROUNDBRACKET = False
 DEVMAX = 17
 DEVMAX = 7777
 
@@ -38,7 +37,7 @@ for root, dirs, files in os.walk("."):
             NAME = True
 
             for wanted in wanted_filetypes:
-                if file_name.endswith(wanted) != 1:
+                if file_name.endswith(wanted) != -1:
                     TYPE = True
 
             for ex_path in exclude_file_paths:
@@ -114,17 +113,17 @@ for root, dirs, files in os.walk("."):
                                             UNICODE = True
                                         # Preceding round bracket?
                                         elif line[i-1] == '(':
-                                            ROUNDBRACKET = True
-                                        # Pre-preceding char:
-                                        if i-2 >= 0:
-                                            # i18n-hook?
-                                            if line[i-2] == '_':
-                                                # Not a doubled underscore?
-                                                if i-3 >= 0:
-                                                    if line[i-3] == '_':
-                                                        pass
-                                                    else:
-                                                        print line
+                                            # Pre-preceding char:
+                                            if i-2 >= 0:
+                                                # i18n-hook?
+                                                if line[i-2] == '_':
+                                                    # Not a doubled underscore?
+                                                    if i-3 >= 0:
+                                                        if line[i-3] == '_':
+                                                            pass
+                                                        else:
+                                                            #print file_path
+                                                            print line
 
                             # NO DELI, collect char, if WORD:
                             elif WORD:
@@ -139,12 +138,12 @@ for root, dirs, files in os.walk("."):
                         preceding_line = line
                         line = fil.readline()
 
-                print file_path
+#                print file_path
 ###################################################
 for word in words:
 #    print ':'+word+':'
     pass
-print words
+#print words
 #print file_path
             #print len(words)
 #            print file_path
