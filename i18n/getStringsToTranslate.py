@@ -2,8 +2,6 @@
 
 # Get strings between '' or ""
 
-import os
-
 wanted_file_types = ['.py', '.cpy', '.vpy']
 IN_WORD = False
 delimiter = ''
@@ -14,6 +12,7 @@ words = []
 for root, dirs, files in os.walk("."):
     # For each file:
     for file_name in files:
+        print file_name
         file_path = os.path.join(root, file_name)
         splitted_name = os.path.splitext(file_name)
         if len(splitted_name) > 0:
@@ -24,6 +23,7 @@ for root, dirs, files in os.walk("."):
                     while(line):
                         for i in range(len(line)):
                             char = line[i]
+                            print char
                             if char == '"' or char == "'":
                                 if IN_WORD:
                                     if char == delimiter:
@@ -38,4 +38,9 @@ for root, dirs, files in os.walk("."):
                             elif IN_WORD:
                                 word += char
                         line = fil.readline()
+
+
+
+###################################################
 print words
+###################################################
