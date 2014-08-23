@@ -3,7 +3,7 @@
 # Update pck-managers:
 apt-get update
 apt-get dist-upgrade
-aptitude udate
+aptitude update
 aptitude dist-upgrade
 
 # General:
