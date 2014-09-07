@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-# Adds a browser-boilerplate to an egg generated with zopeksel's 
+# Adds a browser-boilerplate to an egg generated with zopeskel's 
 # "plone"-template, where "Include profile?" was answered with yes.
 
 import os, shutil
@@ -47,25 +47,43 @@ if not os.path.exists('browser'):
     interface_name = egg_name.split('.')
     interface_name = 'I' + str.capitalize(interface_name[0]) + str.capitalize(interface_name[1])
     interface = open('browser/interfaces.py', 'w')
-    interface.write('from zope.interface import Interface\nclass ' + interface_name + '(Interface):')
+    interface.write('from zope.interface import Interface\n\n\
+class ' + interface_name + '(Interface):\n\
+    """Interface for layer-specific customisation.\n\
+    """')
     interface.close()
 
     # Create configure:
+    firstname = egg_name.split('.')[0]
+    lastname = egg_name.split('.')[1]
+    template_name = firstname + '_' + lastname + '_view'
     configure = open('browser/configure.zcml', 'w')
     configure.write('\
 <configure\n\
  xmlns="http://namespaces.zope.org/zope"\n\
  xmlns:five="http://namespaces.zope.org/five"\n\
  xmlns:browser="http://namespaces.zope.org/browser"\n\
- i18n_domain="'+egg_name+'">\n\
- <include package="plone.app.contentmenu" />\n\
-  <browser:resourceDirectory\n\
-      name="'+egg_name+'.resources"\n\
-      directory="resources"\n\
-      />\n\
+ i18n_domain="'+egg_name+'">\n\n\
+    <include package="plone.app.contentmenu" />\n\n\
+    <browser:resourceDirectory\n\
+        name="'+egg_name+'.resources"\n\
+        directory="resources"\n\
+    />\n\n\
+    <browser:page\n\
+        for="*"\n\
+        name="' + template_name + '"\n\
+        template="resources/' + template_name + '.pt"\n\
+        permission="zope2.View"\n\
+        layer=".interfaces.'+interface_name+'"\n\
+    />\n\n\
 </configure>')
     configure.close()
 
+
+    # Create template:
+    template = open('browser/resources/' + template_name + '.pt', 'w')
+    template.write(template_name + 'successfully loaded!')
+    template.close()
 
     # Create layer:
     layer = open('profiles/default/browserlayer.xml', 'w')
@@ -98,26 +116,5 @@ if not os.path.exists('browser'):
     });\n\
 })(jQuery);')
     js.close()
-# Register a view:
-#browserconf = 'browser/configure.zcml'
-#browserconftmp = browserconf + '.tmp'
-#print 'EGG'
-#print egg_name
-#firstname = egg_name.split('.')[0]
-#lasttname = egg_name.split('.')[1]
-#with open(browserconf) as fin, open(browserconftmp, 'w') as fout:
-#    for line in fin:
-#        # Insert:
-#        if line.find('</configure>'):
-#            fout.write('\
-#<browser:page\n\
-#for="*"\n\
-#name="'+firstname+'_'+lastname+'_view"\n\
-#template="'+firstname+'_'+lastname+'_view.pt"\n\
-#permission="zope2.View"\n\
-#layer=".interfaces.'+interface_name+'"\n\
-#/>\n')
 
-#        fout.write(line)
-    # Overwrite original with workingcopy:
-#    shutil.move(browserconftmp, browserconf)
+# EOF
