@@ -1,4 +1,4 @@
- #!/usr/bin/python
+#!/usr/bin/python
 
 # Adds a browser-boilerplate to an egg generated with zopeskel's 
 # "plone"-template, where "Include profile?" was answered with yes.
@@ -72,7 +72,7 @@ class ' + interface_name + '(Interface):\n\
     <browser:page\n\
         for="*"\n\
         name="' + template_name + '"\n\
-        class="' + template_name + '.' + interface_name[1:] + '"\n\
+        class="' + egg_name + '.browser.' + template_name + '.' + interface_name[1:] + '"\n\
         permission="zope2.View"\n\
         layer=".interfaces.'+interface_name+'"\n\
       />\n\n\
@@ -85,7 +85,9 @@ class ' + interface_name + '(Interface):\n\
     view.write('\
 # -*- coding: utf-8 -*-\n\n\
 from Products.Five.browser import BrowserView\n\
-from ' + egg_name + '.interfaces import ' + interface_name + '\n\n\
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile\n\
+from zope.interface import implements\n\n\
+from ' + egg_name + '.browser.interfaces import ' + interface_name + '\n\n\
 class ' + interface_name[1:] + ':\n\
     template = ViewPageTemplateFile("resources/' + template_name + '.pt")\n\
     implements(' + interface_name + ')\n')
