@@ -56,7 +56,7 @@ class ' + interface_name + '(Interface):\n\
     # Create configure:
     firstname = egg_name.split('.')[0]
     lastname = egg_name.split('.')[1]
-    template_name = firstname + '_' + lastname + '_view'
+    view_name = firstname + '_' + lastname + '_view'
     configure = open('browser/configure.zcml', 'w')
     configure.write('\
 <configure\n\
@@ -71,31 +71,44 @@ class ' + interface_name + '(Interface):\n\
       />\n\n\
     <browser:page\n\
         for="*"\n\
-        name="' + template_name + '"\n\
-        class="' + egg_name + '.browser.' + template_name + '.' + interface_name[1:] + '"\n\
+        name="' + view_name + '_view"\n\
+        template="resources/' + view_name + '.pt"\n\
         permission="zope2.View"\n\
-        layer=".interfaces.'+interface_name+'"\n\
+        layer=".interfaces.' + interface_name + '"\n\
+      />\n\n\
+    <browser:page\n\
+        for="*"\n\
+        name="' + view_name + '_helpers"\n\
+        class=".' + view_name + 'helpers.View"\n\
+        permission="zope2.View"\n\
+        layer=".interfaces.' + interface_name + '"\n\
       />\n\n\
 </configure>')
     configure.close()
 
 
-    # Create view:
-    view = open('browser/' + template_name + '.py', 'w')
+    # Create helper-py:
+    view = open('browser/' + view_name + '.py', 'w')
     view.write('\
 # -*- coding: utf-8 -*-\n\n\
-from Products.Five.browser import BrowserView\n\
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile\n\
-from zope.interface import implements\n\n\
+from Products.Five.browser import BrowserView\n\n\
 from ' + egg_name + '.browser.interfaces import ' + interface_name + '\n\n\
-class ' + interface_name[1:] + ':\n\
-    template = ViewPageTemplateFile("resources/' + template_name + '.pt")\n\
-    implements(' + interface_name + ')\n')
+class View(BrowserView):\n\
+    def hello(self):\n\
+        return "Hello, I am coming from that helper-script!"')
     view.close()
 
     # Create template:
-    template = open('browser/resources/' + template_name + '.pt', 'w')
-    template.write(template_name + ' successfully loaded!')
+    template = open('browser/resources/' + view_name + '.pt', 'w')
+    template.write(view_name + '_view.pt successfully loaded!<br>\n\
+And ' + view_name + '_helpers.py should greet us with a friendly:\n\
+<div tal:define="hello nocall: context/@@' + view_name + '_helpers/hello">\n\
+    <div tal:content="hello|nothing">
+    </div>
+    <div tal:condition="not: hello">
+        Urgh, could not retrieve a friendly welcome for unknown reasons.
+    </div>
+</div>')
     template.close()
 
     # Create layer:
