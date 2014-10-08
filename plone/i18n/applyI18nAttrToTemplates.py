@@ -2,18 +2,8 @@ import sys
 import os
 import shutil
 
-# add i18n trans/name, but
-# no i18n:translate for tal:content und tal:replace
-
-
 tag_types = ['opening', 'closing', 'selfclosing', 'comment']
 xid = 1
-
-# if (len(sys.argv)>1):
-#     food = open(sys.argv[1]).read()
-#     xid = int(sys.argv[2])
-# else:
-#     food = open("bsp.pt").read()
 
 opened_tags = 1
 needs_i18n_trans = []
@@ -51,7 +41,7 @@ def skipComment(pos):
 
 def getTag(pos):
     """ Returns the tag without brackets, 
-        f.e. 'body class=" bla"' or '/div'
+        f.e. 'body class="bla"' or '/div'
     """
     tag = ''
     while len(food) > pos + 1:
@@ -93,15 +83,11 @@ def getParentTag(pos):
         elif not inQuote and food[pos]=='<':
             if food[pos+1]!='/' and closingPos>0 and food[closingPos-1]!='/': 
                 level+=1
-#                print "level up"
             elif food[pos+1]=='/': 
                 level-=1
-#                print "level down"
             closingPos = -1
             inTag=False
 
-
-#        print [level,pos,food[pos]]
         if level==1:
             return pos
 
@@ -164,24 +150,24 @@ def prepare():
             tag_type = getTagType(tag)
             tag_text = getText(pos)
             tag_text = trimText(tag_text)
-#          print tag_text
             parent_pos = getParentTag(pos)
             xtext = getText(parent_pos)
             parent_text = trimText(xtext)
 
+            ##################
+            # i18n:translate #
+            ##################
             if tag_type is 'opening' and tag_text is not '':
-                needs_i18n_trans.append(pos) # match
-
+                # We don't need i18n:translate, if tag is 
+                # created dynamically of a tal-statement:
+                if (tag.find('tal:content') == -1) and (tag.find('tal:replace') == -1):
+                    needs_i18n_trans.append(pos) # match
+            ##################
+            #   i18n:name    #
+            ##################
+            # We always need an i18n:name, if parent has text:
             if tag_type is 'opening' and parent_text != '':
                 needs_i18n_name.append(pos) # match
-#        if pos > 4222:
-#            LOOP = False
-#    print needs_i18n_trans
-#    print needs_i18n_name
-#prepare()
-
-#print getParentTag(507)
-#print getParentTag(494)
 
 def append_string(result, string):
     length = len(string)
@@ -206,10 +192,6 @@ def must_patch(pos):
                 if (food[k]=='>'): break;
                 k += 1
                 attrs += food[k]
-            # if (attrs.find("tal:content")!=-1):
-            #     break
-            # if (attrs.find("tal:replace")!=-1):
-            #     break
 
             result += " i18n:translate=\"id-"+str(xid)+"\""
             xid += 1
@@ -225,7 +207,6 @@ def must_patch(pos):
             break
         i+=1
 
-
     return result
 
 def replace():
@@ -239,7 +220,6 @@ def replace():
         result += food[pos]
         if (len(patch)>0):
             tag = getTag(pos);
-            #print tag
             off = 0
             while(off<len(tag)):
                 result += food[pos+off+1]
@@ -249,6 +229,7 @@ def replace():
         pos += 1
     return result
 
+# MAIN:
 wanted_file_types = ['.pt', '.cpt', '.zpt']
 # Walk recursively through directory:
 for root, dirs, files in os.walk("."):
@@ -273,10 +254,8 @@ for root, dirs, files in os.walk("."):
 
                 with open(file_path) as fin, open(file_path+".out", 'w') as fout:
                     food = fin.read()
-                    #print file_path
-                    res =replace();
+                    res = replace();
                     fout.write(res)
                     # Overwrite original with workingcopy:
                     shutil.move(file_path+".out", file_path)
-                    
 
