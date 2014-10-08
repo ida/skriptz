@@ -92,7 +92,7 @@ def getParentTag(pos):
             return pos
 
         pos -= 1
-    return 0
+    return None
 
 def getText(pos):
   p = pos;
@@ -140,20 +140,22 @@ def getText(pos):
     p += 1;
 
 def prepare():
-    LOOP = True
     pos = -1
-    while LOOP and len(food) > pos + 1:
+    parent_tag = ''
+    parent_text = ''
+    while len(food) > pos + 1:
         pos += 1
         if food[pos] == '<':
 
             tag = getTag(pos)
             tag_type = getTagType(tag)
-            tag_text = getText(pos)
-            tag_text = trimText(tag_text)
+            tag_text = trimText(getText(pos))
             parent_pos = getParentTag(pos)
-            xtext = getText(parent_pos)
-            parent_text = trimText(xtext)
-
+            # Has parent:
+            if parent_pos:
+                parent_tag = getTag(parent_pos)
+                parent_text = trimText(getText(parent_pos))
+                print parent_text
             ##################
             # i18n:translate #
             ##################
@@ -165,8 +167,10 @@ def prepare():
             ##################
             #   i18n:name    #
             ##################
-            # We always need an i18n:name, if parent has text:
             if tag_type is 'opening' and parent_text != '':
+                # We don't need i18n:name, if parent-tag is 
+                # created dynamically of a tal-statement:
+                #if (parent_tag.find('tal:content') == -1) and (tag.find('tal:replace') == -1):
                 needs_i18n_name.append(pos) # match
 
 def append_string(result, string):
@@ -185,15 +189,8 @@ def must_patch(pos):
     length = len(needs_i18n_trans)
     i = 0
     while (i<length):
-        if needs_i18n_trans[i]==pos: 
-            k=pos
-            attrs = ""
-            while (k<len(food)):
-                if (food[k]=='>'): break;
-                k += 1
-                attrs += food[k]
-
-            result += " i18n:translate=\"id-"+str(xid)+"\""
+        if needs_i18n_trans[i]==pos:
+            result += " i18n:translate=\"id-" + str(xid) + "\""
             xid += 1
             break
         i+=1
@@ -201,8 +198,8 @@ def must_patch(pos):
     length = len(needs_i18n_name)
     i = 0
     while (i<length):
-        if needs_i18n_name[i]==pos: 
-            result += " i18n:name=\"name-"+str(xid)+"\""
+        if needs_i18n_name[i]==pos:
+            result += " i18n:name=\"name-"+str(xid) + "\""
             xid += 1
             break
         i+=1
