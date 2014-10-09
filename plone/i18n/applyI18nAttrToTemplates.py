@@ -1,4 +1,7 @@
-# TODO: except head, style and script-tags
+# TODO: Regard, if there is no wrapping root-tag, holding all children.
+
+# Remove all i18n-attrs and add i18n:translate and i18n:name, where needed.
+
 import sys
 import os
 import shutil
@@ -164,33 +167,34 @@ def prepare():
     while len(food) > pos + 1:
         pos += 1
         if food[pos] == '<':
-
             tag = getTag(pos)
-            tag_type = getTagType(tag)
-            tag_text = trimText(getText(pos))
-            parent_pos = getParentTag(pos)
-            # Has parent:
-            if parent_pos:
-                parent_tag = getTag(parent_pos)
-                parent_text = trimText(getText(parent_pos))
-            ##################
-            # i18n:translate #
-            ##################
-            if tag_type is 'opening' and tag_text is not '':
-                # We don't need i18n:translate, if tag is 
-                # created dynamically of a tal-statement:
-                if (tag.find('tal:content') == -1) and (tag.find('tal:replace') == -1):
-                    needs_i18n_trans.append(pos) # match
-            ##################
-            #   i18n:name    #
-            ##################
-            if (parent_text != '') and ((tag_type is 'opening') or (tag_type is 'selfclosing')):
-                needs_i18n_name.append(pos) # match
+            # Exceptionize special tags:
+            if tag.split(' ')[0] not in tags_to_skip:
+                tag_type = getTagType(tag)
+                tag_text = trimText(getText(pos))
+                parent_pos = getParentTag(pos)
+                # Has parent:
+                if parent_pos:
+                    parent_tag = getTag(parent_pos)
+                    parent_text = trimText(getText(parent_pos))
+                ##################
+                # i18n:translate #
+                ##################
+                if tag_type is 'opening' and tag_text is not '':
+                    # We don't need i18n:translate, if tag is 
+                    # created dynamically of a tal-statement:
+                    if (tag.find('tal:content') == -1) and (tag.find('tal:replace') == -1):
+                        needs_i18n_trans.append(pos) # match
+                ##################
+                #   i18n:name    #
+                ##################
+                if (parent_text != '') and ((tag_type is 'opening') or (tag_type is 'selfclosing')):
+                    needs_i18n_name.append(pos) # match
 
 def append_string(result, string):
+    
     # Regard pos for selfclosing tags needs to be one more left:
     SELFCLOSED = False
-    WHITESPACE = False
     if result.endswith('/'):
         SELFCLOSED = True
         result = result[:-1]
