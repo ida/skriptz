@@ -1,8 +1,10 @@
+# TODO: except head, style and script-tags
 import sys
 import os
 import shutil
 
 tag_types = ['opening', 'closing', 'selfclosing', 'comment']
+tags_to_skip = ['head', 'script', 'style']
 xid = 1
 
 opened_tags = 1
@@ -39,6 +41,14 @@ def skipComment(pos):
                                                     break
     return pos
 
+def skipTag(tag_name, pos):
+    tag_length = len(tag)
+    while len(food) > pos + 1:
+        pos += 1
+        if tag[pos] and tag[pos+1:pos+tag_length+1] == tag_name:
+            pos += tag_length + 2 # move behind bracket
+        return pos
+
 def getTag(pos):
     """ Returns the tag without brackets, 
         f.e. 'body class="bla"' or '/div'
@@ -46,14 +56,22 @@ def getTag(pos):
     tag = ''
     while len(food) > pos + 1:
         pos += 1
-        while food[pos] != '>': # TDO: ignore '>' in between "", could be py-ex
-            tag += food[pos]
-            if len(food) > pos + 1:
+        tag += food[pos]
+
+        # Collect everything inside of quotes
+        # and move on cursor:
+        if food[pos] == '"':
+            while len(food) > pos +1:
                 pos += 1
-            else:
-                pos += 1
-                break
-        break
+                tag += food[pos]
+                if food[pos] == '"':
+                    break        
+        # Tag stops and we are not in quotes:
+        elif food[pos] == '>':
+            # Remove closing bracket:
+            tag = tag[:-1]
+            break        
+
     return tag
 
 def getTagType(tag):
@@ -155,7 +173,6 @@ def prepare():
             if parent_pos:
                 parent_tag = getTag(parent_pos)
                 parent_text = trimText(getText(parent_pos))
-                print parent_text
             ##################
             # i18n:translate #
             ##################
@@ -167,13 +184,19 @@ def prepare():
             ##################
             #   i18n:name    #
             ##################
-            if tag_type is 'opening' and parent_text != '':
-                # We don't need i18n:name, if parent-tag is 
-                # created dynamically of a tal-statement:
-                #if (parent_tag.find('tal:content') == -1) and (tag.find('tal:replace') == -1):
+            if (parent_text != '') and ((tag_type is 'opening') or (tag_type is 'selfclosing')):
                 needs_i18n_name.append(pos) # match
 
 def append_string(result, string):
+    # Regard pos for selfclosing tags needs to be one more left:
+    SELFCLOSED = False
+    WHITESPACE = False
+    if result.endswith('/'):
+        SELFCLOSED = True
+        result = result[:-1]
+        if result.endswith(' '):
+            result = result[:-1]
+
     length = len(string)
     pos = length
     i = 0
@@ -181,6 +204,10 @@ def append_string(result, string):
         result+=string[i]
         i+=1
 
+    # Re-add removed chars of selfclosing:
+    result = result + ' ' # Add whitespace also, if it wasn't there before.
+    if SELFCLOSED:
+        result = result + '/'
     return result
 
 def must_patch(pos):
@@ -226,6 +253,28 @@ def replace():
         pos += 1
     return result
 
+def removeExistingI18nAttrs(food):
+    feed = ''
+    pos = -1
+    while len(food) > pos + 1:
+        pos += 1
+        feed += food[pos] # Write each char
+
+        # Ignore i18n:
+        if food[pos:pos+5] == 'i18n:':
+            # Remove already collected starting 'i':
+            feed = feed[:-1]
+            # Move on position:
+            while (len(food) > pos + 1):
+                pos += 1
+                if food[pos] == '"':
+                    while (len(food) > pos + 1):
+                        pos += 1
+                        if food[pos] == '"':
+                            break 
+                    break 
+    return feed
+
 # MAIN:
 wanted_file_types = ['.pt', '.cpt', '.zpt']
 # Walk recursively through directory:
@@ -249,10 +298,11 @@ for root, dirs, files in os.walk("."):
                 needs_i18n_name = []
                 needs_i18n_attr = [] # TDO
 
-                with open(file_path) as fin, open(file_path+".out", 'w') as fout:
+                with open(file_path) as fin, open(file_path + '.tmp', 'w') as fout:
                     food = fin.read()
-                    res = replace();
-                    fout.write(res)
+                    food = removeExistingI18nAttrs(food)
+                    food = replace();
+                    fout.write(food)
                     # Overwrite original with workingcopy:
-                    shutil.move(file_path+".out", file_path)
+#                    shutil.move(file_path + '.tmp', file_path)
 
