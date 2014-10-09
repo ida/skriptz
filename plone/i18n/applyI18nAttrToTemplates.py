@@ -2,6 +2,8 @@
 
 # Remove all i18n-attrs and add i18n:translate and i18n:name, where needed.
 
+domain = 'our.domain'
+
 import sys
 import os
 import shutil
@@ -264,8 +266,8 @@ def removeExistingI18nAttrs(food):
         pos += 1
         feed += food[pos] # Write each char
 
-        # Ignore i18n:
-        if food[pos:pos+5] == 'i18n:':
+        # Ignore i18n, except namespace-decla:
+        if food[pos:pos+5] == 'i18n:' and food[pos-1] == ' ':
             # Remove already collected starting 'i':
             feed = feed[:-1]
             # Move on position:
@@ -279,7 +281,31 @@ def removeExistingI18nAttrs(food):
                     break 
     return feed
 
-# MAIN:
+def addNamespaceAndDomain(food):
+    feed = ''
+    nspace = ''
+    idomain = ' i18n:domain="' + domain + '"'
+    pos = -1
+    APPLIED = False
+    while len(food) > pos + 1:
+        pos += 1
+        feed += food[pos] # Write each char
+        if (food[pos] == '<') and (APPLIED == False):
+            APPLIED = True
+            tag = getTag(pos)
+            if tag.startswith('html'):
+                if tag.find('xmls:i18n') == -1:
+                    nspace = ' xmls:i18n="http://xml.zope.org/namespaces/i18n"'
+            
+            add_str = tag + nspace + idomain
+            feed += add_str
+            pos += len(tag)
+    return feed
+
+
+########
+# MAIN #
+########
 wanted_file_types = ['.pt', '.cpt', '.zpt']
 # Walk recursively through directory:
 for root, dirs, files in os.walk("."):
@@ -305,7 +331,8 @@ for root, dirs, files in os.walk("."):
                 with open(file_path) as fin, open(file_path + '.tmp', 'w') as fout:
                     food = fin.read()
                     food = removeExistingI18nAttrs(food)
-                    food = replace();
+                    food = addNamespaceAndDomain(food)
+#                    food = replace();
                     fout.write(food)
                     # Overwrite original with workingcopy:
 #                    shutil.move(file_path + '.tmp', file_path)
