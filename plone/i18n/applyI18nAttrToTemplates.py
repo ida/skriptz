@@ -332,8 +332,7 @@ for root, dirs, files in os.walk("."):
                     food = fin.read()
                     food = removeExistingI18nAttrs(food)
                     food = addNamespaceAndDomain(food)
-#                    food = replace();
+                    food = replace();
                     fout.write(food)
                     # Overwrite original with workingcopy:
-#                    shutil.move(file_path + '.tmp', file_path)
-
+                    shutil.move(file_path + '.tmp', file_path)
