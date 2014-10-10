@@ -205,7 +205,8 @@ def prepare():
             chars_before_first_tag += food[pos]
         if food[pos] == '<':
             if not ONE_TIME:
-                print getNextSibling(pos)
+                if getNextSibling(pos):
+                    print 'Oh, oh, we don\'t have  root-tag!'
                 ONE_TIME = True
             FIRST_TAG = True
             tag = getTag(pos)
@@ -381,9 +382,8 @@ for root, dirs, files in os.walk("."):
                 with open(file_path) as fin, open(file_path + '.tmp', 'w') as fout:
                     food = fin.read()
                     food = removeExistingI18nAttrs(food)
-                    #food = addNamespaceAndDomain(food)
-                    #food = replace();
-                    prepare();
+                    food = addNamespaceAndDomain(food)
+                    food = replace();
                     fout.write(food)
                     # Overwrite original with workingcopy:
                     shutil.move(file_path + '.tmp', file_path)
