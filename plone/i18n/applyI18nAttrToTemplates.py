@@ -1,4 +1,3 @@
-# TODO: i18n:attributes
 # TODO: Regard, if there is no wrapping root-tag, holding all children.
 # TODO: No msgid-dups.
 
@@ -145,13 +144,58 @@ def getNextSibling(pos):
                             pos = len(tag)
                 return None
 
+def getI18nText(pos):
+    
+    tag = getTag(pos)
+    pos = len(tag)
+    opencloseratio = 1
+    HAS_CHILD = False
+    i18n_txt = ''
+    
+    while len(food) > pos+1:
+        pos += 1
+        
+    
+        # Found child:
+        if (food[pos] == '<'):
+            nxt_tag = getTag(pos)
+            nxt_tag_type = getTagType(nxt_tag)
+
+            if nxt_tag_type == 'opening':
+                opencloseratio += 1
+                HAS_CHILD = True
+
+            elif nxt_tag_type == 'selfclosing':
+                i18n_txt += '${name-[VAR]}' #TODO: VAR
+            
+            elif nxt_tag_type == 'closing':
+                if opencloseratio == 2:
+                    i18n_txt += '${name-[VAR]}' #TODO: VAR
+                opencloseratio -= 1
+                 
+            # Move cursor behind tag: 
+            pos += len(nxt_tag) + 1
+    
+        # Write char:
+        if opencloseratio == 1 and food[pos] != '>':
+            i18n_txt += food[pos] 
+        
+        # Tag closed:
+        if opencloseratio == 0:
+            break
+    
+    print i18n_txt
+    return i18n_txt
+food = '<gg>Grandgrand <g>Momo <p>paris <c>child </c><s>sibling </s>Pares</p>Grant</g>Grandgrand End</gg>'
+getI18nText(0)
+
 def getText(pos):
   p = pos;
   inTag = False
   isCloseTag = 0
-  level=0
-  inComment=False
-  inQuote=False
+  level = 0
+  inComment = False
+  inQuote = False
   tag = ""
   stack = []
   result = ""
@@ -206,7 +250,7 @@ def prepare():
         if food[pos] == '<':
             if not ONE_TIME:
                 if getNextSibling(pos):
-                    print 'Oh, oh, we don\'t have  root-tag!'
+                    print 'Oh, oh, we don\'t have a root-tag!'
                 ONE_TIME = True
             FIRST_TAG = True
             tag = getTag(pos)
