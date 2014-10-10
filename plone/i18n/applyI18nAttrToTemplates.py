@@ -1,8 +1,9 @@
 # TODO: Regard, if there is no wrapping root-tag, holding all children.
 
-# Remove all i18n-attrs and add i18n:translate and i18n:name, where needed.
+# This script removes all i18n-attrs and adds 
+# i18n:translate and i18n:name, where needed.
 
-domain = 'our.domain'
+domain = 'amp.translations'
 
 import sys
 import os
@@ -211,7 +212,7 @@ def append_string(result, string):
         i+=1
 
     # Re-add removed chars of selfclosing:
-    result = result + ' ' # Add whitespace also, if it wasn't there before.
+    result = result
     if SELFCLOSED:
         result = result + '/'
     return result
@@ -266,10 +267,10 @@ def removeExistingI18nAttrs(food):
         pos += 1
         feed += food[pos] # Write each char
 
-        # Ignore i18n, except namespace-decla:
-        if food[pos:pos+5] == 'i18n:' and food[pos-1] == ' ':
-            # Remove already collected starting 'i':
-            feed = feed[:-1]
+        # Ignore i18n, except namespace-decla and i18n:attrs:
+        if food[pos:pos+5] == 'i18n:' and food[pos-1] == ' ' and food[pos+5] != 'a':
+            # Remove already collected starting 'i' and space before:
+            feed = feed[:-2]
             # Move on position:
             while (len(food) > pos + 1):
                 pos += 1
@@ -283,6 +284,7 @@ def removeExistingI18nAttrs(food):
 
 def addNamespaceAndDomain(food):
     feed = ''
+    xmlns = ''
     nspace = ''
     idomain = ' i18n:domain="' + domain + '"'
     pos = -1
@@ -290,16 +292,19 @@ def addNamespaceAndDomain(food):
     while len(food) > pos + 1:
         pos += 1
         feed += food[pos] # Write each char
-        if (food[pos] == '<') and (APPLIED == False):
-            APPLIED = True
+        if food[pos] == '<' and APPLIED == False:
             tag = getTag(pos)
-            if tag.startswith('html'):
-                if tag.find('xmls:i18n') == -1:
-                    nspace = ' xmls:i18n="http://xml.zope.org/namespaces/i18n"'
-            
-            add_str = tag + nspace + idomain
-            feed += add_str
-            pos += len(tag)
+            if getTagType(tag) == 'opening':
+                if tag.startswith('html'):
+                    if tag.find('xmlns="') == -1:
+                        xmlns = ' xmlns="http://www.w3.org/1999/xhtml"'
+                    if tag.find('xmlns:i18n') == -1:
+                        nspace = ' xmlns:i18n="http://xml.zope.org/namespaces/i18n"'
+                
+                feed += tag + xmlns + nspace + idomain
+                APPLIED = True
+                pos += len(tag)
+    
     return feed
 
 
