@@ -120,6 +120,31 @@ def getParentTag(pos):
         pos -= 1
     return None
 
+def getNextSibling(pos):
+    openclose_ratio = 1
+    pos += len(getTag(pos))
+    while len(food) > pos + 1:
+        pos += 1
+        if food[pos] == '<':
+            tag = getTag(pos)
+            tag_type = getTagType(tag)
+            pos += len(tag)
+            if tag_type == 'opening':
+                openclose_ratio += 1
+            elif tag_type == 'closing':
+                openclose_ratio -= 1
+            if openclose_ratio == 0:
+                while len(food) > pos + 1:
+                    pos += 1
+                    if food[pos] == '<':
+                        tag = getTag(pos)
+                        tag_type = getTagType(tag)
+                        if (tag_type == 'opening') or (tag_type == 'selfclosing'):
+                            return pos
+                        else:
+                            pos = len(tag)
+                return None
+
 def getText(pos):
   p = pos;
   inTag = False
@@ -168,6 +193,7 @@ def getText(pos):
 # Is first tag a sibling of another tag? Then it's not a wrapper-tag.
 def prepare():
     chars_before_first_tag = ''
+    ONE_TIME = False
     GRUEN = True
     FIRST_TAG = False
     pos = -1
@@ -178,6 +204,9 @@ def prepare():
         if not FIRST_TAG:
             chars_before_first_tag += food[pos]
         if food[pos] == '<':
+            if not ONE_TIME:
+                print getNextSibling(pos)
+                ONE_TIME = True
             FIRST_TAG = True
             tag = getTag(pos)
             if chars_before_first_tag != '<':
@@ -207,7 +236,7 @@ def prepare():
                 if (parent_text != '') and ((tag_type is 'opening') or (tag_type is 'selfclosing')):
                     needs_i18n_name.append(pos) # match
     if not GRUEN:
-        print "Oh, oh, there are characters before a tag starts:"
+        print "Oh, oh, there are characters before first tag starts:"
         print chars_before_first_tag[0:-1]
 
 def append_string(result, string):
@@ -352,8 +381,9 @@ for root, dirs, files in os.walk("."):
                 with open(file_path) as fin, open(file_path + '.tmp', 'w') as fout:
                     food = fin.read()
                     food = removeExistingI18nAttrs(food)
-                    food = addNamespaceAndDomain(food)
-                    food = replace();
+                    #food = addNamespaceAndDomain(food)
+                    #food = replace();
+                    prepare();
                     fout.write(food)
                     # Overwrite original with workingcopy:
                     shutil.move(file_path + '.tmp', file_path)
