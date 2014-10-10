@@ -1,4 +1,6 @@
+# TODO: i18n:attributes
 # TODO: Regard, if there is no wrapping root-tag, holding all children.
+# TODO: No msgid-dups.
 
 # This script removes all i18n-attrs and adds 
 # i18n:translate and i18n:name, where needed.
@@ -163,14 +165,25 @@ def getText(pos):
 
     p += 1;
 
+# Is first tag a sibling of another tag? Then it's not a wrapper-tag.
 def prepare():
+    chars_before_first_tag = ''
+    GRUEN = True
+    FIRST_TAG = False
     pos = -1
     parent_tag = ''
     parent_text = ''
     while len(food) > pos + 1:
         pos += 1
+        if not FIRST_TAG:
+            chars_before_first_tag += food[pos]
         if food[pos] == '<':
+            FIRST_TAG = True
             tag = getTag(pos)
+            if chars_before_first_tag != '<':
+                chars_before_first_tag = trimText(chars_before_first_tag)
+                if chars_before_first_tag != '<':
+                    GRUEN = False
             # Exceptionize special tags:
             if tag.split(' ')[0] not in tags_to_skip:
                 tag_type = getTagType(tag)
@@ -193,6 +206,9 @@ def prepare():
                 ##################
                 if (parent_text != '') and ((tag_type is 'opening') or (tag_type is 'selfclosing')):
                     needs_i18n_name.append(pos) # match
+    if not GRUEN:
+        print "Oh, oh, there are characters before a tag starts:"
+        print chars_before_first_tag[0:-1]
 
 def append_string(result, string):
     
