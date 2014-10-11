@@ -53,7 +53,7 @@ def skipTag(tag_name, pos):
     while len(food) > pos + 1:
         pos += 1
         if tag[pos] and tag[pos+1:pos+tag_length+1] == tag_name:
-            pos += tag_length + 2 # move behind bracket
+            pos += tag_length + 1 # move behind bracket
         return pos
 
 def getTag(pos):
@@ -144,10 +144,13 @@ def getNextSibling(pos):
                             pos = len(tag)
                 return None
 
-def getI18nText(pos):
-    
+# DEV:
+def getMsgStr(pos):
     tag = getTag(pos)
-    pos = len(tag)
+    #print tag
+    #print pos, food[pos:pos+10]
+    pos = len(tag) + 1 # plus bracket
+    #print pos, food[pos:pos+10]
     opencloseratio = 1
     HAS_CHILD = False
     i18n_txt = ''
@@ -159,25 +162,26 @@ def getI18nText(pos):
         # Found child:
         if (food[pos] == '<'):
             nxt_tag = getTag(pos)
+            print 'XXX'+nxt_tag
             nxt_tag_type = getTagType(nxt_tag)
 
-            if nxt_tag_type == 'opening':
+            # Move cursor behind tag: 
+            pos += len(nxt_tag) + 2
+              
+            if nxt_tag_type == 'selfclosing':
+                i18n_txt += '${name-[VAR]}' #TODO: VAR
+            
+            elif nxt_tag_type == 'opening':
                 opencloseratio += 1
                 HAS_CHILD = True
 
-            elif nxt_tag_type == 'selfclosing':
-                i18n_txt += '${name-[VAR]}' #TODO: VAR
             
             elif nxt_tag_type == 'closing':
-                if opencloseratio == 2:
-                    i18n_txt += '${name-[VAR]}' #TODO: VAR
                 opencloseratio -= 1
                  
-            # Move cursor behind tag: 
-            pos += len(nxt_tag) + 1
     
         # Write char:
-        if opencloseratio == 1 and food[pos] != '>':
+        if opencloseratio == 1:
             i18n_txt += food[pos] 
         
         # Tag closed:
@@ -186,8 +190,7 @@ def getI18nText(pos):
     
     print i18n_txt
     return i18n_txt
-food = '<gg>Grandgrand <g>Momo <p>paris <c>child </c><s>sibling </s>Pares</p>Grant</g>Grandgrand End</gg>'
-getI18nText(0)
+
 
 def getText(pos):
   p = pos;
@@ -258,15 +261,15 @@ def prepare():
                 chars_before_first_tag = trimText(chars_before_first_tag)
                 if chars_before_first_tag != '<':
                     GRUEN = False
+
             # Exceptionize special tags:
             if tag.split(' ')[0] not in tags_to_skip:
+                
                 tag_type = getTagType(tag)
+
                 tag_text = trimText(getText(pos))
                 parent_pos = getParentTag(pos)
-                # Has parent:
-                if parent_pos:
-                    parent_tag = getTag(parent_pos)
-                    parent_text = trimText(getText(parent_pos))
+                
                 ##################
                 # i18n:translate #
                 ##################
@@ -275,11 +278,15 @@ def prepare():
                     # created dynamically of a tal-statement:
                     if (tag.find('tal:content') == -1) and (tag.find('tal:replace') == -1):
                         needs_i18n_trans.append(pos) # match
+                
                 ##################
                 #   i18n:name    #
                 ##################
-                if (parent_text != '') and ((tag_type is 'opening') or (tag_type is 'selfclosing')):
-                    needs_i18n_name.append(pos) # match
+                if parent_pos: # has parent
+                    parent_tag = getTag(parent_pos)
+                    parent_text = trimText(getText(parent_pos))
+                    if (parent_text != '')  and  ( (tag_type is 'opening') or (tag_type is 'selfclosing') ):
+                        needs_i18n_name.append(pos) # match
     if not GRUEN:
         print "Oh, oh, there are characters before first tag starts:"
         print chars_before_first_tag[0:-1]
@@ -425,9 +432,10 @@ for root, dirs, files in os.walk("."):
 
                 with open(file_path) as fin, open(file_path + '.tmp', 'w') as fout:
                     food = fin.read()
-                    food = removeExistingI18nAttrs(food)
-                    food = addNamespaceAndDomain(food)
-                    food = replace();
-                    fout.write(food)
+                    prepare()
+                    #food = removeExistingI18nAttrs(food)
+                    #food = addNamespaceAndDomain(food)
+                    #food = replace()
+                    #fout.write(food)
                     # Overwrite original with workingcopy:
-                    shutil.move(file_path + '.tmp', file_path)
+                    #shutil.move(file_path + '.tmp', file_path)
