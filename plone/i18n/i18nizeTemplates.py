@@ -15,10 +15,18 @@ def readPot(pot):
     with open(pot) as fin:
         for line in fin:
             if line.startswith('msgid "'):
-                msgid = line[6:-1]
+                msgid = line[7:-2]
             if line.startswith('msgstr "'):
-                msgstr = line[7:-1]
+                msgstr = line[8:-2]
                 msg_dict.append([msgid, msgstr])
+
+def writePot():
+    feed = ''
+    for entry in msg_dict:
+        feed += 'msgid "' + entry[0] + '"\nmsgstr "' + entry[1] + '"\n\n'
+    nupot = open('nu.pot', 'w')
+    nupot.write(feed)
+    nupot.close()
 
 def getTag(pos):
     """ Returns the tag without brackets,
@@ -252,13 +260,21 @@ def writeTranslates(food):
             msgid = ''
             msg = getMsgStrAndCollectNeeds(pos)
             msg = trimText(msg)
-            # No dups:
+            ids = []
+            # No dup msgs:
             for entry in msg_dict:
+                ids.append(entry[0])
                 if entry[1] == msg:
                     msgid = entry[0]
             # New id:
             if msgid == '':
                 msgid = 'id-' + str(idnr)
+                # No dup id:
+                if msgid in ids:
+                    while msgid in ids:
+                        idnr += 1
+                        msgid = 'id-'+ str(idnr)
+
                 idnr += 1
                 msg_dict.append([msgid, msg])
 
@@ -368,6 +384,7 @@ def isValidMarkup(food):
         return False
 
 #MAIN
+readPot(pot)
 wanted_file_types = ['.pt', '.cpt', '.zpt']
 # Walk recursively through directory:
 for root, dirs, files in os.walk("."):
@@ -402,3 +419,5 @@ for root, dirs, files in os.walk("."):
                     else:
 #if isValidMarkup(food) == False:
                         print 'Erm, this template seems to be frogged up, doesn\'t validate!'
+print msg_dict
+writePot()
