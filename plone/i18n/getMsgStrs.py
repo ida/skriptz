@@ -114,7 +114,6 @@ def getI18nName(tag):
     return name
 
 def stripVars(string):
-#    print 'v: '+string
     IN_VAR = False
     stripped = ''
     i = -1
@@ -134,7 +133,6 @@ def stripVars(string):
 
         stripped = trimText(stripped)
 
-    print ':::'+stripped+':::'
     return stripped
 
 def getMsgStrAndCollectNeeds(pos):
@@ -193,11 +191,10 @@ def getMsgStrAndCollectNeeds(pos):
         NEED_TRANS = True
         # Exclude single vars:
         if stripped_msgstr.startswith('${') and stripped_msgstr.endswith('}'):
-            # Exclude no text, only vars (assuming we don't need this):
-            #print '+++'+stripped_msgstr
+            # Exclude only vars and no text, assuming we don't want this:
             text = stripVars(stripped_msgstr)
-            #print ':::'+text
-            NEED_TRANS = False
+            if text == '':
+                NEED_TRANS = False
         if NEED_TRANS:
             if tag_pos not in needs_trans:
                 needs_trans.append(tag_pos)
@@ -368,4 +365,3 @@ for root, dirs, files in os.walk("."):
                     fout.write(food)
                     # Overwrite original with workingcopy:
 #                    shutil.move(file_path+".out", file_path)
-#print msg_dict
