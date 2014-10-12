@@ -1,8 +1,14 @@
-#dup msgids
 import os
 
+pot ='the.pot' # Path to pot-file
+
 domain = 'our.translations'
-pot ='the.pot'
+
+# This will run over all dirs, can be also several eggs.
+# In our case we want only eggs starting with the first part
+# of our namespace (here: 'our') to be included.
+# Set prefix below to 'None', if you want to  grasp all dirs.
+prefix = domain.split('.')[0] 
 
 tags_to_skip = ['html', 'head', 'style', 'script']
 
@@ -103,20 +109,27 @@ def getParentTag(pos): # Not used, but keeping it for reference.
     return None
 
 def getNextSibling(pos):
+    """ Expects an opening tag to be passed.""" 
     openclose_ratio = 1
     pos += len(getTag(pos))
     while len(food) > pos + 1:
         pos += 1
         if food[pos] == '<':
+            
             tag = getTag(pos)
             tag_type = getTagType(tag)
             pos += len(tag)
+            
             if tag_type == 'opening':
                 openclose_ratio += 1
             elif tag_type == 'closing':
                 openclose_ratio -= 1
+            elif tag_type == 'comment':
+                pos += len(tag) + 1
+
             if openclose_ratio == 0:
                 while len(food) > pos + 1:
+                    print food[:pos]
                     pos += 1
                     if food[pos] == '<':
                         tag = getTag(pos)
@@ -124,7 +137,7 @@ def getNextSibling(pos):
                         if (tag_type == 'opening') or (tag_type == 'selfclosing'):
                             return pos
                         else:
-                            pos = len(tag)
+                            pos = len(tag) + 1
                 return None
 
 def skipTag(pos): # DEV: not used currently, keeping for ref
@@ -324,7 +337,7 @@ def writeTranslates(food):
                 msgid = 'id-' + str(idnr)
                 # No dup id:
                 if msgid in ids:
-                    while msgid in ids:
+                    while msgid in ids: #TODO: Still get dups, why?
                         idnr += 1
                         msgid = 'id-'+ str(idnr)
 
@@ -437,7 +450,7 @@ for root, dirs, files in os.walk("."):
 
         # Get current file-path, for later overwrite:
         file_path = os.path.join(root, file_name)
-
+        print file_path
         # Get suffix:
         splitted_name = os.path.splitext(file_name)
         if len(splitted_name) > 0:
@@ -448,22 +461,20 @@ for root, dirs, files in os.walk("."):
 
                 with open(file_path) as fin, open(file_path+".tmp", 'w') as fout:
                     food = fin.read()
-                    print isValidMarkup(food)
                     if isValidMarkup(food):
                         if not hasRoot(food):
-                            print 'No root-tag, gotta wrap this up, still!'
-                        else:
-                            food = removeExistingI18nAttrs(food)
-                            food = addNamespaceAndDomain(food)
-                            collectNeeds(food)
-                            food = writeNames(food)
-                            needs_trans = needs_name = [] # reset
-                            collectNeeds(food)
-                            food = writeTranslates(food)
-                            fout.write(food)
-                            # Overwrite original with workingcopy:
+                            food = '<div class="addedWrapperRootTag">' + food + '</div>'
+                        food = removeExistingI18nAttrs(food)
+                        food = addNamespaceAndDomain(food)
+                        collectNeeds(food)
+                        food = writeNames(food)
+                        needs_trans = needs_name = [] # reset
+                        collectNeeds(food)
+                        food = writeTranslates(food)
+                        fout.write(food)
+                        # Overwrite original with workingcopy:
 #                    shutil.move(file_path+".out", file_path)
                     else:
-#if isValidMarkup(food) == False:
-                        print 'Erm, this template seems to be frogged up, doesn\'t validate!'
+                        print file_path
+                        #print 'Erm, this template seems to be frogged up, doesn\'t validate!'
 writePot()
