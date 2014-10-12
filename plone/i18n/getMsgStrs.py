@@ -1,3 +1,4 @@
+#dup msgids
 import os
 
 domain = 'our.translations'
@@ -112,6 +113,29 @@ def getI18nName(tag):
     name = name[:-1]
     return name
 
+def stripVars(string):
+#    print 'v: '+string
+    IN_VAR = False
+    stripped = ''
+    i = -1
+    while len(string) > i + 1:
+        i += 1
+
+        if string[i] == '$':
+            if (len(string) > i + 1) and (string[i+1] == '{'):
+                IN_VAR = True
+                i += 1
+
+        if (string[i] == '}') and IN_VAR:
+            IN_VAR = False
+
+        if (not IN_VAR) and (string[i] != '}'):
+            stripped += string[i] # write
+
+        stripped = trimText(stripped)
+
+    print ':::'+stripped+':::'
+    return stripped
 
 def getMsgStrAndCollectNeeds(pos):
     msgstr = ''
@@ -169,9 +193,11 @@ def getMsgStrAndCollectNeeds(pos):
         NEED_TRANS = True
         # Exclude single vars:
         if stripped_msgstr.startswith('${') and stripped_msgstr.endswith('}'):
-            # Include multiple vars:
-            if stripped_msgstr.find('{$') > 1:
-                NEED_TRANS = False
+            # Exclude no text, only vars (assuming we don't need this):
+            #print '+++'+stripped_msgstr
+            text = stripVars(stripped_msgstr)
+            #print ':::'+text
+            NEED_TRANS = False
         if NEED_TRANS:
             if tag_pos not in needs_trans:
                 needs_trans.append(tag_pos)
@@ -214,11 +240,25 @@ def writeTranslates(food):
         pos += 1
         digest += food[pos]
         if pos in needs_trans:
+
+            msgid = ''
+            msg = getMsgStrAndCollectNeeds(pos)
+            msg = trimText(msg)
+            # No dups:
+            for entry in msg_dict:
+                if entry[1] == msg:
+                    msgid = entry[0]
+            # New id:
+            if msgid == '':
+                msgid = 'id-' + str(idnr)
+                idnr += 1
+                msg_dict.append([msgid, msg])
+
             tag = getTag(pos)
             digest += tag
             if getTagType(tag) == 'selfclosing':
                 digest = digest[:-1]
-            digest += ' i18n:translate="id-' + str(idnr) + '"'
+            digest += ' i18n:translate="' + msgid + '"'
             if getTagType(tag) == 'selfclosing':
                 digest += ' /'
             idnr += 1
@@ -316,11 +356,6 @@ for root, dirs, files in os.walk("."):
             # It's a pagetemplate:
             if suff in wanted_file_types:
 
-                opened_tags = 1
-                needs_i18n_trans = []
-                needs_i18n_name = []
-                needs_i18n_attr = [] # TDO
-
                 with open(file_path) as fin, open(file_path+".tmp", 'w') as fout:
                     food = fin.read()
                     food = removeExistingI18nAttrs(food)
@@ -333,4 +368,4 @@ for root, dirs, files in os.walk("."):
                     fout.write(food)
                     # Overwrite original with workingcopy:
 #                    shutil.move(file_path+".out", file_path)
-
+#print msg_dict
