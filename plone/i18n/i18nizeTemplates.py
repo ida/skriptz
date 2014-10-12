@@ -129,7 +129,6 @@ def getNextSibling(pos):
 
             if openclose_ratio == 0:
                 while len(food) > pos + 1:
-                    print food[:pos]
                     pos += 1
                     if food[pos] == '<':
                         tag = getTag(pos)
@@ -267,22 +266,24 @@ def getMsgStrAndCollectNeeds(pos):
             # Move on:
             pos += len(nxt_tag) + 1
             
+    stripped_msgstr = trimText(msgstr)
+    
     ######################################        
     #           i18n:translate           #        
     ######################################        
     # Apply i18n:translate, if neccessary:
-    stripped_msgstr = trimText(msgstr)
-    if stripped_msgstr != '':
-        NEED_TRANS = True
-        # Exclude single vars:
-        if stripped_msgstr.startswith('${') and stripped_msgstr.endswith('}'):
-            # Exclude only vars and no text, assuming we don't want this:
-            text = stripVars(stripped_msgstr)
-            if text == '':
-                NEED_TRANS = False
-        if NEED_TRANS:
-            if tag_pos not in needs_trans:
-                needs_trans.append(tag_pos)
+    if (tag.find('tal:content') == -1) and (tag.find('tal:replace') == -1):
+        if stripped_msgstr != '':
+            NEED_TRANS = True
+            # Exclude single vars:
+            if stripped_msgstr.startswith('${') and stripped_msgstr.endswith('}'):
+                # Exclude only vars and no text, assuming we don't want this:
+                text = stripVars(stripped_msgstr)
+                if text == '':
+                    NEED_TRANS = False
+            if NEED_TRANS:
+                if tag_pos not in needs_trans:
+                    needs_trans.append(tag_pos)
 
     return msgstr
 
@@ -450,7 +451,6 @@ for root, dirs, files in os.walk("."):
 
         # Get current file-path, for later overwrite:
         file_path = os.path.join(root, file_name)
-        print file_path
         # Get suffix:
         splitted_name = os.path.splitext(file_name)
         if len(splitted_name) > 0:
