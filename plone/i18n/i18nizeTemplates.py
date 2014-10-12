@@ -74,6 +74,59 @@ def getTagType(tag):
     else:
         return 'opening'
 
+def getParentTag(pos): # Not used, but keeping it for reference.
+    inComment=False
+    inQuote=False
+    inTag = False
+    closingPos = -1
+    pos -= 1
+    level=0
+    while pos > -1:
+        if (inTag and food[pos]=='"'):
+            if (inQuote): inComment=inQuote=False
+            else:         inComment=inQuote=True
+        elif not inQuote and food[pos]=='>':
+            inTag = True
+            closingPos = pos
+        elif not inQuote and food[pos]=='<':
+            if food[pos+1]!='/' and closingPos>0 and food[closingPos-1]!='/':
+                level+=1
+            elif food[pos+1]=='/':
+                level-=1
+            closingPos = -1
+            inTag=False
+
+        if level==1:
+            return pos
+
+        pos -= 1
+    return None
+
+def getNextSibling(pos):
+    openclose_ratio = 1
+    pos += len(getTag(pos))
+    while len(food) > pos + 1:
+        pos += 1
+        if food[pos] == '<':
+            tag = getTag(pos)
+            tag_type = getTagType(tag)
+            pos += len(tag)
+            if tag_type == 'opening':
+                openclose_ratio += 1
+            elif tag_type == 'closing':
+                openclose_ratio -= 1
+            if openclose_ratio == 0:
+                while len(food) > pos + 1:
+                    pos += 1
+                    if food[pos] == '<':
+                        tag = getTag(pos)
+                        tag_type = getTagType(tag)
+                        if (tag_type == 'opening') or (tag_type == 'selfclosing'):
+                            return pos
+                        else:
+                            pos = len(tag)
+                return None
+
 def skipTag(pos): # DEV: not used currently, keeping for ref
     """ Moves pos behind closing tag of tag.
     """
@@ -289,33 +342,6 @@ def writeTranslates(food):
             pos += len(tag)# move on
     return digest
 
-def writeTransen(food):
-    digest = ''
-    msgid = ''
-    idnr = 1
-    pos = -1
-    while len(food) > pos+1:
-        pos += 1
-        digest += food[pos]
-        if pos in needs_name:
-            msg = getMsgStrAndCollectNeeds(pos)
-            # No dups:
-            for entry in msg_dict:
-                if entry[1] == msg:
-                    msgid = entry[0]
-            if line.startwith('msgid "'):
-                msgid = line[6:-1]
-            # New id:
-            if msgid == '':
-                msgid = 'id-' + str(idnr)
-                idnr += 1
-
-            tag = getTag(pos)
-            digest += tag
-            digest += ' i18n:translate="' + msgid + '"'
-            pos += len(tag) # move on
-
-    return digest
 
 def removeExistingI18nAttrs(food):
     feed = ''
@@ -391,7 +417,7 @@ def hasRoot(food):
             tag = getTag(pos)
             tag_type= getTagType(tag)
             if tag_type == 'opening':
-                if getSibling(pos):
+                if getNextSibling(pos):
                     return False
                 else:
                     return True
@@ -425,7 +451,7 @@ for root, dirs, files in os.walk("."):
                     print isValidMarkup(food)
                     if isValidMarkup(food):
                         if not hasRoot(food):
-                            print 'Gotta wrap this up, still!'
+                            print 'No root-tag, gotta wrap this up, still!'
                         else:
                             food = removeExistingI18nAttrs(food)
                             food = addNamespaceAndDomain(food)
