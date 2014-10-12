@@ -1,9 +1,12 @@
 import os
 
+domain = 'our.translations'
+
+tags_to_skip = ['html', 'head', 'style', 'script']
+
 needs_trans = []
 needs_name = []
 msg_dict = []
-tags_to_skip = ['html', 'head', 'style', 'script']
 
 def getTag(pos):
     """ Returns the tag without brackets,
@@ -248,6 +251,53 @@ def writeTransen(food):
 
     return digest
 
+def removeExistingI18nAttrs(food):
+    feed = ''
+    pos = -1
+    while len(food) > pos + 1:
+        pos += 1
+        feed += food[pos] # Write each char
+
+        # Ignore i18n, except namespace-decla and i18n:attrs:
+        if food[pos:pos+5] == 'i18n:' and food[pos-1] == ' ' and food[pos+5] != 'a':
+            # Remove already collected starting 'i' and space before:
+            feed = feed[:-2]
+            # Move on position:
+            while (len(food) > pos + 1):
+                pos += 1
+                if food[pos] == '"':
+                    while (len(food) > pos + 1):
+                        pos += 1
+                        if food[pos] == '"':
+                            break
+                    break
+    return feed
+
+def addNamespaceAndDomain(food):
+    feed = ''
+    xmlns = ''
+    nspace = ''
+    idomain = ' i18n:domain="' + domain + '"'
+    pos = -1
+    APPLIED = False
+    while len(food) > pos + 1:
+        pos += 1
+        feed += food[pos] # Write each char
+        if food[pos] == '<' and APPLIED == False:
+            tag = getTag(pos)
+            if getTagType(tag) == 'opening':
+                if tag.startswith('html'):
+                    if tag.find('xmlns="') == -1:
+                        xmlns = ' xmlns="http://www.w3.org/1999/xhtml"'
+                    if tag.find('xmlns:i18n') == -1:
+                        nspace = ' xmlns:i18n="http://xml.zope.org/namespaces/i18n"'
+
+                feed += tag + xmlns + nspace + idomain
+                APPLIED = True
+                pos += len(tag)
+
+    return feed
+
 #MAIN
 wanted_file_types = ['.pt', '.cpt', '.zpt']
 # Walk recursively through directory:
@@ -273,6 +323,8 @@ for root, dirs, files in os.walk("."):
 
                 with open(file_path) as fin, open(file_path+".tmp", 'w') as fout:
                     food = fin.read()
+                    food = removeExistingI18nAttrs(food)
+                    food = addNamespaceAndDomain(food)
                     collectNeeds(food)
                     food = writeNames(food)
                     needs_trans = needs_name = [] # reset
