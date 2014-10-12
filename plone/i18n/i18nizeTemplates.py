@@ -16,13 +16,10 @@ def readPot(pot):
         for line in fin:
             if line.startswith('msgid "'):
                 msgid = line[6:-1]
-                print msgid
             if line.startswith('msgstr "'):
                 msgstr = line[7:-1]
-                print msgstr
                 msg_dict.append([msgid, msgstr])
-readPot(pot)
-print msg_dict
+
 def getTag(pos):
     """ Returns the tag without brackets,
         f.e. 'body class="bla"' or '/div'
@@ -351,6 +348,25 @@ def addNamespaceAndDomain(food):
 
     return feed
 
+def isValidMarkup(food):
+    opencloseratio = 0
+    pos = -1
+    while len(food) > pos+1:
+        pos += 1
+        if food[pos] == '<':
+            tag = getTag(pos)
+            tag_type = getTagType(tag)
+            if tag_type == 'opening':
+                opencloseratio += 1
+            if tag_type == 'closing':
+                opencloseratio -= 1
+            pos += len(tag)
+
+    if opencloseratio == 0:
+        return True
+    else:
+        return False
+
 #MAIN
 wanted_file_types = ['.pt', '.cpt', '.zpt']
 # Walk recursively through directory:
@@ -371,13 +387,18 @@ for root, dirs, files in os.walk("."):
 
                 with open(file_path) as fin, open(file_path+".tmp", 'w') as fout:
                     food = fin.read()
-                    food = removeExistingI18nAttrs(food)
-                    food = addNamespaceAndDomain(food)
-                    collectNeeds(food)
-                    food = writeNames(food)
-                    needs_trans = needs_name = [] # reset
-                    collectNeeds(food)
-                    food = writeTranslates(food)
-                    fout.write(food)
-                    # Overwrite original with workingcopy:
+                    print isValidMarkup(food)
+                    if isValidMarkup(food):
+                        food = removeExistingI18nAttrs(food)
+                        food = addNamespaceAndDomain(food)
+                        collectNeeds(food)
+                        food = writeNames(food)
+                        needs_trans = needs_name = [] # reset
+                        collectNeeds(food)
+                        food = writeTranslates(food)
+                        fout.write(food)
+                        # Overwrite original with workingcopy:
 #                    shutil.move(file_path+".out", file_path)
+                    else:
+#if isValidMarkup(food) == False:
+                        print 'Erm, this template seems to be frogged up, doesn\'t validate!'
