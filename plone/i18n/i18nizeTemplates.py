@@ -383,6 +383,24 @@ def isValidMarkup(food):
     else:
         return False
 
+def hasRoot(food):
+    pos = -1
+    while len(food) > pos+1:
+        pos += 1
+        if food[pos] == '<':
+            tag = getTag(pos)
+            tag_type= getTagType(tag)
+            if tag_type == 'opening':
+                if getSibling(pos):
+                    return False
+                else:
+                    return True
+            elif tag_type == 'selfclosing':
+                return False
+            elif tag_type == 'closing':
+                print 'Holy moly, template seems to start with a closing tag!'
+            else:
+                pos + len(tag) + 1
 #MAIN
 readPot(pot)
 wanted_file_types = ['.pt', '.cpt', '.zpt']
@@ -406,18 +424,20 @@ for root, dirs, files in os.walk("."):
                     food = fin.read()
                     print isValidMarkup(food)
                     if isValidMarkup(food):
-                        food = removeExistingI18nAttrs(food)
-                        food = addNamespaceAndDomain(food)
-                        collectNeeds(food)
-                        food = writeNames(food)
-                        needs_trans = needs_name = [] # reset
-                        collectNeeds(food)
-                        food = writeTranslates(food)
-                        fout.write(food)
-                        # Overwrite original with workingcopy:
+                        if not hasRoot(food):
+                            print 'Gotta wrap this up, still!'
+                        else:
+                            food = removeExistingI18nAttrs(food)
+                            food = addNamespaceAndDomain(food)
+                            collectNeeds(food)
+                            food = writeNames(food)
+                            needs_trans = needs_name = [] # reset
+                            collectNeeds(food)
+                            food = writeTranslates(food)
+                            fout.write(food)
+                            # Overwrite original with workingcopy:
 #                    shutil.move(file_path+".out", file_path)
                     else:
 #if isValidMarkup(food) == False:
                         print 'Erm, this template seems to be frogged up, doesn\'t validate!'
-print msg_dict
 writePot()
