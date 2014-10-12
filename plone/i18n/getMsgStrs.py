@@ -1,7 +1,10 @@
 import os
+
 needs_trans = []
 needs_name = []
 msg_dict = []
+tags_to_skip = ['html', 'head', 'style', 'script']
+
 def getTag(pos):
     """ Returns the tag without brackets,
         f.e. 'body class="bla"' or '/div'
@@ -178,7 +181,7 @@ def collectNeeds(food):
     while len(food) > pos+1:
         pos += 1
         if food[pos] == '<':
-            if getTagType(getTag(pos)) == 'opening':
+            if (getTagType(getTag(pos)) == 'opening') and (getTag(pos).split(' ')[0] not in tags_to_skip):
                 getMsgStrAndCollectNeeds(pos)
 
 def writeNames(food):
