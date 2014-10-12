@@ -286,7 +286,7 @@ def prepare():
                     parent_tag = getTag(parent_pos)
                     parent_text = trimText(getText(parent_pos))
                     if (parent_text != '')  and  ( (tag_type is 'opening') or (tag_type is 'selfclosing') ):
-                        needs_i18n_name.append(pos) # match
+                        pass#needs_i18n_name.append(pos) # match
     if not GRUEN:
         print "Oh, oh, there are characters before first tag starts:"
         print chars_before_first_tag[0:-1]
@@ -433,9 +433,9 @@ for root, dirs, files in os.walk("."):
                 with open(file_path) as fin, open(file_path + '.tmp', 'w') as fout:
                     food = fin.read()
                     prepare()
-                    #food = removeExistingI18nAttrs(food)
-                    #food = addNamespaceAndDomain(food)
-                    #food = replace()
-                    #fout.write(food)
+                    food = removeExistingI18nAttrs(food)
+                    food = addNamespaceAndDomain(food)
+                    food = replace()
+                    fout.write(food)
                     # Overwrite original with workingcopy:
                     #shutil.move(file_path + '.tmp', file_path)
