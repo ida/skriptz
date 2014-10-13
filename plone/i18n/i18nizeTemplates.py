@@ -1,4 +1,5 @@
 import os
+import shutil
 
 pot ='the.pot' # Path to pot-file
 
@@ -408,7 +409,6 @@ def isValidMarkup(food):
     opencloseratio = 0
     pos = -1
     while len(food) > pos+1:
-        pos += 1
         if food[pos] == '<':
             tag = getTag(pos)
             tag_type = getTagType(tag)
@@ -416,7 +416,8 @@ def isValidMarkup(food):
                 opencloseratio += 1
             if tag_type == 'closing':
                 opencloseratio -= 1
-            pos += len(tag)
+            pos += len(tag) + 1
+        pos += 1
 
     if opencloseratio == 0:
         return True
@@ -432,7 +433,10 @@ def hasRoot(food):
             tag_type= getTagType(tag)
             if tag_type == 'opening':
                 if getNextSibling(pos):
-                    return False
+                    #print tag
+                    #print getTag(getNextSibling(pos))
+                    #return False
+                    return True
                 else:
                     return True
             elif tag_type == 'selfclosing':
@@ -471,9 +475,9 @@ for root, dirs, files in os.walk("."):
                         needs_trans = needs_name = [] # reset
                         collectNeeds(food)
                         food = writeTranslates(food)
-                        fout.write(food)
+                        fout.write(food) # write
                         # Overwrite original with workingcopy:
-#                    shutil.move(file_path+".out", file_path)
+                        shutil.move(file_path+".tmp", file_path)
                     else:
                         print file_path
                         #print 'Erm, this template seems to be frogged up, doesn\'t validate!'
