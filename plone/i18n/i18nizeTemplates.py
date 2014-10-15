@@ -1,9 +1,12 @@
 import os
 import shutil
 
-pot ='the.pot' # Path to pot-file
-
 domain = 'our.translations'
+
+pot = domain+ '.pot' # Path to pot-file
+
+if not os.path.exists(pot):
+    open(pot, 'w').close()
 
 # This will run over all dirs, can be also several eggs.
 # In our case we want only eggs starting with the first part
@@ -11,7 +14,7 @@ domain = 'our.translations'
 # Set prefix below to 'None', if you want to  grasp all dirs.
 prefix = domain.split('.')[0] 
 
-tags_to_skip = ['html', 'head', 'style', 'script']
+tags_to_skip = ['html', 'head', 'style', 'script', 'tal:comment', 'metal:comment']
 
 needs_trans = []
 needs_name = []
@@ -140,31 +143,6 @@ def getNextSibling(pos):
                             pos = len(tag) + 1
                 return None
 
-def skipTag(pos): # DEV: not used currently, keeping for ref
-    """ Moves pos behind closing tag of tag.
-    """
-    opencloseratio = 1
-    tag = getTag(pos)
-    tag_type = getTagType(tag)
-
-    pos += len(tag) + 1 # move behind bracket
-
-    if getTagType(getTag(pos)) == 'opening' or getTagType(getTag(pos)) == 'closing':
-        while len(food) > pos + 1:
-            pos += 1
-            if food[pos] == '<':
-                if getTagType(getTag(pos)) == 'opening':
-                    opencloseratio += 1
-                elif getTagType(getTag(pos)) == 'closing':
-                    opencloseratio -= 1
-                
-                pos += len(getTag(pos)) + 1 # move behind bracket
-            
-            if opencloseratio == 0:
-                break 
-
-    return pos
-
 def trimText(txt):
     """ Removes linebreaks and tabs,
         any whitespace more than one between words,
@@ -268,7 +246,7 @@ def getMsgStrAndCollectNeeds(pos):
             pos += len(nxt_tag) + 1
             
     stripped_msgstr = trimText(msgstr)
-    
+   
     ######################################        
     #           i18n:translate           #        
     ######################################        
@@ -285,7 +263,6 @@ def getMsgStrAndCollectNeeds(pos):
             if NEED_TRANS:
                 if tag_pos not in needs_trans:
                     needs_trans.append(tag_pos)
-
     return msgstr
 
 
@@ -294,7 +271,9 @@ def collectNeeds(food):
     while len(food) > pos+1:
         pos += 1
         if food[pos] == '<':
-            if (getTagType(getTag(pos)) == 'opening') and (getTag(pos).split(' ')[0] not in tags_to_skip):
+            if (getTagType(getTag(pos)) == 'opening') \
+            and (getTag(pos).split(' ')[0] not in tags_to_skip) \
+            and (getTag(pos).find('use-macro') == -1):
                 getMsgStrAndCollectNeeds(pos)
 
 def writeNames(food):
@@ -433,10 +412,7 @@ def hasRoot(food):
             tag_type= getTagType(tag)
             if tag_type == 'opening':
                 if getNextSibling(pos):
-                    #print tag
-                    #print getTag(getNextSibling(pos))
-                    #return False
-                    return True
+                    return False
                 else:
                     return True
             elif tag_type == 'selfclosing':
