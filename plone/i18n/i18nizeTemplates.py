@@ -1,8 +1,7 @@
 import os
 import shutil
 
-#DEVdomain = 'our.translations'
-domain = 'amp.translations'
+domain = 'our.translations'
 
 pot = domain+ '.pot' # Path to pot-file
 
@@ -482,11 +481,7 @@ for root, dirs, files in os.walk("."):
 
         # Regard possible prefix, if prefix is '', all
         # files will be considered:
-        if file_path.startswith('./' + prefix) and not file_path.startswith('./' + domain + '/') \
-        and not file_path.startswith('amp.ezupgrade') \
-        and not file_path.startswith('amp.model') \
-        and not file_path.startswith('amp.pas') \
-        and not file_path.startswith('amp.ussa_api'): #DEV
+        if file_path.startswith('./' + prefix) and not file_path.startswith('./' + domain + '/'):
 
             # Get suffix:
             splitted_name = os.path.splitext(file_name)
