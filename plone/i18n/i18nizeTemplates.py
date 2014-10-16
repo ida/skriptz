@@ -1,7 +1,8 @@
 import os
 import shutil
 
-domain = 'our.translations'
+#DEVdomain = 'our.translations'
+domain = 'amp.translations'
 
 pot = domain+ '.pot' # Path to pot-file
 
@@ -11,15 +12,15 @@ if not os.path.exists(pot):
 # This will run over all dirs, can be also several eggs.
 # In our case we want only eggs starting with the first part
 # of our namespace (here: 'our') to be included.
-# Set prefix below to 'None', if you want to  grasp all dirs.
-prefix = domain.split('.')[0] 
+# Set prefix below to '', if you want to  grasp all dirs.
+prefix = domain.split('.')[0] + '.' # include dot for sharp results later
+#prefix = ''
 
-tags_to_skip = ['html', 'head', 'style', 'script', 'tal:comment', 'metal:comment']
+skip_tags = ['html', 'head', 'style', 'script', 'tal:comment', 'metal:comment']
 
-needs_trans = []
-needs_name = []
+g_idnr = 1
+g_nmnr = 1
 msg_dict = []
-
 
 def readPot(pot):
     with open(pot) as fin:
@@ -30,13 +31,13 @@ def readPot(pot):
                 msgstr = line[8:-2]
                 msg_dict.append([msgid, msgstr])
 
-def writePot():
+def writePot(pot):
     feed = ''
     for entry in msg_dict:
         feed += 'msgid "' + entry[0] + '"\nmsgstr "' + entry[1] + '"\n\n'
-    nupot = open('nu.pot', 'w')
-    nupot.write(feed)
-    nupot.close()
+    pot = open(pot, 'w')
+    pot.write(feed)
+    pot.close()
 
 def getTag(pos):
     """ Returns the tag without brackets,
@@ -58,7 +59,7 @@ def getTag(pos):
             pos += 1
             tag += food[pos] #write
 
-            # Collect everything (also '<') inside 
+            # Collect everything (also '>') inside 
             # of quotes and move on cursor:
             if food[pos] == '"':
                 while len(food) > pos +1:
@@ -143,6 +144,46 @@ def getNextSibling(pos):
                             pos = len(tag) + 1
                 return None
 
+def getChildren(pos):
+    """ Expects an opening tag to be passed.""" 
+    
+    children = []
+    opencloseratio = 0
+    
+    tag = getTag(pos)
+
+    pos += len(tag) + 1
+    
+    while len(food) > pos + 1:
+        
+        pos += 1
+        
+        if food[pos] == '<':
+            
+            tag = getTag(pos)
+            tag_type = getTagType(tag)
+            
+            if tag_type == 'opening':
+                opencloseratio += 1
+                
+                if opencloseratio == 1:
+                    children.append(pos) #collect child
+            
+            
+            elif tag_type == 'closing':
+                opencloseratio -= 1
+            
+            elif tag_type == 'selfclosing' and opencloseratio == 0:
+                children.append(pos) #collect child
+
+            if opencloseratio == -1:
+                break
+            
+            pos += len(tag)
+
+    return children
+
+
 def trimText(txt):
     """ Removes linebreaks and tabs,
         any whitespace more than one between words,
@@ -155,6 +196,74 @@ def trimText(txt):
     txt = txt.strip()
     return txt
 
+def getText(pos):
+    """Returns the text of a tag, ignores children."""
+    text = ''
+    pos += len(getTag(pos)) + 1
+    opencloseratio = 1
+    while len(food) > pos + 1:
+        pos += 1
+        if opencloseratio == 1 and food[pos] != '<':
+            text += food[pos]  # write
+        if food[pos] == '<':
+            tag = getTag(pos)
+            if len(food) > pos + 2:
+                pos += len(tag) + 2 # move behind closing bracket
+            else:
+                pos += len(tag) + 1
+            tag_type = getTagType(tag)
+            
+            if tag_type == 'opening':
+                opencloseratio += 1
+            elif tag_type == 'closing':
+                opencloseratio -= 1
+        
+        if opencloseratio == 0:
+            break
+    text = trimText(text)
+
+    return text
+
+
+def getMsgStr(pos):
+    """Returns msgstr, substitutes children with name-vars."""
+    text = ''
+    pos += len(getTag(pos)) + 1
+    opencloseratio = 1
+    while len(food) > pos + 1:
+        pos += 1
+        
+        if opencloseratio == 1 and food[pos] != '<':
+            text += food[pos]  # write
+        
+        if food[pos] == '<':
+            tag = getTag(pos)
+            tag_type = getTagType(tag)
+            pos += len(tag) + 1 # move on closing bracket
+            
+            if tag_type == 'opening':
+                opencloseratio += 1
+                    
+            elif tag_type == 'closing':
+                opencloseratio -= 1
+
+            if (tag_type == 'selfclosing') \
+            or (tag_type == 'opening' and opencloseratio == 2):
+                name = getI18nName(tag)
+                text += '${' + name  + '}'
+
+
+            pos += 1 # move behind closing bracket
+        
+        if opencloseratio == 0:
+            break
+    
+    text = trimText(text)
+
+    return text
+
+
+
 def getI18nName(tag):
     name = ''
     IN_NAME = False
@@ -164,7 +273,7 @@ def getI18nName(tag):
         # We have an i18n:name-attr:
         if len(tag) > p + 11 and tag[p:p+11] == 'i18n:name="':
             # Move to first quote:
-            p += 11 
+            p += 11
             IN_NAME = True
         # Write:
         if IN_NAME:
@@ -174,167 +283,8 @@ def getI18nName(tag):
             break
     # Remove last quote:
     name = name[:-1]
+
     return name
-
-def stripVars(string):
-    IN_VAR = False
-    stripped = ''
-    i = -1
-    while len(string) > i + 1:
-        i += 1
-
-        if string[i] == '$':
-            if (len(string) > i + 1) and (string[i+1] == '{'):
-                IN_VAR = True
-                i += 1
-
-        if (string[i] == '}') and IN_VAR:
-            IN_VAR = False
-
-        if (not IN_VAR) and (string[i] != '}'):
-            stripped += string[i] # write
-
-        stripped = trimText(stripped)
-
-    return stripped
-
-def getMsgStrAndCollectNeeds(pos):
-    msgstr = ''
-    opencloseratio = 1
-    tag_pos = pos
-    tag = getTag(pos)
-    pos += len(tag) + 1 # +1 cause len starts with 1, list with 0
-
-    while len(food) > pos + 1:
-        pos += 1
-
-        # Write:
-        if food[pos] != '<' and  opencloseratio == 1:
-                msgstr += food[pos]       
-
-        # Tag closes:
-        if opencloseratio == 0:
-            break
-
-        # Found child:
-        if food[pos] == '<':
-            nxt_tag = getTag(pos)
-            nxt_type = getTagType(nxt_tag)
-
-            # Count ratio:
-            if nxt_type == 'opening':
-                opencloseratio += 1
-            elif nxt_type == 'closing':
-                opencloseratio -= 1
-
-            ######################################        
-            #             i18n:name              #        
-            ######################################        
-            # Write substitute:
-            if (nxt_type== 'opening' and opencloseratio == 2) or \
-               (nxt_type== 'selfclosing' and opencloseratio == 1):
-                numsgnm = ''
-                msgnm = getI18nName(nxt_tag)
-                # i18n:name set already:
-                if msgnm != '':
-                    msgstr += '${' + msgnm  + '}'
-                # not set, apply:
-                else:
-                    if pos not in needs_name:
-                        needs_name.append(pos)
-            # Move on:
-            pos += len(nxt_tag) + 1
-            
-    stripped_msgstr = trimText(msgstr)
-   
-    ######################################        
-    #           i18n:translate           #        
-    ######################################        
-    # Apply i18n:translate, if neccessary:
-    if (tag.find('tal:content') == -1) and (tag.find('tal:replace') == -1):
-        if stripped_msgstr != '':
-            NEED_TRANS = True
-            # Exclude single vars:
-            if stripped_msgstr.startswith('${') and stripped_msgstr.endswith('}'):
-                # Exclude only vars and no text, assuming we don't want this:
-                text = stripVars(stripped_msgstr)
-                if text == '':
-                    NEED_TRANS = False
-            if NEED_TRANS:
-                if tag_pos not in needs_trans:
-                    needs_trans.append(tag_pos)
-    return msgstr
-
-
-def collectNeeds(food):
-    pos = -1
-    while len(food) > pos+1:
-        pos += 1
-        if food[pos] == '<':
-            if (getTagType(getTag(pos)) == 'opening') \
-            and (getTag(pos).split(' ')[0] not in tags_to_skip) \
-            and (getTag(pos).find('use-macro') == -1):
-                getMsgStrAndCollectNeeds(pos)
-
-def writeNames(food):
-    digest = ''
-    nmnr = 1
-    pos = -1
-    while len(food) > pos+1:
-        pos += 1
-        digest += food[pos]
-        if pos in needs_name:
-            tag = getTag(pos)
-            digest += tag
-            if getTagType(tag) == 'selfclosing':
-                digest = digest[:-1]
-            digest += ' i18n:name="name-' + str(nmnr) + '"'
-            if getTagType(tag) == 'selfclosing':
-                digest += ' /'
-            nmnr += 1
-            pos += len(tag)# move on
-    return digest
-
-def writeTranslates(food):
-    digest = ''
-    idnr = 1
-    pos = -1
-    while len(food) > pos+1:
-        pos += 1
-        digest += food[pos]
-        if pos in needs_trans:
-
-            msgid = ''
-            msg = getMsgStrAndCollectNeeds(pos)
-            msg = trimText(msg)
-            ids = []
-            # No dup msgs:
-            for entry in msg_dict:
-                ids.append(entry[0])
-                if entry[1] == msg:
-                    msgid = entry[0]
-            # New id:
-            if msgid == '':
-                msgid = 'id-' + str(idnr)
-                # No dup id:
-                if msgid in ids:
-                    while msgid in ids: #TODO: Still get dups, why?
-                        idnr += 1
-                        msgid = 'id-'+ str(idnr)
-
-                idnr += 1
-                msg_dict.append([msgid, msg])
-
-            tag = getTag(pos)
-            digest += tag
-            if getTagType(tag) == 'selfclosing':
-                digest = digest[:-1]
-            digest += ' i18n:translate="' + msgid + '"'
-            if getTagType(tag) == 'selfclosing':
-                digest += ' /'
-            idnr += 1
-            pos += len(tag)# move on
-    return digest
 
 
 def removeExistingI18nAttrs(food):
@@ -421,7 +371,105 @@ def hasRoot(food):
                 print 'Holy moly, template seems to start with a closing tag!'
             else:
                 pos + len(tag) + 1
-#MAIN
+
+def collectNeeds(food):
+    needs_trans = []
+    needs_name = []
+    pos = -1
+    while len(food) > pos + 1:
+        pos += 1
+
+        if food[pos] == '<':
+            tag = getTag(pos)
+            tag_type = getTagType(tag)
+            if (tag_type == 'opening') \
+            and (tag not in skip_tags) \
+            and (tag.find('use-macro') == -1) \
+            and (tag.find('tal:comment') == -1) \
+            and (tag.find('tal:replace') == -1) \
+            and (tag.find('tal:content') == -1):
+                tag_text = getText(pos)
+                # Needs trans:
+                if tag_text != '':
+                    needs_trans.append(pos)
+                    # Children need name:
+                    children = getChildren(pos)
+                    for child in children:
+                        needs_name.append(child)
+
+            pos += len(tag) + 1 #move on bracket
+    
+    return needs_name, needs_trans
+
+def writeNames(food, g_nmnr):
+    nmnr = g_nmnr
+    needs =collectNeeds(food)
+    needs_name = needs[0]
+    needs[0]
+    digest = ''
+    pos = -1
+    while len(food) > pos + 1:
+        pos += 1
+        digest += food[pos] # write
+
+        if pos in needs_name:
+            tag = getTag(pos)
+            digest += tag
+            pos += len(tag) + 1
+            tag_type = getTagType(tag)
+            if tag_type == 'selfclosing':
+                digest = digest[:-1]
+
+            digest += ' i18n:name="name-' + str(nmnr) + '"'
+            if tag_type == 'selfclosing':
+                digest += ' /'
+            nmnr += 1
+            pos -= 1
+
+    g_nmnr = nmnr
+
+    return [digest, g_nmnr]
+
+def writeTrans(food, g_idnr):
+    idnr = g_idnr
+    needs_trans = collectNeeds(food)[1]
+    digest = ''
+    pos = -1
+    while len(food) > pos + 1:
+        pos += 1
+        digest += food[pos] # write
+
+        if pos in needs_trans:
+
+            tag = getTag(pos)
+            digest += tag
+            msgid = ''
+            msgstr = getMsgStr(pos)
+            
+            pos += len(tag) + 1
+            
+            # No dups:
+            for entry in msg_dict:
+                if entry[1] == msgstr:
+                    msgid = entry[0]
+            
+            # New id:
+            if msgid == '':
+                msgid = 'id-' + str(idnr)
+                idnr += 1
+                msg_dict.append([msgid, msgstr])
+
+            
+            # Write trans:
+            digest += ' i18n:translate="' + msgid + '"'
+            pos -= 1
+
+    return [digest, idnr]
+
+
+############
+#   MAIN   #
+############
 readPot(pot)
 wanted_file_types = ['.pt', '.cpt', '.zpt']
 # Walk recursively through directory:
@@ -431,30 +479,42 @@ for root, dirs, files in os.walk("."):
 
         # Get current file-path, for later overwrite:
         file_path = os.path.join(root, file_name)
-        # Get suffix:
-        splitted_name = os.path.splitext(file_name)
-        if len(splitted_name) > 0:
-            suff = splitted_name[1]
 
-            # It's a pagetemplate:
-            if suff in wanted_file_types:
+        # Regard possible prefix, if prefix is '', all
+        # files will be considered:
+        if file_path.startswith('./' + prefix) and not file_path.startswith('./' + domain + '/') \
+        and not file_path.startswith('amp.ezupgrade') \
+        and not file_path.startswith('amp.model') \
+        and not file_path.startswith('amp.pas') \
+        and not file_path.startswith('amp.ussa_api'): #DEV
 
-                with open(file_path) as fin, open(file_path+".tmp", 'w') as fout:
-                    food = fin.read()
-                    if isValidMarkup(food):
-                        if not hasRoot(food):
-                            food = '<div class="addedWrapperRootTag">' + food + '</div>'
-                        food = removeExistingI18nAttrs(food)
-                        food = addNamespaceAndDomain(food)
-                        collectNeeds(food)
-                        food = writeNames(food)
-                        needs_trans = needs_name = [] # reset
-                        collectNeeds(food)
-                        food = writeTranslates(food)
-                        fout.write(food) # write
-                        # Overwrite original with workingcopy:
-                        shutil.move(file_path+".tmp", file_path)
-                    else:
-                        print file_path
-                        #print 'Erm, this template seems to be frogged up, doesn\'t validate!'
-writePot()
+            # Get suffix:
+            splitted_name = os.path.splitext(file_name)
+            if len(splitted_name) > 0:
+                suff = splitted_name[1]
+
+                # It's a pagetemplate:
+                if suff in wanted_file_types:
+
+                    with open(file_path) as fin, open(file_path+".tmp", 'w') as fout:
+                        food = fin.read()
+                        if isValidMarkup(food):
+                            if not hasRoot(food):
+                                food = '<div class="rootTagWrapper">' + food + '</div>'
+                            # Heavy manipulations:
+                            food = removeExistingI18nAttrs(food)
+                            food = addNamespaceAndDomain(food)
+                            names = writeNames(food, g_nmnr)
+                            food = names[0]
+                            g_nmnr = names[1]
+                            trans = writeTrans(food, g_idnr)
+                            food = trans[0]
+                            g_idnr = trans[1]
+                            fout.write(food) # write
+                            # Overwrite original with workingcopy:
+                            shutil.move(file_path+".tmp", file_path)
+                        else:
+                            print '! The following template does have more or less opening than closing tags:'
+                            print file_path
+
+writePot(pot)
