@@ -14,7 +14,10 @@ def trimStr(string):
 	return string
 
 def getMsgStr(pos, food):
+    deli = None
     msg_str = ''
+    while food[pos] == ' ' or food[pos] == '\n' or food[pos] == '\t': #ignore spaces at beginning
+        pos += 1
     if food[pos] == 'u':
         pos += 1
     deli = food[pos]
@@ -24,6 +27,7 @@ def getMsgStr(pos, food):
             break
         msg_str += food[pos]
 #    print msg_str
+    msg_str = trimStr(msg_str)
     return msg_str
 
 def getMsgStrs():
@@ -50,6 +54,6 @@ def getMsgStrs():
                                         pos += 1
                                         msg_strs.append(getMsgStr(pos, food))
 
-    print msg_strs
+    print len(msg_strs)
     return msg_strs
 getMsgStrs()
