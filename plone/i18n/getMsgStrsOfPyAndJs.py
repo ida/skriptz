@@ -1,7 +1,3 @@
-#TDO: Regard id+default, like in:
-#    message=_(u'message_edit_item_cancelled',
-#            default='Edit cancelled.')
-
 #TDO: exclude comments
 import os
 
@@ -97,10 +93,9 @@ def getMsgsDict():
     return msgs_dict
 
 def writePot():
-
     lines = []
     mdict = getMsgsDict()
-
+    print len(mdict)
     for entry in mdict:
         lines.append(entry[0])
         lines.append('\n')
@@ -119,3 +114,12 @@ def writePot():
     pot.close()
 
 writePot()
+
+def mergePots():
+    pt_pot = open('pot.pot').read()
+    py_js_pot = open('ofPyAndJs.pot').read()
+    merge_pot = pt_pot + py_js_pot
+    mpot = open('merge.pot', 'w')
+    mpot.write(merge_pot)
+    mpot.close()
+mergePots()
