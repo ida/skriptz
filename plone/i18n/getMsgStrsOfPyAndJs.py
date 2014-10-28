@@ -1,3 +1,7 @@
+#TDO: Regard id+default, like in:
+#    message=_(u'message_edit_item_cancelled',
+#            default='Edit cancelled.')
+
 #TDO: exclude comments
 import os
 
@@ -13,24 +17,44 @@ def trimStr(string):
 				string += ' '
 	return string
 
-def getMsgStr(pos, food):
-    deli = None
-    msg_str = ''
-    while food[pos] == ' ' or food[pos] == '\n' or food[pos] == '\t': #ignore spaces at beginning
-        pos += 1
-    if food[pos] == 'u':
-        pos += 1
-    deli = food[pos]
+def getMsgStr(pos, food, deli):
+    para = ''
+    msg = [] # [id, def]
+    msg_id = ''
+    msg_def = ''
     while len(food) > pos + 1:
         pos += 1
         if food[pos] == deli:
             break
-        msg_str += food[pos]
-#    print msg_str
-    msg_str = trimStr(msg_str)
-    return msg_str
+        msg_id += food[pos]
+    msg_id = trimStr(msg_id)
+    # Has id and default:
+    if food[pos+1] == ',':
+        pos += 1
+        while food[pos] == ' ' or food[pos] == '\n' or food[pos] == '\t': #ignore spaces at beginning
+            pos += 1
+            while len(food) > pos + 1:
+                pos += 1
+                para += food[pos]
+                if food[pos] == '"' or food[pos] == "'":
+                    deli = food[pos]
+                    while len(food) > pos + 1:
+                        pos += 1
+                        if food[pos] == deli:
+                            break
+                        msg_def += food[pos]
+    # No default:
+    else:
+        msg_def = msg_id
 
-def getMsgStrs():
+    # Escape quotations:
+    msg_id = msg_id.replace('"', '\\"')
+    msg_def = msg_def.replace('"', '\\"')
+    return [msg_id, msg_def]
+
+def getMsgsDict():
+    deli = None
+    msgs_dict = [] # [def_str, [paths], id, str]
     msg_strs = []
     msg_str = ''
 
@@ -40,7 +64,6 @@ def getMsgStrs():
                     file_path = os.path.join(root, file_name)
                     if file_path.find('/tests/') == -1:
                         food = open(file_path).read()
-                        #print food
                         pos = -1
                         while len(food) > pos + 1:
                             pos += 1
@@ -52,8 +75,47 @@ def getMsgStrs():
                                             pos += 1
                                     if food[pos] == '(':
                                         pos += 1
-                                        msg_strs.append(getMsgStr(pos, food))
+                                        while food[pos] == ' ' or food[pos] == '\n' or food[pos] == '\t': #ignore spaces at beginning
+                                            pos += 1
+                                        if food[pos] == 'u':
+                                            pos += 1
+                                        if food[pos] == '"' or food[pos] == "'":
+                                            deli = food[pos]
+                                            msg = getMsgStr(pos, food, deli)
+                                            msg_id = msg[0]
+                                            msg_str = msg[1]
+                                            if msg_str != '':
+                                                if msg_str in msg_strs: # is dup
+                                                    for entry in msgs_dict: # get dup
+                                                        if entry[0] == msg_str:
+                                                            entry[1].append('#' + file_path) # add path
+                                                else: # no dup, fresh entry:
+                                                    entry = [ '# ' + msg_str, ['#' + file_path], 'msgid "' + msg_id + '"', 'msgstr ""' ]
+                                                    msgs_dict.append(entry)
+                                                msg_strs.append(msg_str)
 
-    print len(msg_strs)
-    return msg_strs
-getMsgStrs()
+    return msgs_dict
+
+def writePot():
+
+    lines = []
+    mdict = getMsgsDict()
+
+    for entry in mdict:
+        lines.append(entry[0])
+        lines.append('\n')
+        for child in entry[1]:
+            lines.append(child)
+            lines.append('\n')
+        lines.append(entry[2])
+        lines.append('\n')
+        lines.append(entry[3])
+        lines.append('\n')
+        lines.append('\n')
+
+    pot = open('ofPyAndJs.pot', 'w')
+    for line in lines:
+        pot.write(line)
+    pot.close()
+
+writePot()
