@@ -1,61 +1,41 @@
-po = open('ger.po').read()
-pot = open('pot.pot').read()
+po = 'po.po'
+pot = 'pot.pot'
 
-def getMsgsDict(food):
-    paths = []
-    msgs_dict = []
-    msg_def = ''
-    msg_id = ''
-    msg_str = ''
-    FIRSTLINE = True
-    lines = food.splitlines()
-    for line in lines:
-        line = line.strip() # !
-        if FIRSTLINE:
-            FIRSTLINE = False
-            msg_def = line
-        if line.startswith('# ./'):
-            paths.append(line)
-        if line.startswith('msgid "'):
-            msg_id = line
-        if line.startswith('msgstr "'):
-            msg_str = line
-        if line == '':
-            FIRSTLINE = True
-            msgs_dict.append([msg_def, paths, msg_id, msg_str])
-            paths = []
-#    for i in range(len(msgs_dict)):
-#	    print msgs_dict[i][1] #paths
-    return msgs_dict
+def getEntries(pot):
 
-def createNuPo():
-    FOUND_TRANS = False
-    nupo_feed = ''
-    pot_dict = getMsgsDict(pot)
-    po_dict = getMsgsDict(po)
-    for entry in pot_dict:
-        def_str = entry[0]
-        nupo_feed += def_str # default
-        nupo_feed += '\n'
-        for path in entry[1]:
-            nupo_feed += str(path)
-            nupo_feed += '\n'
-        nupo_feed += entry[2] # msgid
-        nupo_feed += '\n'
-        # Do we have an equiv def_str in po?
-        for entr in po_dict:
-            if entr[0] == def_str:
-                FOUND_TRANS = True
-                nupo_feed += entr[3] # Write translated msgstr.
-        if not FOUND_TRANS:
-                nupo_feed += entry[3] # Write empty msgstr of pot.
-        else:
-            FOUND_TRANS = False
-        nupo_feed += '\n'
-        nupo_feed += '\n'
+    entries = []
+    entry = []
 
+    with open(pot) as fin:
+        for line in fin:
+            entry.append(line)
+            if line == '\n': # end
+                entries.append(entry)
+                entry = []
+
+    return entries
+
+def getNuPoEntries():
+    nu_po_entries = []
+    po_entries = getEntries(po)
+    pot_entries = getEntries(pot)
+    for pot_e in pot_entries:
+        for po_e in po_entries:
+            if pot_e[0] == po_e[0]:
+                # Has trans?
+                if po_e[-2] != 'msgstr ""\n':
+                    # Insert trans in entry:
+                    pot_e[-2] = po_e[-2]
+                    break
+        nu_po_entries.append(pot_e)
+    return nu_po_entries
+
+def writeNuPo():
     nupo = open('nu.po', 'w')
-    nupo.write(nupo_feed)
+    nu_po_entries = getNuPoEntries()
+    for entry in nu_po_entries:
+        for e in entry:
+            nupo.write(e)
     nupo.close()
 
-createNuPo()
+writeNuPo()
