@@ -1,7 +1,8 @@
 import os
 import shutil
 
-domain = 'our.translations'
+#DEVdomain = 'our.translations'
+domain = 'amp.translations'
 
 pot = domain+ '.pot' # Path to pot-file
 
@@ -50,6 +51,8 @@ def getTag(pos):
             pos += 1
             tag += food[pos]
             if food[pos] == '-' and len(food) > pos + 3 and food[pos:pos+3] == '-->':
+                tag += food[pos]
+                print tag
                 return tag
 
     # Not a comment:
@@ -75,11 +78,12 @@ def getTag(pos):
     return tag
 
 def getTagType(tag):
-    if tag.startswith('!--'):
+    # Can be also '<!DOCTYPE html>' or '<?xml version="1.0">'.
+    if tag.startswith('!') or tag.startswith('?'): 
         return 'comment'
     elif tag.startswith('/'):
         return 'closing'
-    elif tag.endswith('/'):
+    elif tag.endswith('/') or tag.startswith('meta') or tag.startswith('link'):
         return 'selfclosing'
     else:
         return 'opening'
@@ -340,7 +344,7 @@ def isValidMarkup(food):
         if food[pos] == '<':
             tag = getTag(pos)
             tag_type = getTagType(tag)
-            if tag_type == 'opening':
+            if tag_type == 'opening': #TODO: Skip head, style and link.
                 opencloseratio += 1
             if tag_type == 'closing':
                 opencloseratio -= 1
@@ -350,6 +354,7 @@ def isValidMarkup(food):
     if opencloseratio == 0:
         return True
     else:
+        opencloseratio = 0
         return False
 
 def hasRoot(food):
@@ -481,7 +486,11 @@ for root, dirs, files in os.walk("."):
 
         # Regard possible prefix, if prefix is '', all
         # files will be considered:
-        if file_path.startswith('./' + prefix) and not file_path.startswith('./' + domain + '/'):
+        if file_path.startswith('./' + prefix) and not file_path.startswith('./' + domain + '/') \
+        and not file_path.startswith('amp.ezupgrade') \
+        and not file_path.startswith('amp.model') \
+        and not file_path.startswith('amp.pas') \
+        and not file_path.startswith('amp.ussa_api'): #DEV
 
             # Get suffix:
             splitted_name = os.path.splitext(file_name)
@@ -491,12 +500,12 @@ for root, dirs, files in os.walk("."):
                 # It's a pagetemplate:
                 if suff in wanted_file_types:
 
-                    with open(file_path) as fin, open(file_path+".tmp", 'w') as fout:
+                    with open(file_path) as fin, open(file_path + ".tmp", 'w') as fout:
                         food = fin.read()
                         if isValidMarkup(food):
+                            # Heavy manipulations:
                             if not hasRoot(food):
                                 food = '<div class="rootTagWrapper">' + food + '</div>'
-                            # Heavy manipulations:
                             food = removeExistingI18nAttrs(food)
                             food = addNamespaceAndDomain(food)
                             names = writeNames(food, g_nmnr)
@@ -507,9 +516,10 @@ for root, dirs, files in os.walk("."):
                             g_idnr = trans[1]
                             fout.write(food) # write
                             # Overwrite original with workingcopy:
-                            shutil.move(file_path+".tmp", file_path)
+                            shutil.move(file_path + ".tmp", file_path)
                         else:
-                            print '! The following template does have more or less opening than closing tags:'
-                            print file_path
-
+#                            print '! The following template does have more or less opening than closing tags:'
+#                            print file_path
+                            # Remove leftover workingcopy:
+                            os.remove(file_path + '.tmp')
 writePot(pot)

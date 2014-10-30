@@ -34,8 +34,9 @@ def writeNuPo():
     nupo = open('nu.po', 'w')
     nu_po_entries = getNuPoEntries()
     for entry in nu_po_entries:
-        for e in entry:
-            nupo.write(e)
+        if not entry[-3] == 'msgid ""\n': #DEV: skip missing ids
+            for e in entry:
+                nupo.write(e)
     nupo.close()
 
 writeNuPo()

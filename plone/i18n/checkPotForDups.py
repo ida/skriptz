@@ -6,7 +6,7 @@ dups = []
 ids = []
 dup_ids = []
 dup_pairs = []
-pot = open('merge.pot').read()
+pot = open('pot.pot').read()
 lines = pot.splitlines()
 for line in lines:
 
