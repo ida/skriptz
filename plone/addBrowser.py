@@ -88,7 +88,7 @@ class ' + interface_name + '(Interface):\n\
 
 
     # Create helper-py:
-    view = open('browser/' + view_name + '.py', 'w')
+    view = open('browser/' + view_name + '_helpers.py', 'w')
     view.write('\
 # -*- coding: utf-8 -*-\n\n\
 from Products.Five.browser import BrowserView\n\n\
@@ -103,11 +103,11 @@ class View(BrowserView):\n\
     template.write(view_name + '_view.pt successfully loaded!<br>\n\
 And ' + view_name + '_helpers.py should greet us with a friendly:\n\
 <div tal:define="hello nocall: context/@@' + view_name + '_helpers/hello">\n\
-    <div tal:content="hello|nothing">
-    </div>
-    <div tal:condition="not: hello">
-        Urgh, could not retrieve a friendly welcome for unknown reasons.
-    </div>
+    <div tal:content="hello|nothing">\n\
+    </div>\n\
+    <div tal:condition="not: hello">\n\
+        Urgh, could not retrieve a friendly welcome for unknown reasons.\n\
+    </div>\n\
 </div>')
     template.close()
 
