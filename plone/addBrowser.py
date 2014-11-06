@@ -1,7 +1,12 @@
 #!/usr/bin/python
 
 # Adds a browser-boilerplate to an egg generated with zopeskel's 
-# "plone"-template, where "Include profile?" was answered with yes.
+# "plone"-template, where "Include profile?" was answered with yes,
+# and provides a template, a py-script-helper that can provide logic
+# to the template and a registered js ready to within the jQuery-scope:
+# - 
+# -
+# -
 
 import os, shutil
 
@@ -25,7 +30,7 @@ with open(conf) as fin, open(conftmp, 'w') as fout:
         if line.find('<include package=".browser" />') != -1:
             LAYER_EXISTS = True
 
-        # Insert if not exists already:
+        # Insert, if not exists already:
         if line.find('</configure>') != -1 and not LAYER_EXISTS:
             fout.write('  <include package=".browser" />\n\n')
 
@@ -142,5 +147,9 @@ And ' + view_name + '_helpers.py should greet us with a friendly:\n\
     });\n\
 })(jQuery);')
     js.close()
+
+else:
+
+    print "A browser directory already exists, aborting this script, *now*, to not potentially screw up what you've accomplished already. A zcml-slug for the brwoser directory has been added, if not present already, in the confihgure.zcml, iin case yu wantto remove it."
 
 # EOF
