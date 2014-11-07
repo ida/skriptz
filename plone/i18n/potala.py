@@ -1,4 +1,5 @@
 pot = 'pot.pot'
+
 def getEntries(pot):
     entries = []
     entry = []
@@ -6,16 +7,22 @@ def getEntries(pot):
         for line in fin:
             if line != '\n':
                 entry.append(line)
+                if entry[-1].startswith('# Evaluation'):
+                    print entry
             if line == '\n': # end
                 entries.append(entry)
                 entry = []
     return entries
+
 def getDefStr(entry):
     return entry[0][2:-1] 
+
 def getPaths(entry):
     return entry[1:-2]
+
 def getMsgId(entry):
     return entry[-2][7:-2]
+
 def getMsgStr(entry):
     return entry[-1][8:-2]
 
@@ -31,14 +38,28 @@ def getDupedStrs(pot):
             dups.append(def_str)
     return dups
 
+def addMissingIds(pot):
+    misses = 0
+    nuentries = []    
+    entries = getEntries(pot)
+    for entry in entries:
+        msgid = entry[-2][7:-2]
+        if msgid != '':
+            nuentries.append(entry)
+        else:
+            print misses
+            print entry
+            entry[-2] = 'msgid "amp-' + str(misses) + '"'
+            misses += 1
+            print entry
+
+addMissingIds(pot)
+
 def getMissingIds(pot):
-    
     misses = 0
     check_paths = []    
     entries = getEntries(pot)
-    
     for entry in entries:
-    
         paths = entry[1:-2]
         msgid = entry[-2][7:-2]
         if msgid == '':
@@ -64,5 +85,3 @@ def getSaneEntries(pot):
             nupot.write(line)
         nupot.write('\n')
     nupot.close()
-
-getSaneEntries(pot)
