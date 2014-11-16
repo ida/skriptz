@@ -1,3 +1,4 @@
+# TODO: handle backslashes in collected strs
 import os
 import shutil
 

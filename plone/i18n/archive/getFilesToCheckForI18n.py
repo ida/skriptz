@@ -60,7 +60,7 @@ for root, dirs, files in os.walk("."):
             elif suff == '.xml' and file_path.find('profile') != -1:
                 if ( file_path.find('upgrades') == -1 and file_path.find('uninstall') == -1 and file_path.find('type') != -1 or file_name in (xml_own or xml_plone) ):
                     xml   += 1
-
+                    print file_path
             # JS
             elif suff == '.js':
                 ecma    += 1

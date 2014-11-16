@@ -1,13 +1,18 @@
 def getEntries(pot):
+    IN_ENTRY = False #cope with mulitple empty lines
     entries = []
     entry = []
     with open(pot) as fin:
         for line in fin:
             if line != '\n':
+                IN_ENTRY = True
+            if IN_ENTRY:
                 entry.append(line)
             if line == '\n': # end
-                entries.append(entry)
-                entry = []
+                if IN_ENTRY:
+                    entries.append(entry)
+                    entry = []
+                    IN_ENTRY = False
     return entries
 
 def getDefStr(entry):
@@ -83,23 +88,19 @@ def compStrsOfTwoPos(po, nupo):
     oldentries = getEntries(po)
     oldentries = getEntries(po)
     nuentries = getEntries(nupo)
-
-# lookup old id beginning with amp:
     for oldentry in oldentries:
-        oldid = getMsgId(oldentry)
-        if oldid.startswith('amp-'):
-# get refering entry by defstr:
+        if getMsgId(oldentry).startswith('amp-'):
+            print oldentry
             olddef = getDefStr(oldentry)
+# get refering entry by defstr:
             for nuentry in nuentries:
                 nudef = getDefStr(nuentry)
+                print nudef
                 if nudef == olddef:
-#                    print nudef, olddef
-                    nuid = getMsgId(nuentry)
-                    if oldid != nuid:
-                        print oldid, nuid
+                    print nuentr
+#                    print getMsgId(nuentr)
 
-#po = 'amp.translations.po'
-#nupo = 'ida_korr.po'
-#nupo = 'jbkmiddle.po'
-#compStrsOfTwoPos(po, nupo)                    
+po = 'amp.translations.po'
+nupo = 'ida_korr.po'
+compStrsOfTwoPos(po, nupo)                    
 
