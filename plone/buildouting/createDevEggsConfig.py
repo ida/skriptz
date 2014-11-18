@@ -1,26 +1,22 @@
 #!/usr/bin/python
 
-# Creates a 'deveggs.cfg' with the entries for buildout
-# of a given directory holding the deveggs, when executed in the
-# same directory, where the buildout.cfg lives.
+# Execute this in the directory where the dev-eggs live
+# and get a config holding the entries and extending buildout.cfg.
+# Then run buildout with the created config: `./bin/buildout -c deveggs.cfg`
 
 import os
 
-path = 'src'
-
 config_name = 'deveggs.cfg'
 
-def getDevEggNames():
-    dev_eggs = os.listdir(path)
-    return dev_eggs
 
 def prepareString(dev_eggs):
-    string = '[buildout]\nextends = buildout.cfg\n[instance]\neggs +=\n'
-    for dev_egg in dev_eggs:
-        string += '    ' + dev_egg + '\n'
-    string += 'develop +=\n'
+    path = os.getcwd()
+    string = '[buildout]\nextends = buildout.cfg\ndevelop +=\n'
     for dev_egg in dev_eggs:
         string += '    ' + path + '/' + dev_egg + '\n'
+    string += '[instance]\neggs +=\n'
+    for dev_egg in dev_eggs:
+        string += '    ' + dev_egg + '\n'
     return string
 
 def createFile(filename, string):
@@ -30,7 +26,7 @@ def createFile(filename, string):
 
 def main():
     filename = config_name
-    dev_eggs = getDevEggNames()
+    dev_eggs = os.listdir('.')
     string = prepareString(dev_eggs)
     createFile(filename, string)
 
