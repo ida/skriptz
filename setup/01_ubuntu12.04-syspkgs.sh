@@ -1,3 +1,4 @@
+#locale-gen en_US en_US.UTF-8 pl_PL pl_PL.UTF-8
 #adduser ida sudo
 
 # Update pck-managers:
