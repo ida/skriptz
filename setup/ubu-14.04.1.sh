@@ -15,7 +15,7 @@ cat <<EOM > '.buildout/default.cfg'
 parts = 
     instance
     plonesite
-eggs-directory = ../eggs
+eggs-directory = $HOME/.buildout/eggs
 extends = http://dist.plone.org/release/4-latest/versions.cfg
 [instance]
 recipe = plone.recipe.zope2instance
