@@ -1,6 +1,7 @@
 alias rf='rm -rf'
 alias py='python'
 alias pyb='python bootstrap'
+alias bo='buildout'
 alias bb='./bin/buildout'
 alias bz='./bin/zeoserver restart'
 alias bc='./bin/client1 fg'
