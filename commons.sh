@@ -6,4 +6,5 @@ strContainsStr () { if [[ "$1" = *"$2"* ]]; then return 1; else return 0; fi }
 strEndswithStr () { if [[ "$1" = *"$2" ]]; then return 1; else return 0; fi }
 
 showFileStrOfPath() { echo $( <$1 ); }
-showFileStrOfPath '/home/uzer/fil.txt'
+
+inEachFirstDirDo() { for file in *; do if [ -d $file ]; then cd $file; $1; cd ..; fi done; }
