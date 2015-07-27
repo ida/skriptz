@@ -40,14 +40,14 @@ strEndswithStr () { if [[ "$1" = *"$2" ]]; then return 1; else return 0; fi }
 forEachDo() {
     # http://stackoverflow.com/questions/16461656/bash-how-to-pass-array-as-an-argument-to-a-function:
     arrayname=$1[@]
-    kommand=$2
     array=("${!arrayname}")
+    kommand=$2
     for i in "${array[@]}" ; do
         "$kommand" "$i"
     done
 }
 # Example:
 # items=("Hello world!" "What a wonderful day." "Couldn't be better." "Ciao!")
-# komand='echo'
-# forEachDo items "$komand"
+# kommand='echo'
+# forEachDo items "$kommand"
 
