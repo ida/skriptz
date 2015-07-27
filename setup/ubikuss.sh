@@ -4,3 +4,4 @@ git config --global credential.helper "cache --timeout=36000"
 git clone https://github.com/ida/skriptz.git
 cp skriptz/setup/dotfiles/.[!.]* ~
 . ~/.bashrc
+git config --global core.excludesfile ~/.gitignore_global
