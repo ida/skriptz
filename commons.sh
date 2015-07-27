@@ -1,6 +1,6 @@
-# =========
-# Reminders
-# =========
+# ======
+# Remind
+# ======
 
 # Get string of file:
 # str_of_file=$( <path/to/file )
@@ -17,18 +17,19 @@
 
 # Get an array:
 # arraycontent="${arrayname[@]}"
-# Nota: Calling arrayname alone, will return only 1st item.
+# Nota: Calling arrayname alone, will only return first item.
 
 # Convert array to string:
 # strg=$( printf "%s" "${arrayname[@]}" )
 
-# ===========
-# Comparisons
-# ===========
+# =======
+# Compare
+# =======
 strEqualsStr () { if [ "$1" = "$2" ]; then return 1; else return 0; fi }
 strStartswithStr () { if [[ "$1" = "$2"* ]]; then return 1; else return 0; fi }
 strContainsStr () { if [[ "$1" = *"$2"* ]]; then return 1; else return 0; fi }
 strEndswithStr () { if [[ "$1" = *"$2" ]]; then return 1; else return 0; fi }
+#
 # Example:
 # strEndswithStr 'The end.' 'end.'
 # if [[ $? = 1]]; then $doSth; fi
@@ -36,6 +37,10 @@ strEndswithStr () { if [[ "$1" = *"$2" ]]; then return 1; else return 0; fi }
 # ====
 # Loop
 # ====
-forEachDo() { for i in $1; do $2 $i; done }
+forEachDo() { for i in $1; do "$2" $i; done }
+#
 # Example:
-# forEachDo 'a b c' echo
+# array=('a b c')
+# forEachDo "$array" "echo"
+#
+# Nota: The quotes make the deal.
