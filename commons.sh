@@ -37,10 +37,17 @@ strEndswithStr () { if [[ "$1" = *"$2" ]]; then return 1; else return 0; fi }
 # ====
 # Loop
 # ====
-forEachDo() { for i in $1; do "$2" $i; done }
-#
+forEachDo() {
+    # http://stackoverflow.com/questions/16461656/bash-how-to-pass-array-as-an-argument-to-a-function:
+    arrayname=$1[@]
+    kommand=$2
+    array=("${!arrayname}")
+    for i in "${array[@]}" ; do
+        "$kommand" "$i"
+    done
+}
 # Example:
-# array=('a b c')
-# forEachDo "$array" "echo"
-#
-# Nota: The quotes make the deal.
+# items=("Hello world!" "What a wonderful day." "Couldn't be better." "Ciao!")
+# komand='echo'
+# forEachDo items "$komand"
+
