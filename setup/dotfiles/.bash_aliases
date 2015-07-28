@@ -1,3 +1,4 @@
+vi='vim'
 alias rf='rm -rf'
 alias py='python'
 alias pyb='python bootstrap'

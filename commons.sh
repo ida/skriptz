@@ -1,16 +1,28 @@
 # ======
 # Remind
 # ======
-
-# Get string of file:
-# str_of_file=$( <path/to/file )
-
-# Get last returned val:
+#
+# Get the latest returned val of a function:
 # last_returned_val=$?
 #
-# Nota: A function's return cannot be fethed like 'var=funk.
+# Nota: A function's return cannot be fetched like 'var=funk'.
 # Functions can only return numeric values, conveniently
 # 0 and 1 are used for symbolizing False and True.
+
+
+
+# ============
+# Get of files
+# ============
+#
+# Get string of file:
+# str_of_file=$( <path/to/file )
+#
+
+
+# ======
+# Arrays
+# ======
 
 # Declare an array:
 # arrayname=(a b c)
@@ -19,9 +31,17 @@
 # arraycontent="${arrayname[@]}"
 # Nota: Calling arrayname alone, will only return first item.
 
+#
+# =======
+# Convert
+# =======
 # Convert array to string:
 # strg=$( printf "%s" "${arrayname[@]}" )
+#
+#
 
+
+#
 # =======
 # Compare
 # =======
@@ -44,5 +64,5 @@ forEachDo() { arrayname=$1[@] array=("${!arrayname}") kommand=$2; for i in "${ar
 # forEachDo items "echo"
 #
 # Nota:
-# http://stackoverflow.com/questions/16461656/bash-how-to-pass-array-as-an-argument-to-a-function:
+# http://stackoverflow.com/questions/16461656/bash-how-to-pass-array-as-an-argument-to-a-function
 
