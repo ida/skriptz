@@ -1,3 +1,5 @@
+export PATH=$HOME/.virtenv/bin:$PATH
+
 # Set window-title to be current dir-path:
 # Thanks to Gilles: http://unix.stackexchange.com/questions/6065/gnu-screen-new-window-name-change
 if [[ "$TERM" == screen* ]]; then
@@ -14,8 +16,6 @@ if [[ "$TERM" == screen* ]]; then
   }
   PROMPT_COMMAND="screen_set_window_title; $PROMPT_COMMAND"
 fi
-
-#export PATH=$HOME/.virtenv/bin:$PATH
 
 ############
 # DEFAULTS #
