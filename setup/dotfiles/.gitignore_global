@@ -1,2 +1,4 @@
+.*.sw[po]
 *.bak*
 *.tmp*
+*.orig
