@@ -7,8 +7,9 @@ strEndswithStr () { if [[ "$1" = *"$2" ]]; then return 1; else return 0; fi }
 forEachDo() { arrayname=$1[@] array=("${!arrayname}") kommand=$2; for i in "${array[@]}" ; do "$kommand" "$i"; done }
 
 str_of_file=''
-fileExists README.md
-if [[ $? = 1 ]]; then str_of_file=$( <README.md ); fi
+file_name=README.md
+fileExists $file_name
+if [[ $? = 1 ]]; then str_of_file=$( <$file_name ); fi
 echo $str_of_file
 
 # =====

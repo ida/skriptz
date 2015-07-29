@@ -46,8 +46,8 @@ The following repos have commits, waiting to be pushed:
 main() {
     cd ..
     basket_lokus=$(pwd) # pwd == this location
-    checkForDiffs
     checkForUnpushedCommits
+    checkForDiffs
 }
 
 main
