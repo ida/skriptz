@@ -1,4 +1,4 @@
-
+# Some functions:
 fileExists() { if [ -f $1 ]; then return 1; else return 0; fi }
 strEqualsStr () { if [ "$1" = "$2" ]; then return 1; else return 0; fi }
 strStartswithStr () { if [[ "$1" = "$2"* ]]; then return 1; else return 0; fi }
@@ -6,11 +6,16 @@ strContainsStr () { if [[ "$1" = *"$2"* ]]; then return 1; else return 0; fi }
 strEndswithStr () { if [[ "$1" = *"$2" ]]; then return 1; else return 0; fi }
 forEachDo() { arrayname=$1[@] array=("${!arrayname}") kommand=$2; for i in "${array[@]}" ; do "$kommand" "$i"; done }
 
-str_of_file=''
-file_name=README.md
-fileExists $file_name
-if [[ $? = 1 ]]; then str_of_file=$( <$file_name ); fi
-echo $str_of_file
+# Remember these vars:
+last_returned_val=$?
+execution_location=$(pwd)
+this_script_location=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
+# Example read a file's str into a variable:
+file_path=$this_script_location/README.txt
+fileExists $file_path
+if [[ $? = 1 ]]; then str_of_file=$( <$file_path ); fi
+#echo $str_of_file
 
 # =====
 # Usage
@@ -78,6 +83,12 @@ echo $str_of_file
 # Nota: Calling arrayname alone, will only return first item.
 #
 #
+# Convert array to string
+# -----------------------
+#
+# strg=$( printf "%s" "${arrayname[@]}" )
+#
+#
 # Loop over array
 # -----------------------
 # forEachDo() { arrayname=$1[@] array=("${!arrayname}") kommand=$2; for i in "${array[@]}" ; do "$kommand" "$i"; done }
@@ -90,12 +101,9 @@ echo $str_of_file
 # http://stackoverflow.com/questions/16461656/bash-how-to-pass-array-as-an-argument-to-a-function
 #
 #
-# Convert array to string
-# -----------------------
-#
-# strg=$( printf "%s" "${arrayname[@]}" )
-#
-#
-#
+# General loop
+# ------------
+# for item in 1 2 3; do echo $item; done
+# for item in '1 1 1' '2 2 2' '3 3 3'; do echo $item; done
 #
 ###########################################################
