@@ -3,7 +3,7 @@
 # Perform git-actions over several repos at once,
 # given, they live in the same directory.
 #
-# Produces reportfiles in this directory:
+# Produces these reportfiles one above this directory:
 unpushed_commits_report='git-unpushed-commits-report.txt'
 diff_report='git-diff-report.txt'
 
