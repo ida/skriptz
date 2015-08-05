@@ -1,15 +1,15 @@
-setScreenWindowTitle() {
+setScreenWindowTitleToFilename() {
     echo -e '\033k'$1'\033\\'
 }
-vimAndSetScreenTitle() {
-    setScreenWindowTitle $1
+vimAndSetScreenTitleToFileName() {
+    setScreenWindowTitleToFilename $1
     vim $1
 }
-alias v=vimAndSetScreenTitle
-alias sc='screen -dRR'
+alias vv=vimAndSetScreenTitleToFileName
+alias vi='vim'
+alias scd='screen -dRR'
 alias ..='cd ..'
 alias ...='cd ../..'
-alias vi='vim'
 alias rf='rm -rf'
 alias py='python'
 alias psy='ps aux|grep python'
