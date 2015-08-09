@@ -227,9 +227,12 @@ splitStringIntoArray() { IFS=', ' read -a $1 <<< $2 }
 # Further reading
 # ===============
 #
-# Some arbitrary sources I stumbled over and liked:
+# Some arbitrary sources, I stumbled over and liked:
 #
+# http://linuxconfig.org/bash-scripting-tutorial
+# http://bash.cyberciti.biz/guide/If..else..fi#Number_Testing_Script
+# http://tldp.org/HOWTO/Bash-Prog-Intro-HOWTO-5.html
+# http://mywiki.wooledge.org/BashFAQ/100#Extracting_parts_of_strings
 # http://shell.cfajohnson.com/
-#
 #
 ###########################################################
