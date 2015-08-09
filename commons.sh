@@ -4,7 +4,9 @@ strStartswithStr () { if [[ "$1" = "$2"* ]]; then return 1; else return 0; fi }
 strContainsStr () { if [[ "$1" = *"$2"* ]]; then return 1; else return 0; fi }
 strEndswithStr () { if [[ "$1" = *"$2" ]]; then return 1; else return 0; fi }
 forEachDo() { arrayname=$1[@] array=("${!arrayname}") kommand=$2; for i in "${array[@]}" ; do "$kommand" "$i"; done }
-###########################################################################
+splitStringIntoArray() { IFS=', ' read -a $1 <<< $2 }
+# splitStringIntoArray arrayname "${string}"
+###############################################################################
 #
 # 
 # Sticky notes
@@ -158,15 +160,21 @@ forEachDo() { arrayname=$1[@] array=("${!arrayname}") kommand=$2; for i in "${ar
 # Get an array
 # ------------
 #
-# arraycontent="${arrayname[@]}"
+# all_array_values="${arrayname[@]}"
 #
-# Nota: Calling arrayname alone, will only return first item.
+# all_array_indizi="${!arrayname[@]}"
+#
+# Nota:
+# Calling arrayname alone, will only return first item's val.
 #
 #
-# Convert array to string
-# -----------------------
+# Get array-items' values and indizi
+# ----------------------------------
 #
-# strg=$( printf "%s" "${arrayname[@]}" )
+# for index in "${!arrayname[@]}"; do echo "$index ${arrayname[index]}"; done
+#
+# Thanks to Dennis Williamson:
+# http://stackoverflow.com/questions/10586153/split-string-into-an-array-in-bash
 #
 #
 # Loop over array
@@ -180,5 +188,19 @@ forEachDo() { arrayname=$1[@] array=("${!arrayname}") kommand=$2; for i in "${ar
 #
 # Nota:
 # http://stackoverflow.com/questions/16461656/bash-how-to-pass-array-as-an-argument-to-a-function
+#
+#
+# Split string into an array
+# ---------------------------
+#
+# IFS=', ' read -a arrayname <<< "Python, Go, Rust, Ruby"
+# echo "${array[@]}"
+#
+#
+# Convert array to string
+# -----------------------
+#
+# strg=$( printf "%s" "${arrayname[@]}" )
+#
 #
 ###########################################################
