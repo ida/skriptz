@@ -35,16 +35,19 @@ diff_report='git-diff-report.txt'
 
 repos_path=$(readlink -f $(pwd)) # realpath of directory where this script is executed
 
-strContainsStr () { if [[ "$1" = *"$2"* ]]; then return 1; else return 0; fi }
 fileIsEmpty () { if [[ $( <"$1" ) = '' ]]; then return 1; else return 0; fi; }
+fileExists() { if [ -f $1 ]; then return 1; else return 0; fi }
 inEachFirstDirDo() { for file in *; do if [ -d $file ]; then cd $file; $1; cd ..; fi done; }
+strContainsStr () { if [[ "$1" = *"$2"* ]]; then return 1; else return 0; fi }
 
 checkForUnpushedCommits() {
     hasUnpushedCommits='0'
     reportfile=$repos_path/$unpushed_commits_report
+    fileExists $reportfile
+    if [[ $? == 1 ]]; then rm $reportfile; fi
     echo "
 The following repos have commits, waiting to be pushed:
-" > "$reportfile"
+" >> "$reportfile"
     cd $repos_path
     for file in *; do
         if [ -d $file ]; then
@@ -56,12 +59,14 @@ The following repos have commits, waiting to be pushed:
             cd ..
         fi
     done
-    if [[ hasUnpushedCommits = '1' ]]; then echo There are diffs, check: $reportfile; fi
+    if [[ $hasUnpushedCommits == '1' ]]; then echo There are unpushed commits, check: $reportfile; else echo 'No unpushed commits :-)'; fi
 }
 checkForDiffs() {
     reportfile=$repos_path/$diff_report
+    fileExists $reportfile
+    if [[ $? == 1 ]]; then rm $reportfile; fi
     cd $repos_path
-    inEachFirstDirDo 'git diff' > "$reportfile"
+    inEachFirstDirDo 'git diff' >> "$reportfile"
     fileIsEmpty $reportfile
     if [[ $? == 1 ]]; then echo 'Everythings clean, no diffs :-)'; else echo There are diffs, check: $reportfile; fi
 }
