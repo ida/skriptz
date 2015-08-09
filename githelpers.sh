@@ -1,27 +1,50 @@
 # !usr/bin/bash
 #
-# Perform git-actions over several repos at once,
-# given, they live in the same directory.
+# Perform git-actions over several repos at once, given they live in the same
+# directory. There, produces two report-files. One is a sum of each repo's
+# git-diff, the other is an extraction of 'git status', holding merely the
+# names of the repos with unpushed commits. So you know. Buh.
 #
-# Produces these reportfiles one above this directory:
+# Usage
+# -----
+#
+# Locate into the directory where our repos are living:
+#
+# cd /path/to/repos-directory
+#
+# Execute script by its absolute-path:
+#
+# /path/to/this/script/commons.sh
+#
+# Or, with relative-path:
+#
+# ./path/to/this/script/commons.sh
+#
+# If you get "Permission denied", make this script executable, first:
+#
+# chmod +x path/to/commons.sh
+#
+# You might change the following variables' values:
+
 unpushed_commits_report='git-unpushed-commits-report.txt'
+
 diff_report='git-diff-report.txt'
 
-#
-#
-# Assumes we are inside of one of a repos' 1st-level-dir,
-# and the other repos live in the same dir, as this one does.
+
+#### Don't change anything after this line, unless you know what you're doing. ####
+
+repos_path=$(readlink -f $(pwd)) # realpath of directory where this script is executed
 
 strContainsStr () { if [[ "$1" = *"$2"* ]]; then return 1; else return 0; fi }
 fileIsEmpty () { if [[ $( <"$1" ) = '' ]]; then return 1; else return 0; fi; }
 inEachFirstDirDo() { for file in *; do if [ -d $file ]; then cd $file; $1; cd ..; fi done; }
 
 checkForUnpushedCommits() {
-    reportfile=$basket_lokus/$unpushed_commits_report
+    reportfile=$repos_path/$unpushed_commits_report
     echo "
 The following repos have commits, waiting to be pushed:
 " > "$reportfile"
-    cd $basket_lokus
+    cd $repos_path
     for file in *; do
         if [ -d $file ]; then
             cd $file
@@ -34,21 +57,15 @@ The following repos have commits, waiting to be pushed:
     done
 }
 checkForDiffs() {
-# Checks for git-diffs in all repos living in the same directory
-# and creates a reportfile of it in the, one level above of where this
-# script is executed.
-    reportfile=$basket_lokus/$diff_report
-    cd $basket_lokus
+    reportfile=$repos_path/$diff_report
+    cd $repos_path
     inEachFirstDirDo 'git diff' > "$reportfile"
     fileIsEmpty $reportfile
     if [[ $? == 1 ]]; then echo 'Everythings clean, no diffs :-)'; else echo There are diffs, check: $reportfile; fi
 }
-
 main() {
-    cd ..
-    basket_lokus=$(pwd) # pwd == this location
     checkForUnpushedCommits
     checkForDiffs
 }
-
 main
+
