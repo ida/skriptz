@@ -40,6 +40,7 @@ fileIsEmpty () { if [[ $( <"$1" ) = '' ]]; then return 1; else return 0; fi; }
 inEachFirstDirDo() { for file in *; do if [ -d $file ]; then cd $file; $1; cd ..; fi done; }
 
 checkForUnpushedCommits() {
+    hasUnpushedCommits='0'
     reportfile=$repos_path/$unpushed_commits_report
     echo "
 The following repos have commits, waiting to be pushed:
@@ -50,11 +51,12 @@ The following repos have commits, waiting to be pushed:
             cd $file
             string=$(git status)
             strContainsStr "${string}" 'Your branch is ahead of '
-            if [[ $? == 1 ]]; then echo '    -' $file '
+            if [[ $? == 1 ]]; then hasUnpushedCommits='1'; echo '    -' $file '
                 '>> "$reportfile"; fi
             cd ..
         fi
     done
+    if [[ hasUnpushedCommits = '1' ]]; then echo There are diffs, check: $reportfile; fi
 }
 checkForDiffs() {
     reportfile=$repos_path/$diff_report
