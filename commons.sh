@@ -1,9 +1,10 @@
+forEachDo() { arrayname=$1[@] array=("${!arrayname}") kommand=$2; for i in "${array[@]}" ; do "$kommand" "$i"; done }
 fileExists() { if [ -f $1 ]; then return 1; else return 0; fi }
+fileIsEmpty () { if [[ $( <"$1" ) = '' ]]; then return 1; else return 0; fi; }
 strEqualsStr () { if [ "$1" = "$2" ]; then return 1; else return 0; fi }
 strStartswithStr () { if [[ "$1" = "$2"* ]]; then return 1; else return 0; fi }
 strContainsStr () { if [[ "$1" = *"$2"* ]]; then return 1; else return 0; fi }
 strEndswithStr () { if [[ "$1" = *"$2" ]]; then return 1; else return 0; fi }
-forEachDo() { arrayname=$1[@] array=("${!arrayname}") kommand=$2; for i in "${array[@]}" ; do "$kommand" "$i"; done }
 splitStringIntoArray() { IFS=', ' read -a $1 <<< $2 }
 # splitStringIntoArray arrayname "${string}"
 ###############################################################################
