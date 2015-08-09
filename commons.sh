@@ -24,9 +24,14 @@ splitStringIntoArray() { IFS=', ' read -a $1 <<< $2 }
 # execution_location_path=$(pwd)
 # execution_location_realpath=$(readlink -f $execution_location)
 #
-# Thank for getting real to Barry, as cited on:
+# parent_path_of_path=${path%/*}
+#
+# Thanks for getting real to Barry, as cited on:
 # https://andy.wordpress.com/2008/05/09/bash-equivalent-for-php-realpath/
 #
+# Thanks for parental advisory to "cfajohnson":
+# http:///www.unix.com/shell-programming-and-scripting/117958-get-parent-directory-file.html
+# 
 # 
 # Read a file's str into a variable, if file-name exists
 # ------------------------------------------------------
@@ -48,7 +53,11 @@ splitStringIntoArray() { IFS=', ' read -a $1 <<< $2 }
 # You can easily test the commands given in this doc, by uncommenting 
 # them and executing this file of the command-line, like:
 #
-# ./commons.sh 
+# ./commons.sh
+#
+# Also possible with absolute path:
+#
+# /home/someuser/somedir/commons.sh
 # 
 # If the shell should complain, you aren't allowed to do so, make
 # sure it's an executable, by making it executable:
@@ -86,6 +95,18 @@ splitStringIntoArray() { IFS=', ' read -a $1 <<< $2 }
 #
 # Shell-basics
 # ============
+#
+# Execute a shell-script
+# ----------------------
+# 
+# By absolute path:
+#
+# /home/someuser/somedir/commons.sh
+#
+# With relative path, prepend './':
+#
+# ./commons.sh
+#
 #
 # Loop
 # ----
@@ -201,6 +222,14 @@ splitStringIntoArray() { IFS=', ' read -a $1 <<< $2 }
 # -----------------------
 #
 # strg=$( printf "%s" "${arrayname[@]}" )
+#
+#
+# Further reading
+# ===============
+#
+# Some arbitrary sources I stumbled over and liked:
+#
+# http://shell.cfajohnson.com/
 #
 #
 ###########################################################
