@@ -38,9 +38,8 @@ splitStringIntoArray() { IFS=', ' read -a $1 <<< $2 }
 # ------------------------------------------------------
 # 
 # str_of_file=''
-# this_script_location=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-# file_path=$this_script_location/README.txt
-# fileExists $file_path # This shoud return '1'
+# file_path=$this_script_realpath/README.txt
+# fileExists $file_path # this shoud return '1'
 # if [[ $? = 1 ]]; then str_of_file=$( <$file_path ); fi
 # echo $str_of_file
 # 

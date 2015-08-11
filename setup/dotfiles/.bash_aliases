@@ -5,12 +5,17 @@ vimAndSetScreenTitleToFileName() {
     setScreenWindowTitleToFilename $1
     vim $1
 }
-alias vv=vimAndSetScreenTitleToFileName
 alias vi='vim'
+if [[ "$TERM" == screen* ]]; then
+    alias vv=vimAndSetScreenTitleToFileName
+fi
 alias scd='screen -dRR'
+alias scl='screen -ls'
+alias scs='screen -S'
 alias ..='cd ..'
 alias ...='cd ../..'
 alias rf='rm -rf'
+alias cl='clear'
 alias py='python'
 alias psy='ps aux|grep python'
 

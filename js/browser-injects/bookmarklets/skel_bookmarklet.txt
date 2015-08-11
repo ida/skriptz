@@ -1,0 +1,10 @@
+javascript:( function(){
+
+/* 
+ *
+ * Note that doubleslashes for comments don't work, as a bookmarklet-injection is always
+ * a oneliner and doubleslashes are ment to mark comments per line. Use slash&asterix :-)
+ *
+ */
+
+})();

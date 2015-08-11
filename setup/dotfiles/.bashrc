@@ -1,6 +1,6 @@
-export PATH=$HOME/.virtenv/bin:$PATH
+#export PATH=$HOME/.virtenv/bin:$PATH
+export PATH=/home/ida/tmp/testSonLib/sonLib:$PATH
 
-# Set window-title to be current dir-path:
 # Thanks to Gilles: http://unix.stackexchange.com/questions/6065/gnu-screen-new-window-name-change
 if [[ "$TERM" == screen* ]]; then
   screen_set_window_title () {
@@ -8,14 +8,15 @@ if [[ "$TERM" == screen* ]]; then
     case $HPWD in
       $HOME) HPWD="~";;
 # full path:
-      $HOME/*) HPWD="~${HPWD#$HOME}";;
+#      $HOME/*) HPWD="~${HPWD#$HOME}";;
 # only dirname:
-#            *) HPWD=`basename "$HPWD"`;;
+            *) HPWD=`basename "$HPWD"`;;
     esac
     printf '\ek%s\e\\' "$HPWD"
   }
   PROMPT_COMMAND="screen_set_window_title; $PROMPT_COMMAND"
 fi
+
 
 ############
 # DEFAULTS #
@@ -123,6 +124,10 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
+fi
+
+if [ -f ~/.bash_profile ]; then
+    . ~/.bash_profile
 fi
 
 # enable programmable completion features (you don't need to enable
