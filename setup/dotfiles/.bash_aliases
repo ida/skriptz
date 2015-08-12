@@ -6,15 +6,14 @@ vimAndSetScreenTitleToFileName() {
     vim $1
 }
 alias vi='vim'
-if [[ "$TERM" == screen* ]]; then
-    alias vv=vimAndSetScreenTitleToFileName
-fi
+alias vv=vimAndSetScreenTitleToFileName
 alias scd='screen -dRR'
 alias scl='screen -ls'
 alias scs='screen -S'
 alias ..='cd ..'
 alias ...='cd ../..'
 alias rf='rm -rf'
+alias ca='cat'
 alias cl='clear'
 alias py='python'
 alias psy='ps aux|grep python'
@@ -27,11 +26,13 @@ alias boi='buildout; ./bin/instance fg'
 alias br='git branch'
 alias pull='git pull origin master'
 alias push='git push origin master'
+alias puff='git push origin forumail'
 alias st='git status'
 alias di='git diff'
 alias ch='git checkout'
 alias chb='git checkout -b'
 alias chm='git checkout master'
+alias chf='git checkout forumail'
 alias rs='git reset --hard'
 alias lo='git log'
 alias co='git commit -m'
