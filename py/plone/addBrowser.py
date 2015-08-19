@@ -84,7 +84,7 @@ class ' + interface_name + '(Interface):\n\
     <browser:page\n\
         for="*"\n\
         name="' + view_name + '_helpers"\n\
-        class=".' + view_name + 'helpers.View"\n\
+        class=".' + view_name + '_helpers.View"\n\
         permission="zope2.View"\n\
         layer=".interfaces.' + interface_name + '"\n\
       />\n\n\
