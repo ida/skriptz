@@ -15,7 +15,7 @@ apt-get install git screen wget python-virtualenv
 apt-get install python-setuptools python-dev build-essential libssl-dev libxml2-dev libxslt1-dev libbz2-dev libjpeg62-dev
 
 # Plone opt:
-apt-get install libreadline-dev wv poppler-utils python-openid
+apt-get install libreadline-dev wv poppler-utils
 
 # Archive: Ubuntu 10:
 #apt-get install g++ zlibc python-imaging zlib1g-dev python-dev build-essential
