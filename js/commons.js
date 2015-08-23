@@ -47,7 +47,10 @@ function getFirstChild(ele) {
     }
     return first_child
 };
-function getQueryVarVals(variable) {
+function setBrowserUrlWithoutReload(url) {
+        window.history.pushState(null, '', url)
+}
+function getUrlQueryVarVals(variable) {
     var vals = []
     var query = window.location.search.substring(1)
     var vars = query.split("&")
@@ -58,9 +61,6 @@ function getQueryVarVals(variable) {
             }
     }
     return(vals)
-}
-function exchangeUrlWithoutReload(url){
-    window.history.pushState(null, '', url)
 }
 function changeUrlQuery(variable, values){
     var new_search = '?'
@@ -110,5 +110,5 @@ function changeUrlQuery(variable, values){
     // Get current url without search-query:
     var url = String(window.location).split('?')[0]
     // Set new query:
-    exchangeUrlWithoutReload(url + new_search)
+    setBrowserUrlWithoutReload(url + new_search)
 }
