@@ -41,7 +41,7 @@ def addMissingIds(pot):
     for entry in entries:
         msgid = entry[-2][7:-2]
         if msgid == '':
-            entry[-2] = 'msgid "amp-' + str(misses) + '"\n'
+            entry[-2] = 'msgid "our-' + str(misses) + '"\n'
             misses += 1
         nuentries.append(entry)
     nupot = open('nu.pot', 'w')
@@ -84,22 +84,17 @@ def compStrsOfTwoPos(po, nupo):
     oldentries = getEntries(po)
     nuentries = getEntries(nupo)
 
-# lookup old id beginning with amp:
+# lookup old id beginning with 'our':
     for oldentry in oldentries:
         oldid = getMsgId(oldentry)
-        if oldid.startswith('amp-'):
+        if oldid.startswith('our-'):
 # get refering entry by defstr:
             olddef = getDefStr(oldentry)
             for nuentry in nuentries:
                 nudef = getDefStr(nuentry)
                 if nudef == olddef:
-#                    print nudef, olddef
                     nuid = getMsgId(nuentry)
                     if oldid != nuid:
                         print oldid, nuid
 
-#po = 'amp.translations.po'
-#nupo = 'ida_korr.po'
-#nupo = 'jbkmiddle.po'
-#compStrsOfTwoPos(po, nupo)                    
 

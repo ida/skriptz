@@ -1,5 +1,5 @@
 import shutil
-source = 'amp.translations.pot'
+source = 'our.translations.pot'
 target = source + '.tmp'
 with open(source) as fin, open(target, 'w') as fout:
     for line in fin:
