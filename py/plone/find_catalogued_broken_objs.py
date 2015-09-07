@@ -1,5 +1,6 @@
 
-# Find broken objs, to be able to recreate them, so reindexing or upgrading will work:
+# Find and return broken objs, to be able to recreate them, so reindexing or upgrading will work.
+# Gives you a linebreak-separated list of paths.
 # Usage: Via ZMI, locate to portal_skins/custom, select "Script(Python)" of dropdwonmenu, insert these lines, save. Then click "Test"-tab on top.
 from Products.CMFCore.utils import getToolByName
 catalog = getToolByName(context, 'portal_catalog')
