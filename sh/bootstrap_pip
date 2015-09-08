@@ -1,0 +1,261 @@
+#!/bin/bash
+#
+# This is a copy of: https://glyph.im/pip/bootstrap.sh
+# Provided by glyph: https://github.com/glyph
+# Promises to install virtenv, virtenvwrapper and pip in a well-behaved manner
+# for all OS'ses bit Windows, not sorry. Mackies can't use this shell-script, but
+# get help, as well. See: https://pip2014.com/
+#
+#
+cd "$(mktemp -d -t pip.setup.XXXXXXX)";
+
+VERSION="1.9.1";
+
+if [[ "$1" == "--version" ]]; then
+    echo "$VERSION";
+    exit 0;
+fi;
+
+SCRIPTNAME="${0}";
+
+function inapp () {
+    if [[ "${SCRIPTNAME}" == *".app/"* ]]; then
+        return 0;
+    else
+        return 1;
+    fi;
+}
+
+if inapp; then
+    # Detect the user's existing environment.
+    if [[ -n "${ZSH_NAME}" ]]; then
+        source ~/.zshrc;
+    else
+        source ~/.bash_profile;
+    fi;
+fi;
+
+export PREVIOUS_PATH="${PATH}";
+
+pip_bootstrap_runtime () {
+    export BOOTSTRAP_PYTHON="${BOOTSTRAP_PYTHON:-$(which python)}";
+
+    function __bootstrap_whence () {
+        if [[ -n "${ZSH_NAME}" ]]; then
+            whence -p "$@";
+        else
+            type -p "$@";
+        fi;
+    }
+
+    function _pip_bootstrap_wheelhouse_config () {
+        # Configure 'pip wheel' to always do the thing it should do out of the
+        # box, and not re-build packages every time I sneeze.
+
+        export WHEELHOUSE="${HOME}/.wheelhouses/$("${BOOTSTRAP_PYTHON}" -c '
+import sys
+try:
+    impl = sys.implementation.name
+except AttributeError:
+    impl = sys.subversion[0]
+sys.stdout.write(impl + "-" + ".".join(map(str,sys.version_info[:3])))
+')";
+        export PIP_FIND_LINKS="file://${WHEELHOUSE}";
+        export PIP_WHEEL_DIR="${WHEELHOUSE}";
+    }
+
+    if [[ -z "${PYTHON_USER_BIN}" ]]; then
+        # Note that you can’t just "import site", because distribute installs a
+        # site.py without the __main__ block.
+
+        export PYTHON_USER_BIN="$(${BOOTSTRAP_PYTHON} -c 'import site; site._script()' --user-base)/bin";
+        export PYTHON_USER_LIB="$(${BOOTSTRAP_PYTHON} -c 'import site; site._script()' --user-site)";
+
+        _pip_bootstrap_wheelhouse_config;
+        export PATH="${PYTHON_USER_BIN}:${PATH}";
+    fi;
+
+    # Set up shell-local stuff unconditionally.
+    if [[ -e "${PYTHON_USER_BIN}/virtualenvwrapper.sh" ]]; then
+        source "${PYTHON_USER_BIN}/virtualenvwrapper.sh";
+    fi;
+
+    function pip () {
+        # Run in a subshell so that we can manipulate the environment.
+        (
+            # We're going to optimistically assume that the "pip" that you're
+            # running and the "python" that you're running match each other.
+            export BOOTSTRAP_PYTHON="$(__bootstrap_whence python)";
+            _pip_bootstrap_wheelhouse_config;
+
+            # When you run "pip install" in your regular shell outside a
+            # virtualenv, it should just work, meaning, install stuff into your
+            # home directory.  But, let’s not affect the operation of pip
+            # within virtualenvs or as executed by any tools (such as tox or
+            # virtualenv itself) which need to run it via automation and not
+            # via a shell.
+
+            if [[ -z "${VIRTUAL_ENV:-}" ]]; then
+                export PIP_USER=yes;
+            fi;
+
+            # exec to discard the subshell; use "$BOOTSTRAP_PYTHON" -m to
+            # ensure that the Python version and the Pip version that we are
+            # using match.  We might, for example, have a version of "pip"
+            # installed against the system python in our home directory, but a
+            # new python.org version of python installed in /usr/local, and
+            # "python" is /usr/local/bin/python, which means that we
+            # (probably?) want to build wheels for /usr/local/bin/python.  Tack
+            # on .__main__ module name for compatibility with Python 2.6, which
+            # didn't have package execution.
+            exec "${BOOTSTRAP_PYTHON}" -m pip.__main__ "$@";
+        )
+    }
+}
+
+echo "
+export BOOTSTRAP_PYTHON='${BOOTSTRAP_PYTHON:-$(which python)}';
+$(declare -f pip_bootstrap_runtime)
+pip_bootstrap_runtime;
+" > "${HOME}/.pip_bootstrap_profile.sh";
+
+if [[ "$(uname)" == Darwin ]]; then
+    export STANDARD_LOG_DIR="Library/Logs";
+else
+    export STANDARD_LOG_DIR=".cache/pip";
+fi;
+
+mkdir -p "${HOME}/${STANDARD_LOG_DIR}";
+
+BOOTSTRAP_LOG="${STANDARD_LOG_DIR}/pip-bootstrap.log";
+
+echo "Install log available in '~/${BOOTSTRAP_LOG}'.";
+echo "Installing ... ";
+
+download () {
+    curl -sO "$@";
+}
+
+message () {
+    echo "$@";
+    echo "$@" >&9;
+}
+
+progress () {
+    if inapp; then
+        message "PROGRESS:${1}";
+    fi;
+}
+
+(
+    set -x;
+    set -e;
+
+    progress "1";
+
+    pip_bootstrap_runtime;
+
+    if [[ -n "${ZSH_NAME}" ]]; then
+        PROFILE_FILE=".zshrc";
+    else
+        PROFILE_FILE=".bash_profile";
+    fi;
+
+    if ( grep -q 'Added by Pip Bootstrap' "${HOME}/${PROFILE_FILE}" ); then
+        message "Looks like you've run this before. Great.
+I'll leave your ${PROFILE_FILE} alone.";
+    else
+        if [[ ":${PREVIOUS_PATH}:" == *":${PYTHON_USER_BIN}:"* ]]; then
+            message '
+It appears that your Python scripts directory has already been added to your
+$PATH.  Since this is the case, I am assuming you know what that means, and I
+am not going to alter your configuration.
+';
+        else
+            message "
+Since your environment does not appear to be configured, I am going to add a few
+lines to your ${PROFILE_FILE} file now, to make sure that commands like
+\"mkvirtualenv\", \"pip\", and \"workon\" all work.  These lines will be clearly
+marked, so feel free to delete them if you prefer a different configuration.
+";
+            echo '
+# vvvv ---- Added by Pip Bootstrap ---- vvvv #
+source "${HOME}/.pip_bootstrap_profile.sh";
+# ^^^^ ---- Added by Pip Bootstrap ---- ^^^^ #
+' >> "${HOME}/${PROFILE_FILE}";
+        fi;
+    fi;
+
+    progress "5";
+
+    # Just for this subshell.
+    export PIP_USER=yes;
+    export PIP_UPGRADE=yes;
+
+    export PIP_BUILD="$(mktemp -d -t pip.build.XXXXXX)";
+    echo "Build directory: ${PIP_BUILD}";
+    message "Downloading pip.";
+    download https://bootstrap.pypa.io/get-pip.py;
+    progress "20";
+    message "Installing pip.";
+    "${BOOTSTRAP_PYTHON}" get-pip.py;
+    progress "30";
+    message "Preparing to upgrade setuptools.";
+    # Make sure that if your user site is enabled, you get _recent_ setuptools,
+    # without which virtualenvwrapper et. al. will just be horribly broken.
+    mkdir -p "${PYTHON_USER_LIB}";
+    mkdir -p "${PYTHON_USER_BIN}";
+    echo 'import sys; sys.path.insert(0, sitedir)' > \
+         "${PYTHON_USER_LIB}/pip-bootstrap.pth";
+    message "Upgrading setuptools.";
+
+    export PIP_FORCE_REINSTALL=yes;
+    export PIP_UPGRADE=yes;
+
+    pip install setuptools;
+    progress "40";
+    message "Installing wheel.";
+    pip install wheel;
+    progress "50";
+    message "Building wheels...";
+    progress "55";
+    message "Building wheel for setuptools.";
+    pip wheel setuptools;
+    progress "60";
+    message "Building wheel for virtualenv.";
+    pip wheel virtualenv;
+    progress "70";
+    message "Installing virtualenv and virtualenvwrapper...";
+    pip install virtualenv virtualenvwrapper;
+    progress "90";
+    message "Configuring virtualenvwrapper...";
+    source "$(__bootstrap_whence virtualenvwrapper.sh)";
+    virtualenvwrapper_initialize;
+    progress "100";
+
+) 9>&1 > "${HOME}/${BOOTSTRAP_LOG}" 2>&1;
+
+STATUS="$?";
+
+if [[ "${STATUS}" == "0" ]]; then
+    echo "Done. Please enjoy Pip!";
+else
+    cat "${HOME}/${BOOTSTRAP_LOG}";
+    echo;
+    echo "Sorry. It looks like something went wrong; see above to figure out what.";
+    exit "${STATUS}";
+fi;
+
+if inapp; then
+    echo "Start a new terminal to start playing with Python packaging.";
+else
+    # If stdin is a TTY, then pause before exiting and require the user to hit
+    # enter.  Otherwise just exit.
+    if [ -t 0 ]; then
+        echo "Start a new terminal now to use pip, or hit enter to keep using this one.";
+        echo "(Pip won't work yet in this one, though.)";
+        read nothing;
+    else
+        echo "Success, pip is set up for ${USER}"'!';
+    fi;
+fi;
