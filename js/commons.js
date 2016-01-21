@@ -112,3 +112,35 @@ function changeUrlQuery(variable, values){
     // Set new query:
     setBrowserUrlWithoutReload(url + new_search)
 }
+
+function jsonToNestedHtmlDivs(obj) {
+    // Takes a json-obj and returns it as
+    // nested html-divs, according to the given structure.
+
+    var txt = '';
+    var keys = [];
+
+    for (var key in obj) {
+      if (key !== 'histology') { // DEV escape this for now
+        if (obj.hasOwnProperty(key)) {
+          if (!$scope.isInArray(key, keys)) { // prep collect keys, for next step to render columns
+            keys.push(key);
+          }
+          if ('object' == typeof(obj[key])) {
+            if ($scope.jsonToNestedHtmlDivs(obj[key]) === '') {
+              txt += $scope.jsonToNestedHtmlDivs(obj[key]);
+            }
+            else {
+              txt += '<div class="nest">' + $scope.jsonToNestedHtmlDivs(obj[key]) + '</div>';
+            }
+          }
+          else {
+            txt += '<div class="row"><div class="key">' + key +
+              '</div><div class="val">' + obj[key] + '</div></div>';
+          }
+        }
+      }
+    }
+    return txt;
+};
+
