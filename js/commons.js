@@ -144,3 +144,18 @@ function jsonToNestedHtmlDivs(obj) {
     return txt;
 };
 
+//
+// ANIMATIONS
+//
+function addTextCharByCharAni(ele, text, duration) {
+    // Insert text into an element in a ticker-like manner.
+    var i = 0
+    var charbychar_interval = setInterval(function () {
+        body.append(text[i])
+        if(i > text.length-1) {
+           clearInterval(charbychar_interval)
+        }
+        i += 1
+    }, duration);
+}
+
