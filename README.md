@@ -1,4 +1,4 @@
-skriptz
+iskriptz
 =======
 
 Miscellaneous helper scripts and sketches for helper scripts.
