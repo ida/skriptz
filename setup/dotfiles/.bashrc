@@ -1,6 +1,16 @@
-#export PATH=$HOME/.virtenv/bin:$PATH
-export PATH=/home/ida/tmp/testSonLib/sonLib:$PATH
+export PATH=$HOME/.virtenv/bin:$PATH
 
+# Meh alwayz wanna haz vim at meh handz, no nano or other default-editor
+# opening, like e.g. when editing git-commit-msg after a merge or rebase.
+export VISUAL=vim
+export EDITOR="$VISUAL"
+
+# http://stackoverflow.com/questions/10130341/go-go-get-go-install-local-packages-and-version-control
+# export GOPATH="$HOME/.gopath"
+# export PATH="$GOPATH/bin:$PATH"
+
+
+# Set screen window-title to show currently opened file-name or complete path:
 # Thanks to Gilles: http://unix.stackexchange.com/questions/6065/gnu-screen-new-window-name-change
 if [[ "$TERM" == screen* ]]; then
   screen_set_window_title () {
