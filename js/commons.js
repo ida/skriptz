@@ -1,4 +1,20 @@
 //
+// FUNCS
+//
+
+function getThisFuncName(argumentsCallee) {
+  // Execute this func of within any function and pass
+  // arguments.callee to it, like this:
+  //     getThisFuncName(arguments.callee)
+  // Returns empty str, if func is anonymous.
+  // Not IE compatible.
+  var funcName = argumentsCallee.toString()
+  funcName = funcName.substr('function '.length)
+  funcName = funcName.substr(0, funcName.indexOf('('))
+  return funcName
+}
+
+//
 // ELES
 //
 
