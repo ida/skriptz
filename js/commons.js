@@ -1,47 +1,60 @@
 //
 // ELES
 //
-function addEle(parent_ele, ele_tag_name) {
-  // Append and return an ele to the given parent.
+
+function addEle(parent_ele, ele_tag_name, ele_text='') {
+/*
+Promises: Add ele to parent, set a min-height, insert text if passed.
+Requires: getStyle()
+Examples: addEle(some_ele, 'div', 'blabla')
+          addEle(some_ele, 'span')
+*/
   var ele = document.createElement(ele_tag_name)
+  ele.innerHTML = ele_text
+  ele.setAttribute('style', 'min-height: ' + getStyle(parent_ele, 'line-height'))
   parent_ele.appendChild(ele)
   return ele
 }
+
 function getEle(ele) {
-  // Passed ele can be obj or id-name or tag-name,
-  // return ele-obj.
+// Promises: Passed 'ele' can be obj or id-name or tag-name, return ele-obj.
   if (typeof ele === 'string') {
     ele = document.getElementById(ele)
   }
   return ele
 }
+
 function getNextSibling(ele) {
   var next_ele=ele.nextSibling
-  while (next_ele.nodeType!=1) {
+  while (next_ele.nodeType != 1) {
     next_ele=next_ele.nextSibling
   }
   return next_ele
 };
+
 function getFirstChild(ele) {
   var first_child=ele.firstChild
-  while (first_child.nodeType!=1) {
+  while (first_child.nodeType != 1) {
     first_child=getNextSibling(first_child)
   }
   return first_child
 };
+
+
 //
 // STYLES
 //
 function getStyles(ele) {
-  // Expects getEle().
+// Requires: getEle()
   return window.getComputedStyle( getEle(ele) )
 }
 function getStyle(ele, prop) {
-  // Expects getEle(), getStyles().
+// Requires: getEle(), getStyles()
   return parseFloat( ( getStyles(ele) ).getPropertyValue(prop) )
 }
+
 function setStyles(ele, newstyles) {
-  // Expects getEle().
+// Requires: getEle()
   ele = getEle(ele)
   styles = ele.getAttribute('style')
   if (styles==undefined) { styles = '' }
@@ -49,11 +62,14 @@ function setStyles(ele, newstyles) {
   // TODO: Instead of simply appending new styles, check if a property
   // was defined already, and replace it with the new one.
 }
+
+
 //
 // POSITIONS
 //
+
 function getCoords(ele) {
-  // Expects getEle().
+// Requires: getEle()
   ele = getEle(ele)
   var left = ele.offsetLeft
   var topp = ele.offsetTop
@@ -64,19 +80,23 @@ function getCoords(ele) {
  return [left, topp]
 }
 function getLeft(ele) {
-  // Expects getCoords().
+  // Requires: getCoords()
   return getCoords(ele)[0]
 }
 function getTop(ele) {
-  // Expects getCoords().
+  // Requires: getCoords()
   return getCoords(ele)[1]
 }
+
+
 //
 // BROWSER-URL
 //
+
 function setUrlWithoutReload(url) {
   window.history.pushState(null, '', url)
 }
+
 function getUrlQueryVarVals(variable) {
   var vals = []
   var query = window.location.search.substring(1)
@@ -89,8 +109,9 @@ function getUrlQueryVarVals(variable) {
   }
   return vals
 }
+
 function changeUrlQuery(variable, values){
-  // Expects setUrlWithoutReload().
+// Requires: setUrlWithoutReload()
   var new_search = '?'
   // Get current search and remove questionmark of beginning:
   var search_string = window.location.search.substring(1)
@@ -140,9 +161,12 @@ function changeUrlQuery(variable, values){
   // Set new query:
   setUrlWithoutReload(url + new_search)
 }
+
+
 //
 // CONVERSIONS
 //
+
 function jsonToNestedHtmlDivs(obj) {
   // Take a json-obj and return it as nested html-divs,
   // according to the given structure.
@@ -168,80 +192,122 @@ function jsonToNestedHtmlDivs(obj) {
   }
   return txt;
 };
+
+
 //
 // ANIMATIONS
 //
-function addTextCharByCharAni(line_ele, line_text, interval_in_milliseconds, callbackFunction) {
-/*  Insert text into an element in a ticker-like manner one char after the other
-    and replace empty- or only-spaces-string with a linebreak. Example usage:
-    var line_ele = document.getElementsByTagName('body')[0]
-    var line_text = 'Some string to ticker.'
-    var interval_in_milliseconds = 10
-    tickerAllTextLinesAtOnce(ele, lines, interval_in_milliseconds) */
-    var i = 0
-    var charbychar_interval = setInterval(function () {
-        // Remove trailing spaces:
-        line_text = line_text.trim()
-        // We have an empty string:
-        if(line_text === '') {
-            // Replace it with a linebreak,
-            // so ele consumes height:
-            line_ele.innerHTML = '<br>'
-        }
-        // If the text ends:
-        if(i > line_text.length-1) {
-            // End the interval:
-            clearInterval(charbychar_interval)
-            // Apply the callback-hook, if passed:
-            if(callbackFunction) {
-                callbackFunction()
-            }
-            // Break further executions:
-            return
-        }
-        // Add char to line and increase iterator:
-        var text_old = line_ele.innerHTML
-        if(text_old === undefined) { text_old = '' }
-        line_ele.innerHTML = text_old + line_text[i]
-        i += 1
-    }, interval_in_milliseconds);
-}
 
-function tickerAllTextLinesAtOnce(lines_ele, lines_text_list, interval_in_milliseconds) {
+function tickerText(text_ele, text, duration, doAfter=null) {
   /*
-  Expects addEle() and addTextCharByCharAni(), example usage:
-  var lines_ele = document.getElementsByTagName('body')[0]
-  var lines_text_list = ['Hello,', '', 'some info.', '', 'Bye,' 'Anynone']
-  var interval_in_milliseconds = 10
-  tickerAllTextLinesAtOnce(lines_ele, lines_text_list, interval_in_milliseconds)
+  Promises: Insert text into an element in a ticker-like manner,
+            one char after the other.
+  Requires: addEle(), tickerText()
+  Examples: var text_ele = document.getElementsByTagName('body')[0]
+            var text = 'Some text to ticker'
+            var duration = 10 // interval in milliseconds
+            var doAfter = function() { console.debug('tickerText() ended')  }
+            tickerText(text_ele, text, duration, doAfter)
   */
-  var i = 0
-  while(i < lines_text_list.length) {
-    var line_ele = addEle(lines_ele, 'div')
-    var line_text = lines_text_list[i]
-    addTextCharByCharAni(line_ele, lines_text_list[i], interval_in_milliseconds)
+  var text_new = ''
+  var i = 1
+
+  text = text.trim() // remove trailing spaces
+
+  // Show first char right ahead, don't wait for interval to start:
+  if(text[0] !== undefined) { text_ele.innerHTML = text[0] }
+
+  // Start interval:
+  var interval = setInterval(function () {
+    // If the text ends ...
+    if(i >= text.length-1) {
+      // ... end the interval ...
+      clearInterval(interval)
+      // and apply callback, if passed:
+      if(doAfter) { doAfter() }
+    }
+    // Text didn't end, set new text:
+    if(text[i] !== undefined) {
+      text_ele.innerHTML = text_ele.innerHTML + text[i]
+    }
     i += 1
-  }
+  }, duration);
 }
 
-function tickerTextLinesOneAfterTheOther(lines_ele, lines_text_list, interval_in_milliseconds) {
-  /*
-  Expects addEle() and addTextCharByCharAni(), example usage:
-  var lines_ele = document.getElementsByTagName('body')[0]
-  var lines_text_list = ['Hello,', '', 'some info.', '', 'Bye,' 'Anynone']
-  var interval_in_milliseconds = 10
-  tickerTextLinesOneAfterTheOther(lines_ele, lines_text_list, interval_in_milliseconds)
-  */
+function tickerLinesSequentially(lines_ele, lines_text_list, duration) {
+/*
+Requires: addEle(), tickerText()
+Promises: Ticker one line after the other.
+Examples: var lines_ele = document.getElementsByTagName('body')[0]
+          var lines_text_list = ['Hello,', '', 'some info.', '', 'Bye,' 'Anynone']
+          var duration = 10 // interval in milliseconds
+          tickerLines(lines_ele, lines_text_list, duration)
+*/
   var i = 0
-  var rekur = function() {
+  var loopLines = function() {
     if(i < lines_text_list.length){
-      var line_ele = addEle(lines_ele, 'div')
-      addTextCharByCharAni(line_ele, lines_text_list[i], interval_in_milliseconds, function() {
-        i += 1
-        rekur()
-      });
+      var text_ele = addEle(lines_ele, 'div')
+      var text = lines_text_list[i]
+      text = text.trim() // remove trailing spaces
+      // Repeat this loop after it ended:
+      var doAfter = function() { i += 1; loopLines() }
+      // Make a little pause between each line-animation:
+      setTimeout(
+        function() {
+          // Now, trigger ticker:
+          tickerText(text_ele, text, duration, doAfter)
+        },
+        427
+      );
     }
   }
-  rekur()
+  loopLines() // ini
 }
 
+function tickerLinesSimultaneouslyWithSameDuration(lines_ele, lines_text_list, duration) {
+/*
+Requires: addEle(), tickerText()
+Promises: Ticker lines, each starting at the same time,
+          each consuming the same time to finish.
+Examples: var lines_ele = document.getElementsByTagName('body')[0]
+          var lines_text_list = ['Hello,', '', 'some info.', '', 'Bye,' 'Anynone']
+          var duration = 10 // interval in milliseconds
+          tickerLinesSimultaneously(lines_ele, lines_text_list, duration)
+*/
+  var text_ele;
+  var line_text;
+  var line_duration = 0
+  var longest_line_length = 0
+  var i = 0
+  // Wait a moment, to have a blank state, do not show first chars immediately:
+  setTimeout(function() {
+    // First, eval longest line to make it the 100% of duration:
+    while(i < lines_text_list.length) {
+      line_text = lines_text_list[i]
+      line_text = line_text.trim() // remove trailing spaces
+      if(line_text.length > longest_line_length) {
+        longest_line_length = line_text.length
+      }
+      i += 1
+    }
+    // Then, iterate again for ticking:
+    i = 0
+    while(i < lines_text_list.length) {
+      text_ele = addEle(lines_ele, 'div')
+      line_text = lines_text_list[i]
+      line_text = line_text.trim() // remove trailing spaces
+      if(line_text === '') { line_text = '&nbsp;' }
+      // Compute duration:
+      line_duration = longest_line_length/line_text.length*duration
+      // Regard, if text is an empty string:
+      if(line_text.length === 0) { line_duration = 0 }
+      // Finally ticker:
+      if(line_text !== '&nbsp;') {
+        tickerText(text_ele, line_text, line_duration)
+      }
+      i += 1
+    }
+  }, 277);
+}
+
+// EOF
