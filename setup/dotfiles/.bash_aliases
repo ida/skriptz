@@ -5,24 +5,27 @@ vimAndSetScreenTitleToFileName() {
     setScreenWindowTitleToFilename $1
     vim $1
 }
-alias vi='vim'
-alias vv=vimAndSetScreenTitleToFileName
-alias scd='screen -dRR'
-alias scl='screen -ls'
-alias scs='screen -S'
 alias ..='cd ..'
 alias ...='cd ../..'
-alias rf='rm -rf'
 alias ca='cat'
 alias cl='clear'
+alias diff='colordiff -u'
 alias py='python'
 alias psy='ps aux|grep python'
+alias scd='screen -dRR'
+alias scl='screen -ls'
+alias scr='screen -r'
+alias scs='screen -S'
+alias rf='rm -rf'
+alias vi='vim'
+alias vv=vimAndSetScreenTitleToFileName
 
 alias bo='buildout'
 alias boo='buildout -O'
+alias bou='./bin/buildout'
 alias bi='./bin/instance fg'
-alias ibi='./instance/bin/instance fg'
-alias boi='buildout; ./bin/instance fg'
+alias boi='bo; bi'
+alias boui='bou; bi'
 
 alias br='git branch'
 alias pull='git pull origin master'
