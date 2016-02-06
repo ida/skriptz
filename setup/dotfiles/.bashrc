@@ -1,7 +1,34 @@
+# ENTER PASSWORDS ONLY ONCE
+
+# Following this very helpful article:
+# http://rabexc.org/posts/pitfalls-of-ssh-agents
+# Note: Suggests to use ssh-ident, when you have a lot of keys.
+
+# For entering the pw for a remote-machine only once, do:
+# ssh-copy-id remote.machi.ne
+# That copies your pubkey and remembers you to be trustable,
+# via ssh-keys, instead of the usual login-procedure.
+
+# For entering the pw for your ssh-key only once, start
+# an ssh-agent, if not done by autostart:
+ssh-add -l &>/dev/null
+if [ "$?" == 2 ]; then
+  test -r ~/.ssh-agent && \
+    eval "$(<~/.ssh-agent)" >/dev/null
+
+  ssh-add -l &>/dev/null
+  if [ "$?" == 2 ]; then
+    (umask 066; ssh-agent > ~/.ssh-agent)
+    eval "$(<~/.ssh-agent)" >/dev/null
+    ssh-add
+  fi
+fi
+
+# Always use an isolated local python-env, no sys-conflicts:
 export PATH=$HOME/.virtenv/bin:$PATH
 
 # Meh alwayz wanna haz vim at meh handz, no nano or other default-editor
-# opening, like e.g. when editing git-commit-msg after a merge or rebase.
+# opening, like e.g. when editing git-commit-msg after a merge or rebase:
 export VISUAL=vim
 export EDITOR="$VISUAL"
 
@@ -146,3 +173,4 @@ fi
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
+
