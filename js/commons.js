@@ -189,20 +189,18 @@ function jsonToNestedHtmlDivs(obj) {
   var txt = '';
   var keys = [];
   for (var key in obj) {
-    if (key !== 'histology') { // DEV escape this for now
-      if (obj.hasOwnProperty(key)) {
-        if ('object' == typeof(obj[key])) {
-          if (jsonToNestedHtmlDivs(obj[key]) === '') {
-            txt += jsonToNestedHtmlDivs(obj[key]);
-          }
-          else {
-            txt += '<div class="nest">' + jsonToNestedHtmlDivs(obj[key]) + '</div>';
-          }
+    if (obj.hasOwnProperty(key)) {
+      if ('object' == typeof(obj[key])) {
+        if (jsonToNestedHtmlDivs(obj[key]) === '') {
+          txt += jsonToNestedHtmlDivs(obj[key]);
         }
         else {
-          txt += '<div class="row"><div class="key">' + key +
-            '</div><div class="val">' + obj[key] + '</div></div>';
+          txt += '<div class="nest">' + jsonToNestedHtmlDivs(obj[key]) + '</div>';
         }
+      }
+      else {
+        txt += '<div class="row"><div class="key">' + key +
+          '</div><div class="val">' + obj[key] + '</div></div>';
       }
     }
   }
