@@ -1,5 +1,6 @@
 " Show always currently opened filename in window-title:
-autocmd BufEnter * let &titlestring = ' ' . expand("%:t") " Prepare window-title of filename-var... 
+" Prepare window-title of filename-var... 
+autocmd BufEnter * let &titlestring = ' ' . expand("%:t") 
 set title           " .. and set it.
 
 " Spaces sanity:
@@ -13,6 +14,17 @@ set smartindent     " Preserve indent when breaking the line.
 autocmd Filetype html setlocal ts=2 sts=2 sw=2
 autocmd Filetype javascript setlocal ts=2 sts=2 sw=2
 
-" Make les-files behave like js-files for syntax-highlighting:
+" Make less-files behave like js-files for syntax-highlighting:
 au BufNewFile,BufRead *.less set filetype=javascript
+
+" http://stackoverflow.com/questions/1294790/change-tilde-color-in-vim
+" make eof-symbol (the tilde) have the same color as default-fg-col and
+" thereby dissapear visually:
+"
+" :highlight nontext ctermfg=12
+"
+" Or, set a specific color:
+" 
+" :highlight nontext ctermfg='red'
+
 

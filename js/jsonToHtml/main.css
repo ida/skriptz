@@ -1,0 +1,22 @@
+body {
+    background: #111;
+    color: #e2e2e2;
+}
+.pair {
+    border-bottom: thin dotted;
+    line-height: 1.61em;
+    background: #333;
+}
+.knot > .pairs {
+    padding-left: 1.5em;
+}
+.key {
+    display: inline-block;
+}
+.val {
+    display: inline-block;
+}
+.pair > .key:after {
+    content: '|';
+    padding: 0 0.85em;
+}
