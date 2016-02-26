@@ -6,11 +6,16 @@
         "maintainer_email": null, 
         "cheesecake_code_kwalitee_id": null, 
         "keywords": "", 
+<<<<<<< HEAD
         "package_url": "http://pypi.python.org/pypi/adi.suite", 
+=======
+        "package_url": "http://pypi.python.org/pypi/adi.fullscreen", 
+>>>>>>> f7c7025b810b752ad64b63bfe7260e3f8f9263a1
         "author": "Ida Ebkes", 
         "author_email": "contact@ida-ebkes.eu", 
         "download_url": "UNKNOWN", 
         "platform": "UNKNOWN", 
+<<<<<<< HEAD
         "version": "0.6", 
         "cheesecake_documentation_id": null, 
         "_pypi_hidden": false, 
@@ -33,12 +38,35 @@
         "license": "GPL", 
         "summary": "A suite for javascript multimedia galleries.", 
         "home_page": "http://ida-ebkes.eu", 
+=======
+        "version": "0.2", 
+        "cheesecake_documentation_id": null, 
+        "_pypi_hidden": false, 
+        "description": "Introduction\n============\n\nThis Plone-add-on supplies a fullscreen-button \nbelow the title of any plone article, symbolized with expanding\nand collapsing arrows.\n\nThe button consists of four unicode-arrow-characters, so can easily\nobtain visual control over the element via, f.e. change color, include \na background-image, or such.\n\nWhen clicked, left- and right-columns and top- and footer-elements are \nhidden and the main column expands to full width and height of the window.\n\nOn reload or calling another page, the view falls back to non-fullscreen \nin order to not accidently hide releveant context information, if the \nuser forgets being in fullscreenmode.\n\nPlease note, that the term 'fullscreen' here doesn't mean, the browserwindow \ndissapears, but any element but the actual article is hidden, which let's \nyou focus more on the content. For the former you can also just user the \nfulscreenmode of your browser, conventionally accessible via the F11-key.\n\nChangelog\n=========\n\n0.2 (2013-03-10)\n----------------\n\n- Also hide top- and footer-elements on fullscreen. [ida]\n\n- Replaced bg-img with unicode-characters (arrows). [ida]\n\n\n\n0.1 (2012-01-02)\n-------------------\n\n- Initial release", 
+        "release_url": "http://pypi.python.org/pypi/adi.fullscreen/0.2", 
+        "downloads": {
+            "last_month": 282, 
+            "last_week": 76, 
+            "last_day": 8
+        }, 
+        "_pypi_ordering": 1, 
+        "classifiers": [
+            "Framework :: Plone", 
+            "Programming Language :: Python"
+        ], 
+        "name": "adi.fullscreen", 
+        "bugtrack_url": null, 
+        "license": "GPL", 
+        "summary": "Give the possibilty of fullscreenmode for plonsite by click.", 
+        "home_page": "http://svn.plone.org/svn/collective/adi.fullscreen", 
+>>>>>>> f7c7025b810b752ad64b63bfe7260e3f8f9263a1
         "cheesecake_installability_id": null
     }, 
     "releases": {
         "0.1": [
             {
                 "has_sig": false, 
+<<<<<<< HEAD
                 "upload_time": "2011-05-12T13:19:22", 
                 "comment_text": "", 
                 "python_version": "2.6", 
@@ -90,11 +118,37 @@
                 "packagetype": "sdist", 
                 "path": "source/a/adi.suite/adi.suite-0.3.tar.gz", 
                 "size": 235361
+=======
+                "upload_time": "2012-01-02T02:36:08", 
+                "comment_text": "", 
+                "python_version": "2.6", 
+                "url": "https://pypi.python.org/packages/2.6/a/adi.fullscreen/adi.fullscreen-0.1-py2.6.egg", 
+                "md5_digest": "1fc82b14d72d65b226958255018b4aca", 
+                "downloads": 3251, 
+                "filename": "adi.fullscreen-0.1-py2.6.egg", 
+                "packagetype": "bdist_egg", 
+                "path": "2.6/a/adi.fullscreen/adi.fullscreen-0.1-py2.6.egg", 
+                "size": 10344
+            }, 
+            {
+                "has_sig": false, 
+                "upload_time": "2012-01-02T02:36:08", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/a/adi.fullscreen/adi.fullscreen-0.1.tar.gz", 
+                "md5_digest": "af3f530d94f6b5bb2ed8c52ed7d98726", 
+                "downloads": 2965, 
+                "filename": "adi.fullscreen-0.1.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "source/a/adi.fullscreen/adi.fullscreen-0.1.tar.gz", 
+                "size": 13162
+>>>>>>> f7c7025b810b752ad64b63bfe7260e3f8f9263a1
             }
         ], 
         "0.2": [
             {
                 "has_sig": false, 
+<<<<<<< HEAD
                 "upload_time": "2011-12-27T15:50:45", 
                 "comment_text": "", 
                 "python_version": "2.6", 
@@ -215,12 +269,38 @@
                 "packagetype": "sdist", 
                 "path": "source/a/adi.suite/adi.suite-0.6.tar.gz", 
                 "size": 218983
+=======
+                "upload_time": "2013-03-10T12:22:10", 
+                "comment_text": "", 
+                "python_version": "2.6", 
+                "url": "https://pypi.python.org/packages/2.6/a/adi.fullscreen/adi.fullscreen-0.2-py2.6.egg", 
+                "md5_digest": "f68a812088ef832e9e6b9e8d19305834", 
+                "downloads": 2593, 
+                "filename": "adi.fullscreen-0.2-py2.6.egg", 
+                "packagetype": "bdist_egg", 
+                "path": "2.6/a/adi.fullscreen/adi.fullscreen-0.2-py2.6.egg", 
+                "size": 9751
+            }, 
+            {
+                "has_sig": false, 
+                "upload_time": "2013-03-10T12:22:05", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/a/adi.fullscreen/adi.fullscreen-0.2.tar.gz", 
+                "md5_digest": "961f038e5dae1808aca1ce6a35b7c34d", 
+                "downloads": 2920, 
+                "filename": "adi.fullscreen-0.2.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "source/a/adi.fullscreen/adi.fullscreen-0.2.tar.gz", 
+                "size": 12279
+>>>>>>> f7c7025b810b752ad64b63bfe7260e3f8f9263a1
             }
         ]
     }, 
     "urls": [
         {
             "has_sig": false, 
+<<<<<<< HEAD
             "upload_time": "2013-01-02T10:30:16", 
             "comment_text": "", 
             "python_version": "2.6", 
@@ -244,6 +324,31 @@
             "packagetype": "sdist", 
             "path": "source/a/adi.suite/adi.suite-0.6.tar.gz", 
             "size": 218983
+=======
+            "upload_time": "2013-03-10T12:22:10", 
+            "comment_text": "", 
+            "python_version": "2.6", 
+            "url": "https://pypi.python.org/packages/2.6/a/adi.fullscreen/adi.fullscreen-0.2-py2.6.egg", 
+            "md5_digest": "f68a812088ef832e9e6b9e8d19305834", 
+            "downloads": 2593, 
+            "filename": "adi.fullscreen-0.2-py2.6.egg", 
+            "packagetype": "bdist_egg", 
+            "path": "2.6/a/adi.fullscreen/adi.fullscreen-0.2-py2.6.egg", 
+            "size": 9751
+        }, 
+        {
+            "has_sig": false, 
+            "upload_time": "2013-03-10T12:22:05", 
+            "comment_text": "", 
+            "python_version": "source", 
+            "url": "https://pypi.python.org/packages/source/a/adi.fullscreen/adi.fullscreen-0.2.tar.gz", 
+            "md5_digest": "961f038e5dae1808aca1ce6a35b7c34d", 
+            "downloads": 2920, 
+            "filename": "adi.fullscreen-0.2.tar.gz", 
+            "packagetype": "sdist", 
+            "path": "source/a/adi.fullscreen/adi.fullscreen-0.2.tar.gz", 
+            "size": 12279
+>>>>>>> f7c7025b810b752ad64b63bfe7260e3f8f9263a1
         }
     ]
 }
