@@ -1,11 +1,23 @@
 body {
+/*
     background: #111;
     color: #e2e2e2;
+*/
 }
-.pair {
-    border-bottom: thin dotted;
+.jsons {
     line-height: 1.61em;
+    border: 1px dotted yellow;
+}
+.json {
+    border: 1px dotted red;
+    margin: 0.85em;
+}
+.pair , .knot {
+    border-left: thin dotted;
+    border-bottom: thin dotted;
+/*
     background: #333;
+*/
 }
 .knot > .pairs {
     padding-left: 1.5em;
@@ -13,10 +25,10 @@ body {
 .key {
     display: inline-block;
 }
-.val {
-    display: inline-block;
-}
 .pair > .key:after {
     content: '|';
     padding: 0 0.85em;
+}
+.val {
+    display: inline-block;
 }

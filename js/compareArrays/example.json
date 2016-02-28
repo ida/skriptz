@@ -1,0 +1,1483 @@
+{
+    "info": {
+        "maintainer": "", 
+        "docs_url": null, 
+        "requires_python": "", 
+        "maintainer_email": "", 
+        "cheesecake_code_kwalitee_id": null, 
+        "keywords": "Plone CMF python Zope", 
+        "package_url": "http://pypi.python.org/pypi/Plone", 
+        "author": "Plone Foundation", 
+        "author_email": "plone-developers@lists.sourceforge.net", 
+        "download_url": "", 
+        "platform": "UNKNOWN", 
+        "version": "5.0.2", 
+        "cheesecake_documentation_id": null, 
+        "_pypi_hidden": false, 
+        "description": "About Plone\n===========\n\nPlone is a user friendly Content Management System running on top of Python,\nZope and the CMF.  \n\nIt benefits from all features of Zope/CMF such as: RDBMS integration,\nPython extensions, Object Oriented Database, Web configurable workflow,\npluggable membership and authentication, Undos, Form validation, amongst many\nmany other features. Available protocols: FTP, XMLRPC, HTTP and WEBDAV\nTurn it into a distributed application system by installing ZEO.\n\nPlone shares some of the qualities of Livelink, Interwoven and Documentum. It\naims to be *the* open source out-of-the-box publishing system.\n\nWhat is Plone?\n--------------\n\nPlone is a ready-to-run content management system that is built on the powerful\nand free Zope application server. Plone is easy to set up, extremely flexible,\nand provides you with a system for managing web content that is ideal for\nproject groups, communities, web sites, extranets and intranets.\n\n- *Plone is easy to install.* You can install Plone with a a click and run\n  installer, and have a content management system running on your computer in\n  just a few minutes.\n\n- *Plone is easy to use.* The Plone Team includes usability experts who have\n  made Plone easy and attractive for content managers to add, update, and\n  maintain content.\n\n- *Plone is international.* The Plone interface has more than 35 translations,\n  and tools exist for managing multilingual content.\n\n- *Plone is standard.* Plone carefully follows standards for usability and\n  accessibility. Plone pages are compliant with US Section 508, and the W3C's\n  AAA rating for accessibility.\n\n- *Plone is Open Source.* Plone is licensed under the GNU General Public\n  License, the same license used by Linux. This gives you the right to use\n  Plone without a license fee, and to improve upon the product.\n\n- *Plone is supported.* There are over three hundred developers in the Plone\n  Development Team around the world, and a multitude of companies that\n  specialize in Plone development and support.\n\n- *Plone is extensible.* There is a multitude of add-on products for Plone to\n  add new features and content types. In addition, Plone can be scripted using\n  web standard solutions and Open Source languages.\n\n- *Plone is technology neutral.* Plone can interoperate with most relational\n  database systems, open source and commercial, and runs on a vast array of\n  platforms, including Linux, Windows, Mac OS X, Solaris and BSD.\n\nTechnical overview\n------------------\n\nPlone is a content management framework that works hand-in-hand and sits on top\nof Zope, a widely-used Open Source web application server and development\nsystem. To use Plone, you don't need to learn anything about Zope; to develop\nnew Plone content types, a small amount of Zope knowledge is helpful, and it is\ncovered in the `documentation`_.\n\nZope itself is written in Python, an easy-to-learn, widely-used and supported\nOpen Source programming language. Python can be used to add new features to\nPlone, and used to understand or make changes to the way that Zope and Plone\nwork.\n\nBy default, Plone stores its contents in Zope's built in transactional object\ndatabase, the ZODB. There are products and techniques, however, to share\ninformation with other sources, such as relational databases, LDAP, filesystem\nfiles, etc.\n\nPlone runs on Windows, Linux, BSD, Mac OS X, and many other platforms;\ndouble-click installers are available for Windows and Mac OS X, and RPM\npackages are available for Linux. For full information, see the\n`plone.org product page`_.\n\n.. _documentation: http://plone.org/documentation\n.. _plone.org product page: http://plone.org/products/plone\n\n\nChangelog\n=========\n\n5.0.2 (2016-01-08)\n------------------\n\nNew:\n\n- Release Plone 5.0.2\n  [esteele]\n\n\n5.0.1 (2015-12-17)\n------------------\n\n- Release Plone 5.0.1\n  [esteele]\n\n\n5.0 (2015-09-27)\n----------------\n\n- Release Plone 5.0\n  [esteele]\n\n\n5.0rc3 (2015-09-21)\n-------------------\n\n- Release Plone 5.0rc3\n  [esteele]\n\n\n5.0rc2 (2015-09-11)\n-------------------\n\n- Release Plone 5.0rc2\n  [esteele]\n\n\n5.0rc1 (2015-09-08)\n-------------------\n\n- Release Plone 5.0rc1\n  [esteele]\n\n\n5.0b4 (2015-08-23)\n------------------\n\n- Release Plone 5.0b4\n  [esteele]\n\n\n5.0b3 (2015-07-20)\n------------------\n\n- Release Plone 5.0b3\n  [esteele]\n\n5.0b2 (2015-05-27)\n------------------\n\n- Release Plone 5.0b2\n  [esteele]\n\n\n5.0b1 (2015-03-26)\n------------------\n\n- Release Plone 5.0b1\n  [esteele]\n\n\n5.0a3 (2014-11-01)\n------------------\n\n- Release Plone 5.0a3\n  [esteele]\n\n\n5.0a2 (2014-04-20)\n------------------\n\n- Move plone.app.theming dependency into Products.CMFPlone.\n  [esteele]\n\n\n4.3.4 (2014-10-22)\n------------------\n  - Release Plone 4.3.4 [esteele]\n\n\n4.3.3 (2014-02-19)\n------------------\n\n  - Release Plone 4.3.3 [esteele]\n\n4.3.2 (2013-08-14)\n------------------\n\n  - Release Plone 4.3.2 [esteele]\n\n\n4.3.1 (2013-05-30)\n------------------\n\n- Release Plone 4.3.1\n  [esteele]\n\n\n4.3 (2013-04-06)\n----------------\n\n- Release Plone 4.3\n  [esteele]\n\n\n4.3b2 (2013-01-17)\n------------------\n\n- Release Plone 4.3b2\n  [esteele]\n\n\n4.3b1 (2013-01-01)\n------------------\n\n- Release Plone 4.3b1\n  [esteele]\n\n\n4.3a2 (2012-10-18)\n------------------\n\n- Release Plone 4.3a2\n  [esteele]\n\n\n4.3a1 (2012-08-31)\n------------------\n\n- Release Plone 4.3a1\n  [esteele]\n\n\n4.2.1 (2012-08-11)\n------------------\n\n- Release Plone 4.2.1\n  [esteele]\n\n\n4.2 (2012-06-29)\n----------------\n\n- Release Plone 4.2\n  [esteele]\n\n\n4.2rc2 (2012-05-31)\n-------------------\n\n- Release Plone 4.2rc2\n  [esteele]\n\n- Add explicit dependencies on some `zope.app` libraries, to ensure they\n  stay included during the 4.2 series.\n  [hannosch]\n\n\n\n4.2rc1 (2012-05-07)\n-------------------\n\n- Release Plone 4.2rc1\n  [esteele]\n\n\n4.2b2 (2012-02-09)\n------------------\n\n- Release Plone 4.2b2\n  [esteele]\n\n\n4.2b1 (2011-12-05)\n------------------\n\n- Release Plone 4.2b1\n  [esteele]\n\n4.2a2 - 2011-08-25\n------------------\n\n- Release Plone 4.2a2\n  [esteele]\n\n4.2a1 - 2011-08-08\n------------------\n\n- Release Plone 4.2a1\n  [esteele]\n\n4.1 - 2011-07-12\n----------------\n\n- Release Plone 4.1 final\n  [esteele]\n\n4.1rc3 - 2011-06-02\n-------------------\n\n- Release Plone 4.1rc3\n  [esteele]\n\n4.1rc2 - 2011-05-21\n-------------------\n\n- Release Plone 4.1rc2\n  [esteele]\n\n\n4.1rc1 - 2011-05-20\n-------------------\n\n- Release Plone 4.1rc1\n  [esteele]\n\n4.1b2 - 2011-04-06\n------------------\n\n- Release Plone 4.1b2\n  [esteele]\n\n- Depend on wicked now that Products.CMFPlone doesn't.\n  [davisagli]\n\n4.1b1 - 2011-03-04\n------------------\n\n- Release Plone 4.1b1\n  [esteele]\n\n4.1a3 - 2011-02-14\n------------------\n\n- Release Plone 4.1a3\n  [esteele]\n\n4.1a2 - 2011-02-10\n------------------\n\n- Include plone.app.caching as an optional, shipped add-on.\n  [esteele]\n\n4.1a1 - 2011-01-18\n------------------\n\n- Separate `Products.CMFPlone` from the `Plone` egg.\n  [elro]", 
+        "release_url": "http://pypi.python.org/pypi/Plone/5.0.2", 
+        "downloads": {
+            "last_month": 8663, 
+            "last_week": 2010, 
+            "last_day": 0
+        }, 
+        "_pypi_ordering": 94, 
+        "classifiers": [
+            "Environment :: Web Environment", 
+            "Framework :: Plone", 
+            "Framework :: Zope2", 
+            "License :: OSI Approved :: GNU General Public License (GPL)", 
+            "Operating System :: OS Independent", 
+            "Programming Language :: Python", 
+            "Topic :: Internet :: WWW/HTTP :: Dynamic Content"
+        ], 
+        "bugtrack_url": null, 
+        "name": "Plone", 
+        "license": "GPL version 2", 
+        "summary": "The Plone Content Management System", 
+        "home_page": "http://plone.org/", 
+        "cheesecake_installability_id": null
+    }, 
+    "releases": {
+        "4.0b5": [
+            {
+                "has_sig": false, 
+                "upload_time": "2010-07-08T22:18:26", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.0b5.tar.gz", 
+                "md5_digest": "fecd5a898c21cd697dd7fac7c88d3348", 
+                "downloads": 5732, 
+                "filename": "Plone-4.0b5.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.0b5.tar.gz", 
+                "size": 1065685
+            }
+        ], 
+        "4.0b4": [
+            {
+                "has_sig": false, 
+                "upload_time": "2010-06-13T05:52:22", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.0b4.zip", 
+                "md5_digest": "2e9f3a3c43c4674f17185eb719cfc162", 
+                "downloads": 5207, 
+                "filename": "Plone-4.0b4.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.0b4.zip", 
+                "size": 1506692
+            }
+        ], 
+        "4.0b1": [
+            {
+                "has_sig": false, 
+                "upload_time": "2010-03-09T03:11:47", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.0b1.zip", 
+                "md5_digest": "a01b1b37dceac2c5eac4f16a51103c15", 
+                "downloads": 4872, 
+                "filename": "Plone-4.0b1.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.0b1.zip", 
+                "size": 1490775
+            }
+        ], 
+        "4.0b3": [
+            {
+                "has_sig": false, 
+                "upload_time": "2010-05-04T20:08:06", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.0b3.zip", 
+                "md5_digest": "e106f1937b75f207f58e8343d4ba51ef", 
+                "downloads": 6031, 
+                "filename": "Plone-4.0b3.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.0b3.zip", 
+                "size": 1505465
+            }
+        ], 
+        "4.0b2": [
+            {
+                "has_sig": false, 
+                "upload_time": "2010-04-10T03:04:04", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.0b2.zip", 
+                "md5_digest": "dc345d5eba4cdf4b62a1d8b62249db1e", 
+                "downloads": 4682, 
+                "filename": "Plone-4.0b2.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.0b2.zip", 
+                "size": 1496737
+            }
+        ], 
+        "3.3rc2": [
+            {
+                "has_sig": false, 
+                "upload_time": "2009-04-05T23:16:34", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-3.3rc2.zip", 
+                "md5_digest": "fb86224dae9931e90204eb1c0f6c403c", 
+                "downloads": 5371, 
+                "filename": "Plone-3.3rc2.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-3.3rc2.zip", 
+                "size": 1606682
+            }
+        ], 
+        "4.3b2": [
+            {
+                "has_sig": false, 
+                "upload_time": "2013-01-18T04:11:46", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.3b2.zip", 
+                "md5_digest": "caa5dbfdb8e2b5b44adc8edc49f962ff", 
+                "downloads": 3393, 
+                "filename": "Plone-4.3b2.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.3b2.zip", 
+                "size": 21453
+            }
+        ], 
+        "4.3b1": [
+            {
+                "has_sig": false, 
+                "upload_time": "2013-01-02T03:02:48", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.3b1.zip", 
+                "md5_digest": "b7d1a11d117ee40b1bf0f25df1e51497", 
+                "downloads": 2999, 
+                "filename": "Plone-4.3b1.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.3b1.zip", 
+                "size": 21415
+            }
+        ], 
+        "5.0b1": [
+            {
+                "has_sig": false, 
+                "upload_time": "2015-03-27T02:11:48", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-5.0b1.zip", 
+                "md5_digest": "15064dea7ca453268b44a8a80901dcd5", 
+                "downloads": 2240, 
+                "filename": "Plone-5.0b1.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-5.0b1.zip", 
+                "size": 21902
+            }
+        ], 
+        "5.0b2": [
+            {
+                "has_sig": false, 
+                "upload_time": "2015-05-14T03:12:09", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-5.0b2.zip", 
+                "md5_digest": "60980fdfd980d3415d1fe23db040cdf6", 
+                "downloads": 2533, 
+                "filename": "Plone-5.0b2.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-5.0b2.zip", 
+                "size": 21942
+            }
+        ], 
+        "5.0b3": [
+            {
+                "has_sig": false, 
+                "upload_time": "2015-07-20T19:20:50", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-5.0b3.tar.gz", 
+                "md5_digest": "5ccc686516c46bc5ffecfae7b12f254f", 
+                "downloads": 2191, 
+                "filename": "Plone-5.0b3.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-5.0b3.tar.gz", 
+                "size": 14737
+            }
+        ], 
+        "4.2b2": [
+            {
+                "has_sig": false, 
+                "upload_time": "2012-02-09T22:54:16", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.2b2.tar.gz", 
+                "md5_digest": "d3d603d7f2a569491607c114a1dbce69", 
+                "downloads": 7356, 
+                "filename": "Plone-4.2b2.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.2b2.tar.gz", 
+                "size": 13723
+            }
+        ], 
+        "4.2b1": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-12-06T04:11:49", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.2b1.tar.gz", 
+                "md5_digest": "f980e691329e2a8411befb793bcb9eaf", 
+                "downloads": 4561, 
+                "filename": "Plone-4.2b1.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.2b1.tar.gz", 
+                "size": 13628
+            }
+        ], 
+        "4.0.1": [
+            {
+                "has_sig": false, 
+                "upload_time": "2010-10-04T02:30:01", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.0.1.zip", 
+                "md5_digest": "be72596d49295b7207f0a861ee3530ed", 
+                "downloads": 8097, 
+                "filename": "Plone-4.0.1.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.0.1.zip", 
+                "size": 1507065
+            }
+        ], 
+        "4.0.3": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-01-21T02:21:18", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.0.3.zip", 
+                "md5_digest": "4aeb7505ad1bcc1bb370eeaed2ee7fb1", 
+                "downloads": 7143, 
+                "filename": "Plone-4.0.3.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.0.3.zip", 
+                "size": 1511544
+            }
+        ], 
+        "4.0.2": [
+            {
+                "has_sig": false, 
+                "upload_time": "2010-11-22T14:29:39", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.0.2.zip", 
+                "md5_digest": "4acafe98e7dc9205bc5fcc144bc1a80e", 
+                "downloads": 7771, 
+                "filename": "Plone-4.0.2.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.0.2.zip", 
+                "size": 1507072
+            }
+        ], 
+        "4.0.5": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-04-09T23:55:45", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.0.5.zip", 
+                "md5_digest": "1f2c9d1368a770bb68cdeadc1585d693", 
+                "downloads": 7110, 
+                "filename": "Plone-4.0.5.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.0.5.zip", 
+                "size": 1513752
+            }
+        ], 
+        "4.0.4": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-03-01T20:36:25", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.0.4.zip", 
+                "md5_digest": "0334babaac64ca9ae5391749c9c0eb06", 
+                "downloads": 6555, 
+                "filename": "Plone-4.0.4.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.0.4.zip", 
+                "size": 1512937
+            }
+        ], 
+        "4.0.7": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-06-06T15:13:23", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.0.7.zip", 
+                "md5_digest": "97660ccacfe7260233874a56d5046a18", 
+                "downloads": 6087, 
+                "filename": "Plone-4.0.7.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.0.7.zip", 
+                "size": 1516172
+            }
+        ], 
+        "4.0.6": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-05-22T15:11:12", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.0.6.zip", 
+                "md5_digest": "77bc5218873e5209f7d35de68e6adf64", 
+                "downloads": 5031, 
+                "filename": "Plone-4.0.6.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.0.6.zip", 
+                "size": 1515179
+            }
+        ], 
+        "4.0.9": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-07-29T02:57:18", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.0.9.zip", 
+                "md5_digest": "344c8a2a270dbca5115db9a96e794658", 
+                "downloads": 5600, 
+                "filename": "Plone-4.0.9.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.0.9.zip", 
+                "size": 1516636
+            }
+        ], 
+        "4.0.8": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-07-17T22:27:40", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.0.8.zip", 
+                "md5_digest": "a7771d3b97fb22d303c981d3333f3931", 
+                "downloads": 4116, 
+                "filename": "Plone-4.0.8.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.0.8.zip", 
+                "size": 1516579
+            }
+        ], 
+        "5.0.1": [
+            {
+                "has_sig": false, 
+                "upload_time": "2015-12-18T02:30:30", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-5.0.1.tar.gz", 
+                "md5_digest": "f50db3a18677e2f774abbcbf5e456093", 
+                "downloads": 488, 
+                "filename": "Plone-5.0.1.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-5.0.1.tar.gz", 
+                "size": 15130
+            }
+        ], 
+        "4.3a2": [
+            {
+                "has_sig": false, 
+                "upload_time": "2012-10-18T21:33:22", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.3a2.zip", 
+                "md5_digest": "4b78b794f3fc69a1d7e745763156b72e", 
+                "downloads": 3663, 
+                "filename": "Plone-4.3a2.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.3a2.zip", 
+                "size": 21369
+            }
+        ], 
+        "4.3a1": [
+            {
+                "has_sig": false, 
+                "upload_time": "2012-09-01T01:34:55", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.3a1.zip", 
+                "md5_digest": "110ea0738e6f7fd434463647a9208441", 
+                "downloads": 3500, 
+                "filename": "Plone-4.3a1.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.3a1.zip", 
+                "size": 21338
+            }
+        ], 
+        "5.0b4": [
+            {
+                "has_sig": false, 
+                "upload_time": "2015-08-24T01:03:28", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-5.0b4.tar.gz", 
+                "md5_digest": "dbf416cfd7883c3235e7c855e45cc5d7", 
+                "downloads": 831, 
+                "filename": "Plone-5.0b4.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-5.0b4.tar.gz", 
+                "size": 14895
+            }
+        ], 
+        "5.0.2": [
+            {
+                "has_sig": false, 
+                "upload_time": "2016-01-09T00:28:12", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-5.0.2.tar.gz", 
+                "md5_digest": "1df9e7ad3b2594622a95dcb928097f5f", 
+                "downloads": 1063, 
+                "filename": "Plone-5.0.2.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-5.0.2.tar.gz", 
+                "size": 15164
+            }
+        ], 
+        "4.3.6": [
+            {
+                "has_sig": false, 
+                "upload_time": "2015-06-03T02:47:07", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.3.6.zip", 
+                "md5_digest": "c370c0c8eace1081ec5b057b2c4149b7", 
+                "downloads": 7050, 
+                "filename": "Plone-4.3.6.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.3.6.zip", 
+                "size": 21707
+            }
+        ], 
+        "4.1b1": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-03-08T03:09:52", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.1b1.zip", 
+                "md5_digest": "367a382d61d9226a88a02bc8650d9f42", 
+                "downloads": 4469, 
+                "filename": "Plone-4.1b1.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.1b1.zip", 
+                "size": 20092
+            }
+        ], 
+        "4.1b2": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-04-09T23:55:27", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.1b2.zip", 
+                "md5_digest": "632994f16f8722085510316dac55e7fd", 
+                "downloads": 4556, 
+                "filename": "Plone-4.1b2.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.1b2.zip", 
+                "size": 20258
+            }
+        ], 
+        "4.3.5": [
+            {
+                "has_sig": false, 
+                "upload_time": "2015-05-14T03:53:03", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.3.5.tar.gz", 
+                "md5_digest": "86443ea943130231a172294c87b1c154", 
+                "downloads": 1881, 
+                "filename": "Plone-4.3.5.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.3.5.tar.gz", 
+                "size": 14555
+            }
+        ], 
+        "4.3.2": [
+            {
+                "has_sig": false, 
+                "upload_time": "2013-08-13T23:10:31", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.3.2.zip", 
+                "md5_digest": "809f9fe8b8d23b49778e8ce304ea34f6", 
+                "downloads": 14839, 
+                "filename": "Plone-4.3.2.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.3.2.zip", 
+                "size": 21558
+            }
+        ], 
+        "4.3.3": [
+            {
+                "has_sig": false, 
+                "upload_time": "2014-02-20T02:40:22", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.3.3.zip", 
+                "md5_digest": "ce8ab3b3033e05b9544a8127dc67e09a", 
+                "downloads": 12259, 
+                "filename": "Plone-4.3.3.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.3.3.zip", 
+                "size": 21589
+            }
+        ], 
+        "4.3.1": [
+            {
+                "has_sig": false, 
+                "upload_time": "2013-05-31T02:53:09", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.3.1.zip", 
+                "md5_digest": "faefd5d2044a9f7660fd18388fd71a4e", 
+                "downloads": 6365, 
+                "filename": "Plone-4.3.1.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.3.1.zip", 
+                "size": 21524
+            }
+        ], 
+        "3.2": [
+            {
+                "has_sig": false, 
+                "upload_time": "2008-12-31T15:39:56", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-3.2.zip", 
+                "md5_digest": "7a29564470edc0e3ee6cf160432bde81", 
+                "downloads": 5289, 
+                "filename": "Plone-3.2.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-3.2.zip", 
+                "size": 1580824
+            }
+        ], 
+        "3.3": [
+            {
+                "has_sig": false, 
+                "upload_time": "2009-08-19T00:11:52", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-3.3.zip", 
+                "md5_digest": "5f42f19b850da89d9c6f07ac8a31d10d", 
+                "downloads": 8379, 
+                "filename": "Plone-3.3.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-3.3.zip", 
+                "size": 1605979
+            }
+        ], 
+        "3.2a1": [
+            {
+                "has_sig": false, 
+                "upload_time": "2008-10-10T22:21:42", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-3.2a1.zip", 
+                "md5_digest": "5c42beb26e0352d0b3276d13dd9ad550", 
+                "downloads": 4531, 
+                "filename": "Plone-3.2a1.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-3.2a1.zip", 
+                "size": 1578670
+            }
+        ], 
+        "4.1.4": [
+            {
+                "has_sig": false, 
+                "upload_time": "2012-02-08T12:50:04", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.1.4.tar.gz", 
+                "md5_digest": "22bb129b6a1099250c306e770f6e7a4a", 
+                "downloads": 7473, 
+                "filename": "Plone-4.1.4.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.1.4.tar.gz", 
+                "size": 13724
+            }
+        ], 
+        "4.1.5": [
+            {
+                "has_sig": false, 
+                "upload_time": "2012-04-19T02:53:04", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.1.5.zip", 
+                "md5_digest": "295a836aae5d0a5c1adbd43d0d1ebe10", 
+                "downloads": 6691, 
+                "filename": "Plone-4.1.5.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.1.5.zip", 
+                "size": 20801
+            }
+        ], 
+        "4.1.6": [
+            {
+                "has_sig": false, 
+                "upload_time": "2012-06-27T17:56:20", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.1.6.zip", 
+                "md5_digest": "a7585cd8f8608ec251829f1e9c03f1ff", 
+                "downloads": 8663, 
+                "filename": "Plone-4.1.6.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.1.6.zip", 
+                "size": 20843
+            }
+        ], 
+        "4.1.1": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-09-21T19:52:43", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.1.1.tar.gz", 
+                "md5_digest": "cbdc961c9b014295f07fab4569e8eed8", 
+                "downloads": 4007, 
+                "filename": "Plone-4.1.1.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.1.1.tar.gz", 
+                "size": 13574
+            }
+        ], 
+        "4.1.2": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-10-08T02:59:30", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.1.2.tar.gz", 
+                "md5_digest": "bf3c645ccb3ac0bf12845586f85c4190", 
+                "downloads": 7555, 
+                "filename": "Plone-4.1.2.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.1.2.tar.gz", 
+                "size": 13586
+            }
+        ], 
+        "4.1.3": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-11-29T03:37:59", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.1.3.tar.gz", 
+                "md5_digest": "bb7e4cc2bc1bd98834de987e2ecd2ee7", 
+                "downloads": 7959, 
+                "filename": "Plone-4.1.3.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.1.3.tar.gz", 
+                "size": 13641
+            }
+        ], 
+        "3.3rc5": [
+            {
+                "has_sig": false, 
+                "upload_time": "2009-08-01T21:19:23", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-3.3rc5.zip", 
+                "md5_digest": "852bd8992b40a11d9c9c33bc57903a55", 
+                "downloads": 4768, 
+                "filename": "Plone-3.3rc5.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-3.3rc5.zip", 
+                "size": 1613458
+            }
+        ], 
+        "3.3rc4": [
+            {
+                "has_sig": false, 
+                "upload_time": "2009-07-07T11:55:10", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-3.3rc4.zip", 
+                "md5_digest": "108fdf5f2519600ff567ab71105c286e", 
+                "downloads": 5705, 
+                "filename": "Plone-3.3rc4.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-3.3rc4.zip", 
+                "size": 1616622
+            }
+        ], 
+        "3.3rc3": [
+            {
+                "has_sig": false, 
+                "upload_time": "2009-05-23T00:08:43", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-3.3rc3.zip", 
+                "md5_digest": "06a184a9bf7804ab08a8b4a8e194855b", 
+                "downloads": 5569, 
+                "filename": "Plone-3.3rc3.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-3.3rc3.zip", 
+                "size": 1608952
+            }
+        ], 
+        "4.3.4": [
+            {
+                "has_sig": false, 
+                "upload_time": "2014-10-23T02:27:49", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.3.4.zip", 
+                "md5_digest": "221d55ab91b6362115971341d36a5ca8", 
+                "downloads": 7435, 
+                "filename": "Plone-4.3.4.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.3.4.zip", 
+                "size": 21626
+            }
+        ], 
+        "3.3rc1": [
+            {
+                "has_sig": false, 
+                "upload_time": "2009-03-30T23:56:26", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-3.3rc1.zip", 
+                "md5_digest": "c038871825cc977f26f8d9451a2c8156", 
+                "downloads": 4287, 
+                "filename": "Plone-3.3rc1.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-3.3rc1.zip", 
+                "size": 1605376
+            }
+        ], 
+        "4.0a4": [
+            {
+                "has_sig": false, 
+                "upload_time": "2010-02-01T18:55:39", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.0a4.zip", 
+                "md5_digest": "d99ab7143a4ba5bd4d19e84a2618bd36", 
+                "downloads": 4647, 
+                "filename": "Plone-4.0a4.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.0a4.zip", 
+                "size": 1477915
+            }
+        ], 
+        "4.0a5": [
+            {
+                "has_sig": false, 
+                "upload_time": "2010-02-19T15:37:23", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.0a5.zip", 
+                "md5_digest": "ca96099beeb25ed6a0999c3040f599be", 
+                "downloads": 4400, 
+                "filename": "Plone-4.0a5.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.0a5.zip", 
+                "size": 1485630
+            }
+        ], 
+        "4.0a1": [
+            {
+                "has_sig": false, 
+                "upload_time": "2009-11-19T19:45:05", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.0a1.zip", 
+                "md5_digest": "009214d2932c662ff1a494d385ce312c", 
+                "downloads": 4470, 
+                "filename": "Plone-4.0a1.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.0a1.zip", 
+                "size": 1460261
+            }
+        ], 
+        "4.0a2": [
+            {
+                "has_sig": false, 
+                "upload_time": "2009-12-04T06:05:49", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.0a2.zip", 
+                "md5_digest": "5efae0e58b181a19881bb79af8a666cb", 
+                "downloads": 4453, 
+                "filename": "Plone-4.0a2.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.0a2.zip", 
+                "size": 1463136
+            }
+        ], 
+        "4.0a3": [
+            {
+                "has_sig": false, 
+                "upload_time": "2009-12-21T19:57:26", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.0a3.zip", 
+                "md5_digest": "28691b69dfd40516ebbc2db53df9e969", 
+                "downloads": 4914, 
+                "filename": "Plone-4.0a3.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.0a3.zip", 
+                "size": 1465261
+            }
+        ], 
+        "4.1rc2": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-05-22T15:05:00", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.1rc2.zip", 
+                "md5_digest": "37b7d474412490f0ef254f182a483812", 
+                "downloads": 4429, 
+                "filename": "Plone-4.1rc2.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.1rc2.zip", 
+                "size": 20379
+            }
+        ], 
+        "4.1rc3": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-06-06T15:13:08", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.1rc3.zip", 
+                "md5_digest": "5c4e84fd456af936ae66164fd0411286", 
+                "downloads": 4900, 
+                "filename": "Plone-4.1rc3.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.1rc3.zip", 
+                "size": 20409
+            }
+        ], 
+        "4.2rc1": [
+            {
+                "has_sig": false, 
+                "upload_time": "2012-05-08T04:13:08", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.2rc1.zip", 
+                "md5_digest": "33b01c7ce523068d171cd92ec86555d3", 
+                "downloads": 3955, 
+                "filename": "Plone-4.2rc1.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.2rc1.zip", 
+                "size": 20843
+            }
+        ], 
+        "4.2rc2": [
+            {
+                "has_sig": false, 
+                "upload_time": "2012-05-31T15:54:32", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.2rc2.zip", 
+                "md5_digest": "4bbc40147e54b1d14a69b0bca3da6e11", 
+                "downloads": 4016, 
+                "filename": "Plone-4.2rc2.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.2rc2.zip", 
+                "size": 21283
+            }
+        ], 
+        "3.2rc1": [
+            {
+                "has_sig": false, 
+                "upload_time": "2008-12-15T14:49:16", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-3.2rc1.zip", 
+                "md5_digest": "81d8058c5303d0f19ae63b8a5233f857", 
+                "downloads": 4290, 
+                "filename": "Plone-3.2rc1.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-3.2rc1.zip", 
+                "size": 1586262
+            }
+        ], 
+        "5.0rc1": [
+            {
+                "has_sig": false, 
+                "upload_time": "2015-09-08T19:12:43", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-5.0rc1.tar.gz", 
+                "md5_digest": "da7ca870a9141c0e914d4060cb67f5e1", 
+                "downloads": 802, 
+                "filename": "Plone-5.0rc1.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-5.0rc1.tar.gz", 
+                "size": 14933
+            }
+        ], 
+        "5.0rc2": [
+            {
+                "has_sig": false, 
+                "upload_time": "2015-09-12T01:39:20", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-5.0rc2.tar.gz", 
+                "md5_digest": "00fbb58d60c8b81702e0f5d25d246e6d", 
+                "downloads": 1091, 
+                "filename": "Plone-5.0rc2.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-5.0rc2.tar.gz", 
+                "size": 14949
+            }
+        ], 
+        "5.0rc3": [
+            {
+                "has_sig": false, 
+                "upload_time": "2015-09-21T23:20:51", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-5.0rc3.tar.gz", 
+                "md5_digest": "2c13200c083764c03e253cddc8339d01", 
+                "downloads": 780, 
+                "filename": "Plone-5.0rc3.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-5.0rc3.tar.gz", 
+                "size": 14900
+            }
+        ], 
+        "4.1a1": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-01-21T02:21:41", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.1a1.zip", 
+                "md5_digest": "41f5ffb0ae00d717783f527bfbe09775", 
+                "downloads": 4258, 
+                "filename": "Plone-4.1a1.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.1a1.zip", 
+                "size": 19834
+            }
+        ], 
+        "4.1a3": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-02-15T17:57:46", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.1a3.zip", 
+                "md5_digest": "2b00e03c4a2b2b9028b65e9e7fc6d465", 
+                "downloads": 4193, 
+                "filename": "Plone-4.1a3.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.1a3.zip", 
+                "size": 20052
+            }
+        ], 
+        "4.1a2": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-02-11T15:42:05", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.1a2.zip", 
+                "md5_digest": "c955d35aa45a34f8afae4983686a6940", 
+                "downloads": 3966, 
+                "filename": "Plone-4.1a2.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.1a2.zip", 
+                "size": 20002
+            }
+        ], 
+        "3.3b1": [
+            {
+                "has_sig": false, 
+                "upload_time": "2009-03-12T23:00:33", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-3.3b1.zip", 
+                "md5_digest": "97484f52b591f476650f62c76f8af141", 
+                "downloads": 4466, 
+                "filename": "Plone-3.3b1.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-3.3b1.zip", 
+                "size": 1597860
+            }
+        ], 
+        "5.0a1": [
+            {
+                "has_sig": false, 
+                "upload_time": "2014-03-03T03:39:49", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-5.0a1.zip", 
+                "md5_digest": "fdb119856b933232db39e577ba2cf074", 
+                "downloads": 2165, 
+                "filename": "Plone-5.0a1.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-5.0a1.zip", 
+                "size": 21768
+            }
+        ], 
+        "5.0a3": [
+            {
+                "has_sig": false, 
+                "upload_time": "2014-11-01T11:07:32", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-5.0a3.zip", 
+                "md5_digest": "1f2ddfbd6952c7f2f7666712211ca263", 
+                "downloads": 2749, 
+                "filename": "Plone-5.0a3.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-5.0a3.zip", 
+                "size": 21855
+            }
+        ], 
+        "5.0a2": [
+            {
+                "has_sig": false, 
+                "upload_time": "2014-04-20T19:28:13", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-5.0a2.zip", 
+                "md5_digest": "1a4510c6cbc354dd747ca670e3826607", 
+                "downloads": 2965, 
+                "filename": "Plone-5.0a2.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-5.0a2.zip", 
+                "size": 21740
+            }
+        ], 
+        "3.3.1": [
+            {
+                "has_sig": false, 
+                "upload_time": "2009-09-09T22:06:35", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-3.3.1.zip", 
+                "md5_digest": "a269602a6690bbbfdcb358c13a7aa236", 
+                "downloads": 7828, 
+                "filename": "Plone-3.3.1.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-3.3.1.zip", 
+                "size": 1611470
+            }
+        ], 
+        "3.3.3": [
+            {
+                "has_sig": false, 
+                "upload_time": "2009-12-08T23:26:19", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-3.3.3.zip", 
+                "md5_digest": "dad95140249fc1ebb836efb9dba084f1", 
+                "downloads": 5306, 
+                "filename": "Plone-3.3.3.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-3.3.3.zip", 
+                "size": 1626902
+            }
+        ], 
+        "3.3.2": [
+            {
+                "has_sig": false, 
+                "upload_time": "2009-11-03T23:17:07", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-3.3.2.tar.gz", 
+                "md5_digest": "5b6dbcaf97c0b3de10c2c9362ea67bde", 
+                "downloads": 6687, 
+                "filename": "Plone-3.3.2.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-3.3.2.tar.gz", 
+                "size": 1119237
+            }
+        ], 
+        "3.3.5": [
+            {
+                "has_sig": false, 
+                "upload_time": "2010-03-03T20:57:45", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-3.3.5.zip", 
+                "md5_digest": "efb54dfeebd4f2c53864ffe5fe789932", 
+                "downloads": 17939, 
+                "filename": "Plone-3.3.5.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-3.3.5.zip", 
+                "size": 1630168
+            }
+        ], 
+        "3.3.4": [
+            {
+                "has_sig": false, 
+                "upload_time": "2010-01-14T20:08:41", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-3.3.4.zip", 
+                "md5_digest": "4e53c1a24b8b371485578afd0f31590c", 
+                "downloads": 8821, 
+                "filename": "Plone-3.3.4.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-3.3.4.zip", 
+                "size": 1628376
+            }
+        ], 
+        "3.3.6": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-07-19T12:57:32", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-3.3.6.tar.gz", 
+                "md5_digest": "8e2f3cc00c13b99f599359c1e858dbb5", 
+                "downloads": 5818, 
+                "filename": "Plone-3.3.6.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-3.3.6.tar.gz", 
+                "size": 1133976
+            }
+        ], 
+        "4.3.7": [
+            {
+                "has_sig": false, 
+                "upload_time": "2015-09-28T01:37:31", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.3.7.zip", 
+                "md5_digest": "1a647203dde769d85714ebe86f0a4bf4", 
+                "downloads": 5171, 
+                "filename": "Plone-4.3.7.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.3.7.zip", 
+                "size": 21742
+            }
+        ], 
+        "4.0.10": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-10-12T20:38:20", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.0.10.zip", 
+                "md5_digest": "a3233b3b691e735ccc0c34ea4b061c2a", 
+                "downloads": 4884, 
+                "filename": "Plone-4.0.10.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.0.10.zip", 
+                "size": 1519105
+            }
+        ], 
+        "5.0": [
+            {
+                "has_sig": false, 
+                "upload_time": "2015-09-28T01:41:44", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-5.0.tar.gz", 
+                "md5_digest": "d01f4ba4e0b52df2acc82b25358731ff", 
+                "downloads": 3873, 
+                "filename": "Plone-5.0.tar.gz", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-5.0.tar.gz", 
+                "size": 15003
+            }
+        ], 
+        "4.1": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-07-17T22:26:56", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.1.zip", 
+                "md5_digest": "e4133787de8c8d026f47c8ee7ca7f867", 
+                "downloads": 10631, 
+                "filename": "Plone-4.1.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.1.zip", 
+                "size": 20354
+            }
+        ], 
+        "4.0": [
+            {
+                "has_sig": false, 
+                "upload_time": "2010-08-30T00:25:52", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.0.zip", 
+                "md5_digest": "9c29c4c7b819d0586a9ae1b68e0158be", 
+                "downloads": 7517, 
+                "filename": "Plone-4.0.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.0.zip", 
+                "size": 1499687
+            }
+        ], 
+        "4.3": [
+            {
+                "has_sig": false, 
+                "upload_time": "2013-04-06T19:48:55", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.3.zip", 
+                "md5_digest": "be27f5d87cf44338be6f209459b13b70", 
+                "downloads": 5187, 
+                "filename": "Plone-4.3.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.3.zip", 
+                "size": 21421
+            }
+        ], 
+        "4.2": [
+            {
+                "has_sig": false, 
+                "upload_time": "2012-06-29T22:40:41", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.2.zip", 
+                "md5_digest": "76aa9511b10bebfa925c96fef89e823d", 
+                "downloads": 9138, 
+                "filename": "Plone-4.2.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.2.zip", 
+                "size": 21200
+            }
+        ], 
+        "4.3rc1": [
+            {
+                "has_sig": false, 
+                "upload_time": "2013-03-06T03:55:31", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.3rc1.zip", 
+                "md5_digest": "21e4fafe5d608f44e759a1a0544aed72", 
+                "downloads": 3289, 
+                "filename": "Plone-4.3rc1.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.3rc1.zip", 
+                "size": 21545
+            }
+        ], 
+        "3.2.1": [
+            {
+                "has_sig": false, 
+                "upload_time": "2009-02-04T22:39:42", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-3.2.1.zip", 
+                "md5_digest": "937e1509e40ea3cc4876f2010ed48d03", 
+                "downloads": 6091, 
+                "filename": "Plone-3.2.1.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-3.2.1.zip", 
+                "size": 1588628
+            }
+        ], 
+        "3.2.2": [
+            {
+                "has_sig": false, 
+                "upload_time": "2009-03-03T20:42:30", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-3.2.2.zip", 
+                "md5_digest": "549e63f0f6c33e0274c24c80f2f13ba1", 
+                "downloads": 8935, 
+                "filename": "Plone-3.2.2.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-3.2.2.zip", 
+                "size": 1589295
+            }
+        ], 
+        "3.2.3": [
+            {
+                "has_sig": false, 
+                "upload_time": "2009-06-20T22:20:21", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-3.2.3.zip", 
+                "md5_digest": "b5314d29d0e050f97b4bcb5864ecad04", 
+                "downloads": 6469, 
+                "filename": "Plone-3.2.3.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-3.2.3.zip", 
+                "size": 1590436
+            }
+        ], 
+        "4.2a2": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-09-16T18:44:33", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.2a2.zip", 
+                "md5_digest": "cf4e3e6648474357ad6f05c4b97d2425", 
+                "downloads": 4473, 
+                "filename": "Plone-4.2a2.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.2a2.zip", 
+                "size": 20503
+            }
+        ], 
+        "4.2a1": [
+            {
+                "has_sig": false, 
+                "upload_time": "2011-08-10T02:05:20", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.2a1.zip", 
+                "md5_digest": "6d988316720f6c8bacab20cef7286ddb", 
+                "downloads": 4051, 
+                "filename": "Plone-4.2a1.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.2a1.zip", 
+                "size": 20458
+            }
+        ], 
+        "4.0rc1": [
+            {
+                "has_sig": false, 
+                "upload_time": "2010-08-06T15:01:45", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.0rc1.zip", 
+                "md5_digest": "839ecb2d136a764ce7270f11e2f7f28c", 
+                "downloads": 5121, 
+                "filename": "Plone-4.0rc1.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.0rc1.zip", 
+                "size": 1506831
+            }
+        ], 
+        "4.2.3": [
+            {
+                "has_sig": false, 
+                "upload_time": "2012-12-15T16:53:06", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.2.3.zip", 
+                "md5_digest": "1d38a01a88a273f6f5803c845c3e88bf", 
+                "downloads": 4200, 
+                "filename": "Plone-4.2.3.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.2.3.zip", 
+                "size": 21364
+            }
+        ], 
+        "4.2.2": [
+            {
+                "has_sig": false, 
+                "upload_time": "2012-10-15T14:28:00", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.2.2.zip", 
+                "md5_digest": "4084fd31d3f6a32e35059a6a0a36c43a", 
+                "downloads": 5775, 
+                "filename": "Plone-4.2.2.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.2.2.zip", 
+                "size": 21340
+            }
+        ], 
+        "4.2.1": [
+            {
+                "has_sig": false, 
+                "upload_time": "2012-08-11T18:28:16", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.2.1.zip", 
+                "md5_digest": "1635f18829ae8c448d20734ea8c23cf5", 
+                "downloads": 7402, 
+                "filename": "Plone-4.2.1.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.2.1.zip", 
+                "size": 21304
+            }
+        ], 
+        "4.2.7": [
+            {
+                "has_sig": false, 
+                "upload_time": "2013-12-10T13:48:04", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.2.7.zip", 
+                "md5_digest": "bbc441a3ff8a6523dc0b4640b0c64325", 
+                "downloads": 2978, 
+                "filename": "Plone-4.2.7.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.2.7.zip", 
+                "size": 21624
+            }
+        ], 
+        "4.2.6": [
+            {
+                "has_sig": false, 
+                "upload_time": "2013-08-14T20:50:27", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.2.6.zip", 
+                "md5_digest": "f01faa0c2af1ac6e83df8ead22afb9e9", 
+                "downloads": 3595, 
+                "filename": "Plone-4.2.6.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.2.6.zip", 
+                "size": 21483
+            }
+        ], 
+        "4.2.5": [
+            {
+                "has_sig": false, 
+                "upload_time": "2013-03-06T03:01:10", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.2.5.zip", 
+                "md5_digest": "1330b7966ffb86f962f4c0bfe56ba594", 
+                "downloads": 5869, 
+                "filename": "Plone-4.2.5.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.2.5.zip", 
+                "size": 21451
+            }
+        ], 
+        "4.2.4": [
+            {
+                "has_sig": false, 
+                "upload_time": "2013-01-18T02:28:39", 
+                "comment_text": "", 
+                "python_version": "source", 
+                "url": "https://pypi.python.org/packages/source/P/Plone/Plone-4.2.4.zip", 
+                "md5_digest": "688438bd541e7cb2ab650c8c59282b85", 
+                "downloads": 5924, 
+                "filename": "Plone-4.2.4.zip", 
+                "packagetype": "sdist", 
+                "path": "source/P/Plone/Plone-4.2.4.zip", 
+                "size": 21416
+            }
+        ]
+    }, 
+    "urls": [
+        {
+            "has_sig": false, 
+            "upload_time": "2016-01-09T00:28:12", 
+            "comment_text": "", 
+            "python_version": "source", 
+            "url": "https://pypi.python.org/packages/source/P/Plone/Plone-5.0.2.tar.gz", 
+            "md5_digest": "1df9e7ad3b2594622a95dcb928097f5f", 
+            "downloads": 1063, 
+            "filename": "Plone-5.0.2.tar.gz", 
+            "packagetype": "sdist", 
+            "path": "source/P/Plone/Plone-5.0.2.tar.gz", 
+            "size": 15164
+        }
+    ]
+}

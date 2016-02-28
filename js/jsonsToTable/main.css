@@ -1,0 +1,23 @@
+.json {
+    display: inline-block;
+    max-width: 77%;
+    vertical-align: top;
+    line-height: 1.61em;
+    color: #333;
+    outline: 1px dotted;
+}
+.json p {
+    padding: 0;
+    margin: 0;
+}
+.json div {
+    min-height: 6.44em;
+    border-bottom: 1px dotted;
+}
+.json.keys div div {
+    margin-left: .85em;
+}
+.json .key,
+.json .val {
+    padding: 0 .85em;
+}

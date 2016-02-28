@@ -1,0 +1,10 @@
+.key, .val {
+    display: inline-block;
+}
+.nest {
+    margin-left: 1.5em;
+}
+body {
+background: #333;
+color: #fff;
+}
