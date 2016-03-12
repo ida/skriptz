@@ -62,16 +62,25 @@ function showTable(keys, deli) {
   }
   document.getElementsByTagName('body')[0].innerHTML = html
 }
+function csvToArrays(csv, rowDeli, cellDeli) {
+  var records = []
+  var rows = csv.split(rowDeli)
+  for (var i in rows) {
+    records.push(rows[i].split(cellDeli))
+  }
+  return records
+}
 document.addEventListener("DOMContentLoaded", function(event) { 
-var deli = ','
-var keys = ['firstname', 'lastname', 'passion']
-var records = [
-  ['Ida', 'Ebkes', 'Pythons'],
-  ['Ada', 'Ebkes', 'Lions']
-]
+var rowDeli = '\n'
+var cellDeli = ','
+var csv = 'firstname, lastname, passion\n\
+Ida,Ebkes,Pythons\n\
+Ada,Ebkes,Lions'
+var records = csvToArrays(csv, rowDeli, cellDeli)
+var keys = records.shift()
 iniTable(keys)
-addRecords(keys, records, deli)
-showTable(keys, deli)
+addRecords(keys, records, cellDeli)
+showTable(keys, cellDeli)
 }); // doc.ready
 </script>
 </head>
