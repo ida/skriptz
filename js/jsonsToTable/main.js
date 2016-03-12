@@ -109,12 +109,13 @@ function json2HtmlKeyTree(json) {
 }
 function main() {
   var html = '<div class="json keys">'
-    html += json2HtmlKeyTree(json)
+    html += json2HtmlKeyTree(json2)
   html += '</div>'
+/*
   html += '<div class="json vals">'
     html += json2KeyTree(json)
   html += '</div>'
-/*
+*/
   html += '<div class="json vals">'
     html += json2KeyTree(json2)
   html += '</div>'
@@ -124,6 +125,5 @@ function main() {
   html += '<div class="json vals">'
     html += json2KeyTree(json4)
   html += '</div>'
-*/
   $('body').html(html)
 } (function ($) { $(document).ready(function() { main() }); })(jQuery);

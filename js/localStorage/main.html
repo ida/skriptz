@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>localStorage</title>
+<style>
+.cell {
+  display: inline-block;
+  margin: 0.27em;
+  padding: 0.27em;
+  outline: 1px solid;
+  min-width: 13em;
+  max-width: 13em;
+}
+.key {
+  text-align: right;
+}
+</style>
+<script type="text/javascript">
+function addRecord(keys, vals, deli) {
+  for(var i in keys) {
+    var keyVals = localStorage.getItem(keys[i])
+    keyVals += deli + vals[i]
+    localStorage.setItem(keys[i], keyVals)
+  }
+}
+function addRecords(keys, records, deli) {
+  for(var i in records) {
+    addRecord(keys, records[i], deli)
+  }
+}
+function getTable(keys) {
+  var table = []
+  for(var i in keys) {
+    table.push(localStorage.getItem(keys[i]))
+  }
+  return table
+}
+function iniTable(keys) {
+  localStorage.clear()
+  for(var i in keys) {
+    localStorage.setItem(keys[i], keys[i])
+  }
+}
+function showTable(keys, deli) {
+  var html = ''
+  var table = getTable(keys)
+  for(var i in table) {
+    var cells = table[i].split(deli)
+    html += '<div class="row">'
+    for(var j in cells) {
+      var cell = cells[j]
+      html += '<div class="cell'
+      if(j == 0) {
+        html += ' key'
+      }
+      html += '">' // .cell
+      html += cell
+      html += '</div>'
+    }
+    html += '</div>' // .row
+  }
+  document.getElementsByTagName('body')[0].innerHTML = html
+}
+document.addEventListener("DOMContentLoaded", function(event) { 
+var deli = ','
+var keys = ['firstname', 'lastname', 'passion']
+var records = [
+  ['Ida', 'Ebkes', 'Pythons'],
+  ['Ada', 'Ebkes', 'Lions']
+]
+iniTable(keys)
+addRecords(keys, records, deli)
+showTable(keys, deli)
+}); // doc.ready
+</script>
+</head>
+<body lang="en" dir="ltr">
+</body>
+</html>
