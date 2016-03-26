@@ -297,16 +297,16 @@ function addButtonsListener(keys) {
   for(var i in editCellButtons) {
     var cellText = null
     editCellButtons[i].onclick = function(eve) {
-      console.log(eve.target.childNodes[0].nodeName.toLowerCase())
       if(eve.target.tagName.toLowerCase() != 'input'
-      && eve.target.childNodes[0].nodeName.toLowerCase() != 'input') {
+      && eve.target.childNodes.length < 1
+      || eve.target.childNodes[0].nodeName.toLowerCase() != 'input') {
         cellText = eve.target.innerHTML
         eve.target.innerHTML = '<input value="' + eve.target.innerHTML  + '">'
         var editCellInput = eve.target.getElementsByTagName('input')[0]
         editCellInput.focus()
         editCellInput.onkeypress = function(eve) {
           if(eve.keyCode == 13) {
-            addEditCellInputListener(eve.target)
+            addEditCellInputListener(eve.target, cellText)
           }
         }
       }
@@ -349,14 +349,14 @@ function addButtonsListener(keys) {
     }
   }
 }
-function addEditCellInputListener(editCell) {
-  var rowNr = getRowNr(editCell.parentNode)
+function addEditCellInputListener(editCellInputEle, cellText) {
+  var rowNr = getRowNr(editCellInputEle.parentNode)
   if(rowNr == 0) { // is column-header
-    editKey(cellText, editCell.value)
+    editKey(cellText, editCellInputEle.value)
   }
   else { // is ordinary-cell
-    var colKey = getColKey(editCell)
-    var val = editCell.value
+    var colKey = getColKey(editCellInputEle)
+    var val = editCellInputEle.value
     var vals = localStorage.getItem(colKey).split(cellDeli)
     vals[rowNr] = val
     vals = vals.join(cellDeli)
