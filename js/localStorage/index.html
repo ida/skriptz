@@ -305,7 +305,9 @@ function addButtonsListener(keys) {
         var editCellInput = eve.target.getElementsByTagName('input')[0]
         editCellInput.focus()
         editCellInput.onkeypress = function(eve) {
-          addEditCellInputListener(eve.target)
+          if(eve.keyCode == 13) {
+            addEditCellInputListener(eve.target)
+          }
         }
       }
     }
@@ -348,13 +350,13 @@ function addButtonsListener(keys) {
   }
 }
 function addEditCellInputListener(editCell) {
-  var rowNr = getRowNr(eve.target.parentNode)
+  var rowNr = getRowNr(editCell.parentNode)
   if(rowNr == 0) { // is column-header
-    editKey(cellText, eve.target.value)
+    editKey(cellText, editCell.value)
   }
   else { // is ordinary-cell
-    var colKey = getColKey(eve.target)
-    var val = eve.target.value
+    var colKey = getColKey(editCell)
+    var val = editCell.value
     var vals = localStorage.getItem(colKey).split(cellDeli)
     vals[rowNr] = val
     vals = vals.join(cellDeli)
