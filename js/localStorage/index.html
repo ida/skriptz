@@ -4,84 +4,392 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <title>localStorage</title>
 <style>
-.cell {
-  display: inline-block;
-  margin: 0.27em;
-  padding: 0.27em;
-  outline: 1px solid;
-  min-width: 13em;
-  max-width: 13em;
+input {
+  border: 1px solid #a2a2a2;
+  height: 100%;
+  font-size: 1em;
 }
-.key {
-  text-align: right;
+div {
+  line-height: 1.61em;
+  min-height: 1.61em;
+  vertical-align: top;
+  display: inline-block;
+  border-right: 1px solid;
+  border-bottom: 1px solid;
+  border-color: #a2a2a2;
+}
+input:focus,
+div:focus {
+  background: lightyellow !important;
+}
+div > div {
+  border-right: none;
+  border-bottom: none;
+}
+div > div > div {
+  display: block;
+  height: 1.61em;
+  padding: 0.4em 0.5em;
+  border-left: 1px solid;
+  border-top: 1px solid;
+  border-color: #a2a2a2;
+}
+/* Column-headers (keys): */
+div > div > div:nth-child(2),
+/* First-column-cells (row-nrs): */
+div > div:first-child > div,
+/* Last-column-cells (delete-buttons): */
+div > div:last-child > div,
+/* First row (add new-row-cells): */
+div > div > div:first-child {
+  background: #e2e2e2;
+}
+div > div:first-child > div:nth-child(2) {
+  font-weight: normal;
 }
 </style>
 <script type="text/javascript">
-function addRecord(keys, vals, deli) {
-  for(var i in keys) {
-    var keyVals = localStorage.getItem(keys[i])
-    keyVals += deli + vals[i]
-    localStorage.setItem(keys[i], keyVals)
-  }
-}
-function addRecords(keys, records, deli) {
-  for(var i in records) {
-    addRecord(keys, records[i], deli)
-  }
-}
-function getTable(keys) {
-  var table = []
-  for(var i in keys) {
-    table.push(localStorage.getItem(keys[i]))
-  }
-  return table
-}
-function iniTable(keys) {
-  localStorage.clear()
-  for(var i in keys) {
-    localStorage.setItem(keys[i], keys[i])
-  }
-}
-function showTable(keys, deli) {
-  var html = ''
-  var table = getTable(keys)
-  for(var i in table) {
-    var cells = table[i].split(deli)
-    html += '<div class="row">'
-    for(var j in cells) {
-      var cell = cells[j]
-      html += '<div class="cell'
-      if(j == 0) {
-        html += ' key'
-      }
-      html += '">' // .cell
-      html += cell
-      html += '</div>'
-    }
-    html += '</div>' // .row
-  }
-  document.getElementsByTagName('body')[0].innerHTML = html
-}
-function csvToArrays(csv, rowDeli, cellDeli) {
-  var records = []
-  var rows = csv.split(rowDeli)
-  for (var i in rows) {
-    records.push(rows[i].split(cellDeli))
-  }
-  return records
-}
-document.addEventListener("DOMContentLoaded", function(event) { 
-var rowDeli = '\n'
+//
+// GLOBAL-VARS
+//
 var cellDeli = ','
-var csv = 'firstname, lastname, passion\n\
-Ida,Ebkes,Pythons\n\
-Ada,Ebkes,Lions'
-var records = csvToArrays(csv, rowDeli, cellDeli)
-var keys = records.shift()
-iniTable(keys)
-addRecords(keys, records, cellDeli)
-showTable(keys, cellDeli)
-}); // doc.ready
+var columnDeli = '\n'
+//
+// COMMONS
+//
+function getNextSibling(ele) {
+  var next_ele=ele.nextSibling
+  while (next_ele.nodeType != 1) {
+    next_ele=next_ele.nextSibling
+  }
+  return next_ele
+};
+
+function getFirstChild(ele) {
+  var first_child=ele.firstChild
+  while (first_child.nodeType != 1) {
+    first_child=getNextSibling(first_child)
+  }
+  return first_child
+}
+//
+// KEYS
+//
+function addKey(key, keys=null) {
+  if(keys === null) {
+    keys = getKeysOfLocalStorage()
+  }
+  if(localStorage.getItem(key) === null) {
+    var delisAmount = getRowDelisAmount()
+    var vals = key + cellDeli.repeat(delisAmount)
+    if(keys === null) {
+      keys = getKeysOfLocalStorage()
+    }
+    keys.push(key)
+    localStorage.setItem(key, vals)
+    showTable(keys)
+  }
+  return keys
+}
+function editKey(oldKey, newKey) {
+  var vals = localStorage.getItem(oldKey)
+  vals = vals.split(cellDeli)
+  vals[0] = newKey
+  vals = vals.join(cellDeli)
+  localStorage.removeItem(oldKey)
+  localStorage.setItem(newKey, vals)
+}
+function delKey(key) {
+  localStorage.removeItem(key)
+  showTable()
+}
+function getKeysOfLocalStorage() {
+  var keys = []
+  for(var i in localStorage) {
+    if(typeof(localStorage[i]) == 'string') {
+      keys.push(localStorage[i].split(cellDeli)[0])
+    }
+  }
+  return keys
+}
+function getKeysOfCsv(csv) {
+  return csv.split(columnDeli)[0].split(cellDeli)
+}
+//
+// TABLE
+//
+function getTable(keys) {
+  var csv = ''
+  for(var i in keys) {
+    csv += localStorage.getItem(keys[i]) + columnDeli
+  }
+  if(csv != '') {
+    csv = csv.slice(0, -columnDeli.length)
+  }
+  return csv
+}
+function iniTable(csv) {
+  localStorage.clear()
+  setTable(csv)
+  var keys = getKeysOfCsv(csv)
+  showTable(keys)
+  return keys
+}
+function setTable(csv) {
+  localStorage.clear()
+  var rows = []
+  var columns = csv.split(columnDeli)
+  for(var i in columns) {
+    var cells = columns[i].split(cellDeli)
+    for(var j in cells) {
+      if(j == rows.length) {
+        rows.push([])
+      }
+      rows[j][i] = cells[j]
+    }
+  }
+  for(var i in rows) {
+    var key = rows[i][0]
+    var val = rows[i].join(cellDeli)
+    localStorage.setItem(key, val)
+  }
+}
+function showTable(keys=null) {
+  if(keys === null) {
+    keys = getKeysOfLocalStorage()
+  }
+  var html = '<div>'
+  var table = getTable(keys)
+  var rows = table.split(columnDeli)
+  for(var i in rows) {
+    if(i == 0) {
+      html += '<div>'
+        //html += '<div><input></div>'
+      html += '<div class="addKey" tabindex="0">'
+      html += '+'
+      html += '</div>'
+    var row = rows[i]
+    var cells = row.split(cellDeli)
+    for(var j in cells) {
+        html += '<div>'
+        //if(j != 0) {
+          html += j
+        //}
+        html += '</div>'
+      }
+    html += '</div>'
+    }
+  }
+  for(var i in rows) {
+    html += '<div>'
+    var row = rows[i]
+    var cells = row.split(cellDeli)
+    for(var j in cells) {
+      if(j == 0) {
+        html += '<div><input></div>'
+      }
+      html += '<div class="editCell" tabindex="0">' + cells[j] + '</div>'
+    }
+    html += '</div>'
+  }
+  html += '<div>'
+    html += '<div class="delKey" tabindex="0">'
+    html += 'X'
+    html += '</div>'
+    html += '<div class="delRows" tabindex="0">'
+    html += 'X'
+    html += '</div>'
+  html += '<div class="delRow" tabindex="0">X</div>'.repeat(getRowDelisAmount())
+  html += '</div>'  // EO column
+  html += '</div>' //  EO table
+  document.getElementsByTagName('body')[0].innerHTML = html
+  addListeners(keys)
+  document.getElementsByTagName('input')[0].focus()
+}
+//
+// COLUMN
+//
+function getColKey(cellEle) {
+  cellEle = cellEle.parentNode.parentNode
+  cellEle = getFirstChild(cellEle)
+  cellEle = getNextSibling(cellEle)
+  return cellEle.innerHTML
+}
+//
+// ROW
+//
+function addRow(csv, keys=null) {
+  if(keys === null) {
+    keys = getKeysOfLocalStorage()
+  }
+  var vals = csv.split(cellDeli)
+  for(var i in keys) {
+    var key = keys[i]
+    if(localStorage.getItem(key) === null) {
+      addKey(key, keys)
+    }
+    var oldVals = localStorage.getItem(key)
+    var newVals = oldVals + cellDeli + vals[i]
+    localStorage.setItem(key, newVals)
+  }
+  showTable(keys)
+}
+function getRowDelisAmount() {
+  var amount = 0
+  var keys = getKeysOfLocalStorage()
+  if(keys[0] !== undefined &&
+     localStorage.getItem(keys[0]) !== null) {
+    amount = localStorage.getItem([keys[0]]).split(cellDeli).length - 1
+  }
+  return amount
+}
+function getRowNr(cellEle) {
+  var rowNr = 0
+  var previousEle = cellEle
+  while(previousEle !== null) {
+    previousEle = previousEle.previousSibling
+    if(previousEle !== null) {
+      while (previousEle.nodeType != 1) {
+        previousEle = previousEle.previousSibling
+      }
+    }
+    rowNr +=1
+  }
+  rowNr -= 2 // subtract first two cells: input and column-header
+  return rowNr
+}
+function delRow(pos, keys=null) {
+  if(keys === null) {
+    keys = getKeysOfLocalStorage()
+  }
+  for(var i in keys) {
+    var vals = localStorage.getItem(keys[i])
+    vals = vals.split(cellDeli)
+    vals.splice(pos, 1)
+    vals.join(cellDeli)
+    localStorage.setItem(keys[i], vals)
+  }
+}
+//
+// LISTEN
+//
+function addButtonsListener(keys) {
+  var addKeyButton = document.getElementsByClassName('addKey')[0]
+  var editCellButtons = document.getElementsByClassName('editCell')
+  var delKeyButton = document.getElementsByClassName('delKey')[0]
+  var delRowButtons = document.getElementsByClassName('delRow')
+  var delRowsButton = document.getElementsByClassName('delRows')[0]
+  addKeyButton.onclick = function(eve) {
+      addKeyButton.innerHTML = '<input>'
+      var addKeyInput = addKeyButton.getElementsByTagName('input')[0]
+      addKeyInput.focus()
+      addKeyInput.onkeypress = function(eve) {
+        if(eve.keyCode == 13) {
+          addKey(addKeyInput.value, keys)
+        }
+      }
+  }
+  addKeyButton.onkeypress = function(eve) {
+    if(eve.keyCode == 13) {
+      eve.target.click()
+    }
+  }
+  for(var i in editCellButtons) {
+    var cellText = null
+    editCellButtons[i].onclick = function(eve) {
+      console.log(eve.target.childNodes[0].nodeName.toLowerCase())
+      if(eve.target.tagName.toLowerCase() != 'input'
+      && eve.target.childNodes[0].nodeName.toLowerCase() != 'input') {
+        cellText = eve.target.innerHTML
+        eve.target.innerHTML = '<input value="' + eve.target.innerHTML  + '">'
+        var editCellInput = eve.target.getElementsByTagName('input')[0]
+        editCellInput.focus()
+        editCellInput.onkeypress = function(eve) {
+          addEditCellInputListener(eve.target)
+        }
+      }
+    }
+  }
+  delKeyButton.onclick = function(eve) {
+    delKeyButton.innerHTML = '<input>'
+    var delKeyInput = delKeyButton.getElementsByTagName('input')[0]
+    delKeyInput.focus()
+    delKeyInput.onkeypress = function(eve) {
+      if(eve.keyCode == 13) {
+        delKey(delKeyInput.value)
+      }
+    }
+  }
+  delKeyButton.onkeypress = function(eve) {
+    if(eve.keyCode == 13) {
+      eve.target.click()
+    }
+  }
+  for(var i in delRowButtons) {
+    delRowButtons[i].onclick = function(eve) {
+      var pos = getRowNr(eve.target)
+      delRow(pos)
+      showTable(keys)
+    }
+    delRowButtons[i].onkeypress = function(eve) {
+      if(eve.keyCode == 13) {
+        eve.target.click()
+      }
+    }
+  }
+  delRowsButton.onclick = function(eve) {
+    localStorage.clear()
+    showTable()
+  }
+  delRowsButton.onkeypress = function(eve) {
+    if(eve.keyCode == 13) {
+      eve.target.click()
+    }
+  }
+}
+function addEditCellInputListener(editCell) {
+  var rowNr = getRowNr(eve.target.parentNode)
+  if(rowNr == 0) { // is column-header
+    editKey(cellText, eve.target.value)
+  }
+  else { // is ordinary-cell
+    var colKey = getColKey(eve.target)
+    var val = eve.target.value
+    var vals = localStorage.getItem(colKey).split(cellDeli)
+    vals[rowNr] = val
+    vals = vals.join(cellDeli)
+    localStorage.setItem(colKey, vals)
+  }
+  showTable()
+}
+function addInputsListener(keys) {
+  var inputs = document.getElementsByTagName('input')
+  for(var i in inputs) {
+    var input = inputs[i]
+    input.onkeypress = function(eve) {
+      if(eve.keyCode == 13) {
+        var vals = ''
+        for(var j in inputs) {
+          if(typeof(inputs[j]) == 'object') {
+            vals += inputs[j].value + cellDeli
+          }
+        }
+        vals = vals.slice(0, -cellDeli.length)
+        addRow(vals, keys)
+      }
+    }
+  }
+}
+function addListeners(keys) {
+  addButtonsListener(keys)
+  addInputsListener(keys)
+}
+//
+// MAIN
+//
+document.addEventListener("DOMContentLoaded", function(event) { 
+  showTable()
+}); // dom loaded
 </script>
 </head>
 <body lang="en" dir="ltr">
