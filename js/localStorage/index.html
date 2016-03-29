@@ -4,6 +4,9 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <title>localStorage</title>
 <style>
+/*
+*/
+body,input {background:#111;color:e2e2e2;}
 input {
   border: 1px solid #a2a2a2;
   height: 100%;
@@ -21,6 +24,7 @@ div {
 input:focus,
 div:focus {
   background: lightyellow !important;
+  background: #222 !important;
 }
 div > div {
   border-right: none;
@@ -42,7 +46,9 @@ div > div:first-child > div,
 div > div:last-child > div,
 /* First row (add new-row-cells): */
 div > div > div:first-child {
+/*
   background: #e2e2e2;
+*/
 }
 div > div:first-child > div:nth-child(2) {
   font-weight: normal;
@@ -91,6 +97,10 @@ function addKey(key, keys=null) {
   }
   return keys
 }
+function delKey(key) {
+  localStorage.removeItem(key)
+  showTable()
+}
 function editKey(oldKey, newKey) {
   var vals = localStorage.getItem(oldKey)
   vals = vals.split(cellDeli)
@@ -98,10 +108,6 @@ function editKey(oldKey, newKey) {
   vals = vals.join(cellDeli)
   localStorage.removeItem(oldKey)
   localStorage.setItem(newKey, vals)
-}
-function delKey(key) {
-  localStorage.removeItem(key)
-  showTable()
 }
 function getKeysOfLocalStorage() {
   var keys = []
@@ -164,17 +170,14 @@ function showTable(keys=null) {
   for(var i in rows) {
     if(i == 0) {
       html += '<div>'
-        //html += '<div><input></div>'
-      html += '<div class="addKey" tabindex="0">'
+      html += '<div class="addKey" title="Add column" tabindex="1">'
       html += '+'
       html += '</div>'
     var row = rows[i]
     var cells = row.split(cellDeli)
     for(var j in cells) {
         html += '<div>'
-        //if(j != 0) {
           html += j
-        //}
         html += '</div>'
       }
     html += '</div>'
@@ -186,14 +189,16 @@ function showTable(keys=null) {
     var cells = row.split(cellDeli)
     for(var j in cells) {
       if(j == 0) {
-        html += '<div><input></div>'
+        html += '<div><input tabindex="1"></div>'
       }
-      html += '<div class="editCell" tabindex="0">' + cells[j] + '</div>'
+      html += '<div class="editCell" tabindex="' + j + 2 + '">' +
+                cells[j] +
+              '</div>'
     }
     html += '</div>'
   }
   html += '<div>'
-    html += '<div class="delKey" tabindex="0">'
+    html += '<div class="delKey" title="Remove column" tabindex="0">'
     html += 'X'
     html += '</div>'
     html += '<div class="delRows" tabindex="0">'
@@ -204,16 +209,25 @@ function showTable(keys=null) {
   html += '</div>' //  EO table
   document.getElementsByTagName('body')[0].innerHTML = html
   addListeners(keys)
-  document.getElementsByTagName('input')[0].focus()
+//  document.getElementsByTagName('input')[0].focus()
 }
 //
 // COLUMN
 //
 function getColKey(cellEle) {
+  var colKey = null
   cellEle = cellEle.parentNode.parentNode
   cellEle = getFirstChild(cellEle)
   cellEle = getNextSibling(cellEle)
-  return cellEle.innerHTML
+  if(cellEle.childNodes.length > 0
+    && cellEle.childNodes[0].tagName !== undefined
+    && cellEle.childNodes[0].tagName.toLowerCase() == 'input') {
+    colKey = cellEle.childNodes[0].value
+  }
+  else {
+    colKey = cellEle.innerHTML
+  }
+  return colKey
 }
 //
 // ROW
@@ -297,18 +311,40 @@ function addButtonsListener(keys) {
   for(var i in editCellButtons) {
     var cellText = null
     editCellButtons[i].onclick = function(eve) {
+//removeInputsOfCells('editCell')
       if(eve.target.tagName.toLowerCase() != 'input'
-      && eve.target.childNodes.length < 1
-      || eve.target.childNodes[0].nodeName.toLowerCase() != 'input') {
+        ||
+        (eve.target.childNodes.length > 0
+          &&
+         eve.target.childNodes[0].tagName.toLowerCase != 'input'
+        )
+      ) {
         cellText = eve.target.innerHTML
         eve.target.innerHTML = '<input value="' + eve.target.innerHTML  + '">'
         var editCellInput = eve.target.getElementsByTagName('input')[0]
         editCellInput.focus()
         editCellInput.onkeypress = function(eve) {
           if(eve.keyCode == 13) {
-            addEditCellInputListener(eve.target, cellText)
+            saveCell(eve.target, cellText)
           }
         }
+        editCellInput.onblur = function(eve) {
+          saveCell(eve.target, cellText)
+          editCellInput.remove()
+          showTable()
+        }
+        editCellInput.onkeypress = function(eve) {
+          if(eve.keyCode == 13) {
+            saveCell(eve.target, cellText)
+            editCellInput.remove()
+            showTable()
+          }
+        }
+      }
+    }
+    editCellButtons[i].onkeypress = function(eve) {
+      if(eve.keyCode == 13) {
+        eve.target.click()
       }
     }
   }
@@ -349,10 +385,10 @@ function addButtonsListener(keys) {
     }
   }
 }
-function addEditCellInputListener(editCellInputEle, cellText) {
+function saveCell(editCellInputEle, oldKey=null) {
   var rowNr = getRowNr(editCellInputEle.parentNode)
   if(rowNr == 0) { // is column-header
-    editKey(cellText, editCellInputEle.value)
+    editKey(oldKey, editCellInputEle.value)
   }
   else { // is ordinary-cell
     var colKey = getColKey(editCellInputEle)
@@ -362,7 +398,6 @@ function addEditCellInputListener(editCellInputEle, cellText) {
     vals = vals.join(cellDeli)
     localStorage.setItem(colKey, vals)
   }
-  showTable()
 }
 function addInputsListener(keys) {
   var inputs = document.getElementsByTagName('input')
@@ -387,10 +422,28 @@ function addListeners(keys) {
   addInputsListener(keys)
 }
 //
+// MISC
+//
+function removeInputsOfCells(cellsClassName) {
+  var cells = document.getElementsByClassName(cellsClassName)
+  for(var i in cells) {
+    var cell = cells[i]
+    if(cell.childNodes !== undefined
+    && cell.childNodes.length > 0
+    && cell.childNodes[0].nodeName.toLowerCase() == 'input') {
+      var input = cell.childNodes[0]
+      saveCell(input)
+      cell.innerHTML = input.value
+    }
+  }
+}
+//
 // MAIN
 //
 document.addEventListener("DOMContentLoaded", function(event) { 
-  showTable()
+  var csv = '0,1,2\nFirstname,Lastname,Passion\nIda,Ebkes,Python\nAda,Ebkes,Lion'
+  setTable(csv)
+  showTable([0,1,2])
 }); // dom loaded
 </script>
 </head>
