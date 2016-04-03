@@ -5,8 +5,8 @@
 <title>localStorage</title>
 <style>
 /*
-*/
 body,input {background:#111;color:e2e2e2;}
+*/
 input {
   border: 1px solid #a2a2a2;
   height: 100%;
@@ -23,8 +23,9 @@ div {
 }
 input:focus,
 div:focus {
-  background: lightyellow !important;
   background: #222 !important;
+  background: lightyellow !important;
+  background: yellow !important;
 }
 div > div {
   border-right: none;
@@ -38,19 +39,27 @@ div > div > div {
   border-top: 1px solid;
   border-color: #a2a2a2;
 }
-/* Column-headers (keys): */
-div > div > div:nth-child(2),
-/* First-column-cells (row-nrs): */
-div > div:first-child > div,
-/* Last-column-cells (delete-buttons): */
-div > div:last-child > div,
-/* First row (add new-row-cells): */
-div > div > div:first-child {
-/*
-  background: #e2e2e2;
-*/
+/* Hide localStorage-keys: 
+div > div > div:nth-child(2) {
+min-height: 0;
+height: 0;
+overflow: hidden;
+padding: 0;
+border: none;
 }
-div > div:first-child > div:nth-child(2) {
+*/
+div > div:first-child > div,
+div > div:last-child > div,
+div > div > div:first-child,
+div > div > div:nth-child(3) {
+  background: #e2e2e2;
+}
+/* Column-headers */
+div > div > div:nth-child(3) {
+  font-weight: bold;
+}
+div > div:last-child > div:nth-child(3),
+div > div:first-child > div:nth-child(3) {
   font-weight: normal;
 }
 </style>
@@ -161,6 +170,7 @@ function setTable(csv) {
   }
 }
 function showTable(keys=null) {
+//console.log(document.activeElement)
   if(keys === null) {
     keys = getKeysOfLocalStorage()
   }
@@ -177,7 +187,9 @@ function showTable(keys=null) {
     var cells = row.split(cellDeli)
     for(var j in cells) {
         html += '<div>'
+        if(j != 0) {
           html += j
+        }
         html += '</div>'
       }
     html += '</div>'
@@ -189,11 +201,14 @@ function showTable(keys=null) {
     var cells = row.split(cellDeli)
     for(var j in cells) {
       if(j == 0) {
-        html += '<div><input tabindex="1"></div>'
+        html += '<div><input tabindex="1"></div>' // new-row-cell
+        html += '<div class="editCell">'
       }
-      html += '<div class="editCell" tabindex="' + j + 2 + '">' +
-                cells[j] +
-              '</div>'
+      else { // except keys
+        html += '<div class="editCell" tabindex="' + j + 2 + '">'
+      }
+      html += cells[j]
+      html += '</div>'
     }
     html += '</div>'
   }
@@ -201,7 +216,7 @@ function showTable(keys=null) {
     html += '<div class="delKey" title="Remove column" tabindex="0">'
     html += 'X'
     html += '</div>'
-    html += '<div class="delRows" tabindex="0">'
+    html += '<div class="delRows">'
     html += 'X'
     html += '</div>'
   html += '<div class="delRow" tabindex="0">X</div>'.repeat(getRowDelisAmount())
@@ -209,7 +224,9 @@ function showTable(keys=null) {
   html += '</div>' //  EO table
   document.getElementsByTagName('body')[0].innerHTML = html
   addListeners(keys)
-//  document.getElementsByTagName('input')[0].focus()
+  if(document.getElementsByTagName('input').length > 0) {
+    document.getElementsByTagName('input')[0].focus()
+  }
 }
 //
 // COLUMN
@@ -297,21 +314,19 @@ function addButtonsListener(keys) {
       addKeyButton.innerHTML = '<input>'
       var addKeyInput = addKeyButton.getElementsByTagName('input')[0]
       addKeyInput.focus()
-      addKeyInput.onkeypress = function(eve) {
+      addKeyInput.onkeydown = function(eve) {
         if(eve.keyCode == 13) {
-          addKey(addKeyInput.value, keys)
+          keys = addKey(addKeyInput.value, keys)
         }
       }
   }
-  addKeyButton.onkeypress = function(eve) {
+  addKeyButton.onkeydown = function(eve) {
     if(eve.keyCode == 13) {
       eve.target.click()
     }
   }
   for(var i in editCellButtons) {
-    var cellText = null
     editCellButtons[i].onclick = function(eve) {
-//removeInputsOfCells('editCell')
       if(eve.target.tagName.toLowerCase() != 'input'
         ||
         (eve.target.childNodes.length > 0
@@ -319,30 +334,26 @@ function addButtonsListener(keys) {
          eve.target.childNodes[0].tagName.toLowerCase != 'input'
         )
       ) {
-        cellText = eve.target.innerHTML
+        var cellText = eve.target.innerHTML
         eve.target.innerHTML = '<input value="' + eve.target.innerHTML  + '">'
+        var editCell = eve.target
         var editCellInput = eve.target.getElementsByTagName('input')[0]
         editCellInput.focus()
-        editCellInput.onkeypress = function(eve) {
+        editCellInput.onkeydown = function(eve) {
           if(eve.keyCode == 13) {
             saveCell(eve.target, cellText)
+            editCell.innerHTML = eve.target.value
+            editCell.focus()
           }
         }
         editCellInput.onblur = function(eve) {
           saveCell(eve.target, cellText)
-          editCellInput.remove()
-          showTable()
-        }
-        editCellInput.onkeypress = function(eve) {
-          if(eve.keyCode == 13) {
-            saveCell(eve.target, cellText)
-            editCellInput.remove()
-            showTable()
-          }
+          editCell.innerHTML = eve.target.value
+          //showTable()
         }
       }
     }
-    editCellButtons[i].onkeypress = function(eve) {
+    editCellButtons[i].onkeydown = function(eve) {
       if(eve.keyCode == 13) {
         eve.target.click()
       }
@@ -352,13 +363,13 @@ function addButtonsListener(keys) {
     delKeyButton.innerHTML = '<input>'
     var delKeyInput = delKeyButton.getElementsByTagName('input')[0]
     delKeyInput.focus()
-    delKeyInput.onkeypress = function(eve) {
+    delKeyInput.onkeydown = function(eve) {
       if(eve.keyCode == 13) {
         delKey(delKeyInput.value)
       }
     }
   }
-  delKeyButton.onkeypress = function(eve) {
+  delKeyButton.onkeydown = function(eve) {
     if(eve.keyCode == 13) {
       eve.target.click()
     }
@@ -369,7 +380,7 @@ function addButtonsListener(keys) {
       delRow(pos)
       showTable(keys)
     }
-    delRowButtons[i].onkeypress = function(eve) {
+    delRowButtons[i].onkeydown = function(eve) {
       if(eve.keyCode == 13) {
         eve.target.click()
       }
@@ -379,7 +390,7 @@ function addButtonsListener(keys) {
     localStorage.clear()
     showTable()
   }
-  delRowsButton.onkeypress = function(eve) {
+  delRowsButton.onkeydown = function(eve) {
     if(eve.keyCode == 13) {
       eve.target.click()
     }
@@ -403,7 +414,7 @@ function addInputsListener(keys) {
   var inputs = document.getElementsByTagName('input')
   for(var i in inputs) {
     var input = inputs[i]
-    input.onkeypress = function(eve) {
+    input.onkeydown = function(eve) {
       if(eve.keyCode == 13) {
         var vals = ''
         for(var j in inputs) {
@@ -417,33 +428,91 @@ function addInputsListener(keys) {
     }
   }
 }
+function getPreviousCousin(ele) {
+}
+function getPosInParent(ele) {
+  var pos = 0
+  while(ele.previousSibling !== null) {
+    if(ele.previousSibling === null) { break }
+    ele = ele.previousSibling
+    pos += 1
+  }
+  return pos
+}
+function addArrowKeysListener() {
+  document.body.onkeydown = function(eve) {
+    if(eve.keyCode == 37
+    || eve.keyCode == 38
+    || eve.keyCode == 39
+    || eve.keyCode == 40) {
+      var currentEle = document.activeElement
+
+      // If we'Re in an input, go one up, into cell:
+      if(currentEle.tagName.toLowerCase() == 'input') {
+        currentEle = currentEle.parentNode
+      }
+
+      // Arrow-left or arrow-right was pressed:
+      if(eve.keyCode == 37 || eve.keyCode == 39) { 
+
+        var pos = getPosInParent(currentEle)
+
+        // First, grab parent:
+        currentEle = currentEle.parentNode
+        
+        // Arrow-left was pressed:
+        if(eve.keyCode == 37) {
+          // Get previous uncle:
+          if(currentEle.previousSibling !== null) {
+            currentEle = currentEle.previousSibling
+          }
+        }
+        // Arrow-right was pressed:
+        if(eve.keyCode == 39) {
+          // Get next uncle:
+          if(currentEle.nextSibling !== null) {
+            currentEle = currentEle.nextSibling
+          }
+        }
+
+        // Now, get cousin of same position:
+        currentEle = currentEle.childNodes[pos]
+
+        currentEle.focus()
+      }
+
+
+
+
+      else if(eve.keyCode == 38) { // arrow-up
+        if(currentEle.previousSibling != null) {
+          currentEle.previousSibling.focus()
+        }
+      }
+      else if(eve.keyCode == 39) { // arrow-right
+      }
+      else if(eve.keyCode == 40) { // arrow-down
+        if(currentEle.nextSibling != null) {
+          currentEle.nextSibling.focus()
+        }
+      }
+    }
+  }
+}
 function addListeners(keys) {
   addButtonsListener(keys)
   addInputsListener(keys)
-}
-//
-// MISC
-//
-function removeInputsOfCells(cellsClassName) {
-  var cells = document.getElementsByClassName(cellsClassName)
-  for(var i in cells) {
-    var cell = cells[i]
-    if(cell.childNodes !== undefined
-    && cell.childNodes.length > 0
-    && cell.childNodes[0].nodeName.toLowerCase() == 'input') {
-      var input = cell.childNodes[0]
-      saveCell(input)
-      cell.innerHTML = input.value
-    }
-  }
+  addArrowKeysListener(keys)
 }
 //
 // MAIN
 //
 document.addEventListener("DOMContentLoaded", function(event) { 
-  var csv = '0,1,2\nFirstname,Lastname,Passion\nIda,Ebkes,Python\nAda,Ebkes,Lion'
-  setTable(csv)
-  showTable([0,1,2])
+  var csv = '2,1,0\nFirstname,Lastname,Passion\nIda,Ebkes,Python\nAda,Ebkes,Lion'
+//  setTable(csv)
+//  var keys = csv.split(columnDeli)[0].split(cellDeli)
+  var keys = getKeysOfLocalStorage() 
+  showTable(keys)
 }); // dom loaded
 </script>
 </head>
