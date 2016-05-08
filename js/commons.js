@@ -323,5 +323,42 @@ Examples: var lines_ele = document.getElementsByTagName('body')[0]
     }
   }, 277);
 }
-
+// LOAD
+function getJson(url) {
+  var request = new XMLHttpRequest()
+  request.open('GET', url, true)
+  request.onload = function() {
+    if(request.status >= 200 && request.status < 400) {
+      // Success!
+      var data = JSON.parse(request.responseText)
+      return data
+    }
+    else {
+      // We reached our target server, but it returned an error:
+      console.error("Couldn't load JSON from '" + url + "'.")
+    }
+  }
+  request.onerror = function() {
+    // There was a connection error of some sort
+      console.error("Cannot get a connection to '" + url + "'.")
+  }
+  request.send()
+}
+function getHtml(url) {
+  var request = new XMLHttpRequest();
+  request.open('GET', url, true);
+  request.onload = function() {
+    if (request.status >= 200 && request.status < 400) {
+      // Success!
+      var resp = request.responseText
+      return resp
+    } else {
+      // We reached our target server, but it returned an error
+    }
+  };
+  request.onerror = function() {
+    // There was a connection error of some sort
+  };
+  request.send()
+}
 // EOF

@@ -90,7 +90,11 @@ function json2KeyTree(json) {
       html += '<div>' + json2KeyTree(json[jso]) + '</div>'
     }
     else {
-     html += '<div class="val">' + json[jso] + '</div>'
+     html += '<div class="val">'
+     html += '<a href="' + json[jso]+ '">'
+     html += json[jso]
+     html += '</a>'
+     html += '</div>'
     }
   }
   return html

@@ -11,11 +11,11 @@
     margin: 0;
 }
 .json div {
-    min-height: 6.44em;
-    border-bottom: 1px dotted;
+    min-height: 1.44em;
+    border: 1px dotted;
 }
 .json.keys div div {
-    margin-left: .85em;
+    margin-left: 1.85em;
 }
 .json .key,
 .json .val {

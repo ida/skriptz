@@ -4,13 +4,13 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <title>localStorage</title>
 <style>
-/*
-body,input {background:#111;color:e2e2e2;}
-*/
+span {
+}
 input {
-  border: 1px solid #a2a2a2;
+  border: none;
   height: 100%;
   font-size: 1em;
+  margin-left: -1px;
 }
 div {
   line-height: 1.61em;
@@ -20,12 +20,6 @@ div {
   border-right: 1px solid;
   border-bottom: 1px solid;
   border-color: #a2a2a2;
-}
-input:focus,
-div:focus {
-  background: #222 !important;
-  background: lightyellow !important;
-  background: yellow !important;
 }
 div > div {
   border-right: none;
@@ -39,28 +33,10 @@ div > div > div {
   border-top: 1px solid;
   border-color: #a2a2a2;
 }
-/* Hide localStorage-keys: 
-div > div > div:nth-child(2) {
-min-height: 0;
-height: 0;
-overflow: hidden;
-padding: 0;
-border: none;
-}
-*/
-div > div:first-child > div,
-div > div:last-child > div,
-div > div > div:first-child,
-div > div > div:nth-child(3) {
-  background: #e2e2e2;
-}
-/* Column-headers */
-div > div > div:nth-child(3) {
-  font-weight: bold;
-}
-div > div:last-child > div:nth-child(3),
-div > div:first-child > div:nth-child(3) {
-  font-weight: normal;
+.info:hover:after {
+  content: 'Put some example info about this awesome app, here.';
+position: absolute;
+background: red;
 }
 </style>
 <script type="text/javascript">
@@ -92,13 +68,13 @@ function getFirstChild(ele) {
 //
 function addKey(key, keys=null) {
   if(keys === null) {
-    keys = getKeysOfLocalStorage()
+    keys = getKeys()
   }
   if(localStorage.getItem(key) === null) {
     var delisAmount = getRowDelisAmount()
     var vals = key + cellDeli.repeat(delisAmount)
     if(keys === null) {
-      keys = getKeysOfLocalStorage()
+      keys = getKeys()
     }
     keys.push(key)
     localStorage.setItem(key, vals)
@@ -118,7 +94,7 @@ function editKey(oldKey, newKey) {
   localStorage.removeItem(oldKey)
   localStorage.setItem(newKey, vals)
 }
-function getKeysOfLocalStorage() {
+function getKeys() {
   var keys = []
   for(var i in localStorage) {
     if(typeof(localStorage[i]) == 'string') {
@@ -126,9 +102,6 @@ function getKeysOfLocalStorage() {
     }
   }
   return keys
-}
-function getKeysOfCsv(csv) {
-  return csv.split(columnDeli)[0].split(cellDeli)
 }
 //
 // TABLE
@@ -142,13 +115,6 @@ function getTable(keys) {
     csv = csv.slice(0, -columnDeli.length)
   }
   return csv
-}
-function iniTable(csv) {
-  localStorage.clear()
-  setTable(csv)
-  var keys = getKeysOfCsv(csv)
-  showTable(keys)
-  return keys
 }
 function setTable(csv) {
   localStorage.clear()
@@ -170,39 +136,49 @@ function setTable(csv) {
   }
 }
 function showTable(keys=null) {
-//console.log(document.activeElement)
-  if(keys === null) {
-    keys = getKeysOfLocalStorage()
-  }
-  var html = '<div>'
+
+  if(keys === null) { keys = getKeys() }
   var table = getTable(keys)
   var rows = table.split(columnDeli)
-  for(var i in rows) {
-    if(i == 0) {
-      html += '<div>'
-      html += '<div class="addKey" title="Add column" tabindex="1">'
-      html += '+'
-      html += '</div>'
-    var row = rows[i]
-    var cells = row.split(cellDeli)
+
+  var html = '<div>'
+
+  // Add first column, add-col-button and row-nrs:
+  html += '<div>'
+    html += '<div class="info">'
+    html += 'i'
+    html += '</div>'
+    html += '<div class="addKey" title="Add column" tabindex="1">'
+    html += '+'
+    html += '</div>'
+  if(table != '') {
+    var cells = rows[0].split(cellDeli)
     for(var j in cells) {
+      if(j != 0) {
         html += '<div>'
-        if(j != 0) {
+          html += '<span class="rowUp">'
+            html += '^'
+          html += '</span>'
           html += j
-        }
+          html += '<span class="rowDown">'
+            html += 'v'
+          html += '</span>'
         html += '</div>'
       }
-    html += '</div>'
     }
   }
+  html += '</div>'
+
+  if(table != '') {
+  // Add columns:
   for(var i in rows) {
     html += '<div>'
     var row = rows[i]
     var cells = row.split(cellDeli)
     for(var j in cells) {
       if(j == 0) {
-        html += '<div><input tabindex="1"></div>' // new-row-cell
-        html += '<div class="editCell">'
+        html += '<div><span class="columnToLeft"><</span><input tabindex="1"><span class="columnToRight">></span></div>' // new-row-cell
+        html += '<div class="columnHeaderCell editCell" tabindex="' + j + 2 + '">'
       }
       else { // except keys
         html += '<div class="editCell" tabindex="' + j + 2 + '">'
@@ -212,20 +188,28 @@ function showTable(keys=null) {
     }
     html += '</div>'
   }
+
+  // Add last column, delete-buttons:
   html += '<div>'
+    html += '<div class="delTable">'
+    html += 'X'
+    html += '</div>'
     html += '<div class="delKey" title="Remove column" tabindex="0">'
     html += 'X'
     html += '</div>'
-    html += '<div class="delRows">'
-    html += 'X'
-    html += '</div>'
-  html += '<div class="delRow" tabindex="0">X</div>'.repeat(getRowDelisAmount())
-  html += '</div>'  // EO column
-  html += '</div>' //  EO table
+    html += '<div class="delRow" tabindex="0">X</div>'
+    .repeat(getRowDelisAmount())
+  html += '</div>'  // end of last-column
+  } // table != ''
+  html += '</div>' //  end of table
+
   document.getElementsByTagName('body')[0].innerHTML = html
   addListeners(keys)
   if(document.getElementsByTagName('input').length > 0) {
     document.getElementsByTagName('input')[0].focus()
+  }
+  else {
+    document.getElementsByClassName('addKey')[0].click()
   }
 }
 //
@@ -251,7 +235,7 @@ function getColKey(cellEle) {
 //
 function addRow(csv, keys=null) {
   if(keys === null) {
-    keys = getKeysOfLocalStorage()
+    keys = getKeys()
   }
   var vals = csv.split(cellDeli)
   for(var i in keys) {
@@ -267,7 +251,7 @@ function addRow(csv, keys=null) {
 }
 function getRowDelisAmount() {
   var amount = 0
-  var keys = getKeysOfLocalStorage()
+  var keys = getKeys()
   if(keys[0] !== undefined &&
      localStorage.getItem(keys[0]) !== null) {
     amount = localStorage.getItem([keys[0]]).split(cellDeli).length - 1
@@ -291,7 +275,7 @@ function getRowNr(cellEle) {
 }
 function delRow(pos, keys=null) {
   if(keys === null) {
-    keys = getKeysOfLocalStorage()
+    keys = getKeys()
   }
   for(var i in keys) {
     var vals = localStorage.getItem(keys[i])
@@ -301,18 +285,64 @@ function delRow(pos, keys=null) {
     localStorage.setItem(keys[i], vals)
   }
 }
+function moveRow(pos, direction, keys=null) {
+  if(keys === null) {
+    keys = getKeys()
+  }
+  for(var i in keys) {
+    var vals = localStorage.getItem(keys[i])
+    vals = vals.split(cellDeli)
+    if(direction == 'down') {
+      vals = moveArrayItemToRight(vals, vals[pos])
+    }
+    else {
+      vals = moveArrayItemToLeft(vals, vals[pos])
+    }
+    localStorage.setItem(keys[i], vals)
+    showTable(keys)
+  }
+}
 //
 // LISTEN
 //
 function addButtonsListener(keys) {
   var addKeyButton = document.getElementsByClassName('addKey')[0]
+  var columnToLeftButtons = document.getElementsByClassName('columnToLeft')
+  var columnToRightButtons = document.getElementsByClassName('columnToRight')
   var editCellButtons = document.getElementsByClassName('editCell')
   var delKeyButton = document.getElementsByClassName('delKey')[0]
   var delRowButtons = document.getElementsByClassName('delRow')
-  var delRowsButton = document.getElementsByClassName('delRows')[0]
+  var delTableButton = document.getElementsByClassName('delTable')[0]
+  var rowDownButtons = document.getElementsByClassName('rowDown')
+  var rowUpButtons = document.getElementsByClassName('rowUp')
+  for(var i in rowDownButtons) {
+    rowDownButtons[i].onclick = function(eve) {
+      // Get rowNr, subtract the first row for new cells:
+      var rowNr = getPosInParent(eve.target.parentNode) - 1
+      moveRow(rowNr, 'down', keys)
+    }
+  }
+  for(var i in rowUpButtons) {
+    rowUpButtons[i].onclick = function(eve) {
+      // Get rowNr, subtract the first row for new cells:
+      var rowNr = getPosInParent(eve.target.parentNode) - 1
+      moveRow(rowNr, 'up', keys)
+    }
+  }
+  for(var i in columnToRightButtons) {
+    columnToRightButtons[i].onclick = function(eve) {
+      moveColumn(keys, eve.target, 'right')
+    }
+  }
+  for(var i in columnToLeftButtons) {
+    columnToLeftButtons[i].onclick = function(eve) {
+      moveColumn(keys, eve.target, 'left')
+    }
+  }
   addKeyButton.onclick = function(eve) {
       addKeyButton.innerHTML = '<input>'
       var addKeyInput = addKeyButton.getElementsByTagName('input')[0]
+console.log(addKeyInput)
       addKeyInput.focus()
       addKeyInput.onkeydown = function(eve) {
         if(eve.keyCode == 13) {
@@ -327,74 +357,95 @@ function addButtonsListener(keys) {
   }
   for(var i in editCellButtons) {
     editCellButtons[i].onclick = function(eve) {
-      if(eve.target.tagName.toLowerCase() != 'input'
-        ||
-        (eve.target.childNodes.length > 0
-          &&
-         eve.target.childNodes[0].tagName.toLowerCase != 'input'
-        )
-      ) {
-        var cellText = eve.target.innerHTML
-        eve.target.innerHTML = '<input value="' + eve.target.innerHTML  + '">'
-        var editCell = eve.target
-        var editCellInput = eve.target.getElementsByTagName('input')[0]
-        editCellInput.focus()
-        editCellInput.onkeydown = function(eve) {
+      var hasInput = true
+      var tag = eve.target
+      var tagName = eve.target.tagName.toLowerCase()
+      // First check if there is an input already:
+      if(tagName != 'input') {
+        if(tag.childNodes.length > 0 && tag.childNodes[0].type != 'text') {
+          hasInput = false
+        }
+        else {
+          hasInput = false
+        }
+      }
+      else {
+        hasInput = false
+      }
+      // If not, insert input:
+      if(!hasInput) { 
+        var tagText = tag.innerHTML
+        tag.innerHTML = '<input value="' + eve.target.innerHTML  +
+                        '" tabindex="' + tag.getAttribute('tabindex') + '">'
+        var input = tag.getElementsByTagName('input')[0]
+        input.focus()
+        // Key pressed in input:
+        input.onkeydown = function(eve) {
           if(eve.keyCode == 13) {
-            saveCell(eve.target, cellText)
-            editCell.innerHTML = eve.target.value
-            editCell.focus()
+            saveCell(eve.target, tagText)
+            tag.innerHTML = eve.target.value
+            tag.focus()
           }
         }
-        editCellInput.onblur = function(eve) {
-          saveCell(eve.target, cellText)
-          editCell.innerHTML = eve.target.value
-          //showTable()
+        // Input looses focus:
+        input.onblur = function(eve) {
+          saveCell(eve.target, tagText)
+          tag.innerHTML = eve.target.value
+        } // input blur
+      } // not hasInput
+    } // click  button
+    // When a user hits enter in a focused cell...
+    editCellButtons[i].onkeydown = function(eve) {
+      // ... simulate a click to trigger the click-procedure:
+      if(eve.keyCode == 13) {
+        eve.target.click()
+      }
+    }
+    // When a cell gets focus, simulate a click, too:
+    editCellButtons[i].onfocus = function(eve) {
+      eve.target.click()
+    }
+  } // for each editButton
+  if(delKeyButton !== undefined) {
+    delKeyButton.onclick = function(eve) {
+      delKeyButton.innerHTML = '<input>'
+      var delKeyInput = delKeyButton.getElementsByTagName('input')[0]
+      delKeyInput.focus()
+      delKeyInput.onkeydown = function(eve) {
+        if(eve.keyCode == 13) {
+          delKey(delKeyInput.value)
         }
       }
     }
-    editCellButtons[i].onkeydown = function(eve) {
+    delKeyButton.onkeydown = function(eve) {
       if(eve.keyCode == 13) {
         eve.target.click()
       }
     }
-  }
-  delKeyButton.onclick = function(eve) {
-    delKeyButton.innerHTML = '<input>'
-    var delKeyInput = delKeyButton.getElementsByTagName('input')[0]
-    delKeyInput.focus()
-    delKeyInput.onkeydown = function(eve) {
-      if(eve.keyCode == 13) {
-        delKey(delKeyInput.value)
+    for(var i in delRowButtons) {
+      delRowButtons[i].onclick = function(eve) {
+        var pos = getRowNr(eve.target)
+        delRow(pos)
+        showTable(keys)
+      }
+      delRowButtons[i].onkeydown = function(eve) {
+        if(eve.keyCode == 13) {
+          eve.target.click()
+        }
       }
     }
-  }
-  delKeyButton.onkeydown = function(eve) {
-    if(eve.keyCode == 13) {
-      eve.target.click()
+    delTableButton.onclick = function(eve) {
+      if(confirm('Do you really want to delete everything?')) {
+        localStorage.clear()
+        showTable()
+      }
     }
-  }
-  for(var i in delRowButtons) {
-    delRowButtons[i].onclick = function(eve) {
-      var pos = getRowNr(eve.target)
-      delRow(pos)
-      showTable(keys)
-    }
-    delRowButtons[i].onkeydown = function(eve) {
+    delTableButton.onkeydown = function(eve) {
       if(eve.keyCode == 13) {
         eve.target.click()
       }
     }
-  }
-  delRowsButton.onclick = function(eve) {
-    localStorage.clear()
-    showTable()
-  }
-  delRowsButton.onkeydown = function(eve) {
-    if(eve.keyCode == 13) {
-      eve.target.click()
-    }
-  }
+  } // delKeyButton != undefined
 }
 function saveCell(editCellInputEle, oldKey=null) {
   var rowNr = getRowNr(editCellInputEle.parentNode)
@@ -428,8 +479,6 @@ function addInputsListener(keys) {
     }
   }
 }
-function getPreviousCousin(ele) {
-}
 function getPosInParent(ele) {
   var pos = 0
   while(ele.previousSibling !== null) {
@@ -439,16 +488,38 @@ function getPosInParent(ele) {
   }
   return pos
 }
+function cursorIsAtBeginning(input) {
+  if(input.selectionStart == 0
+    && input.selectionEnd == 0) {
+    return true
+  }
+  else {
+    return false
+  }
+}
+function cursorIsAtEnd(input) {
+  if(input.selectionStart == input.value.length
+    && input.selectionEnd == input.value.length) {
+    return true
+  }
+  else {
+    return false
+  }
+}
 function addArrowKeysListener() {
   document.body.onkeydown = function(eve) {
     if(eve.keyCode == 37
     || eve.keyCode == 38
     || eve.keyCode == 39
     || eve.keyCode == 40) {
-      var currentEle = document.activeElement
+     var isInput = false 
+     var currentEle = document.activeElement
 
-      // If we'Re in an input, go one up, into cell:
+      // If we're in an input, go one up, into cell:
       if(currentEle.tagName.toLowerCase() == 'input') {
+        var isInput = true
+        var atStart = cursorIsAtBeginning(currentEle)
+        var atEnd = cursorIsAtEnd(currentEle)
         currentEle = currentEle.parentNode
       }
 
@@ -459,7 +530,7 @@ function addArrowKeysListener() {
 
         // First, grab parent:
         currentEle = currentEle.parentNode
-        
+
         // Arrow-left was pressed:
         if(eve.keyCode == 37) {
           // Get previous uncle:
@@ -467,8 +538,10 @@ function addArrowKeysListener() {
             currentEle = currentEle.previousSibling
           }
         }
+
         // Arrow-right was pressed:
         if(eve.keyCode == 39) {
+
           // Get next uncle:
           if(currentEle.nextSibling !== null) {
             currentEle = currentEle.nextSibling
@@ -478,26 +551,59 @@ function addArrowKeysListener() {
         // Now, get cousin of same position:
         currentEle = currentEle.childNodes[pos]
 
-        currentEle.focus()
+        if(! isInput
+        || eve.keyCode == 37 && atStart
+        || eve.keyCode == 39 && atEnd) {
+          eve.preventDefault() // Inhibit right move before...
+          currentEle.focus() // ...focusing new ele.
+        }
       }
 
-
-
-
-      else if(eve.keyCode == 38) { // arrow-up
+      // Arrow-up was pressed:
+      else if(eve.keyCode == 38) {
         if(currentEle.previousSibling != null) {
           currentEle.previousSibling.focus()
         }
       }
-      else if(eve.keyCode == 39) { // arrow-right
-      }
-      else if(eve.keyCode == 40) { // arrow-down
+
+      // Arrow-down was pressed:
+      else if(eve.keyCode == 40) {
         if(currentEle.nextSibling != null) {
           currentEle.nextSibling.focus()
         }
       }
     }
   }
+}
+function moveArrayItemToLeft(arr, item, steps=1) {
+  while(steps > 0) {
+    steps -= 1
+    var pos = arr.indexOf(item) // TODO: regard dups
+    arr.splice(pos, 1) // remove item of pos
+    arr.splice(pos - 1, 0, item) // add to pos-1
+  }
+  return arr
+}
+function moveArrayItemToRight(arr, item, steps=1) {
+  while(steps > 0) {
+    steps -= 1
+    var pos = arr.indexOf(item) // TODO: regard dups
+    arr.splice(pos, 1) // remove item of pos
+    arr.splice(pos + 1, 0, item) // add item to pos+1
+  }
+  return arr
+}
+function moveColumn(keys, button, direction) {
+    var colKey = button.parentNode.parentNode
+                 .getElementsByClassName('columnHeaderCell')[0]
+                 .innerHTML
+    if(direction == 'right') {
+      moveArrayItemToRight(keys, colKey, 1)
+    }
+    else if(direction == 'left') {
+      moveArrayItemToLeft(keys, colKey, 1)
+    }
+    showTable(keys)
 }
 function addListeners(keys) {
   addButtonsListener(keys)
@@ -508,11 +614,13 @@ function addListeners(keys) {
 // MAIN
 //
 document.addEventListener("DOMContentLoaded", function(event) { 
-  var csv = '2,1,0\nFirstname,Lastname,Passion\nIda,Ebkes,Python\nAda,Ebkes,Lion'
+  var csv = 'x,y,z\nFirstname,Lastname,Passion\nIda,Ebkes,Python\nAda,Ebkes,Lion'
 //  setTable(csv)
 //  var keys = csv.split(columnDeli)[0].split(cellDeli)
-  var keys = getKeysOfLocalStorage() 
+  var keys = getKeys() 
   showTable(keys)
+console.log(localStorage)
+
 }); // dom loaded
 </script>
 </head>
