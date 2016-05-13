@@ -1,7 +1,6 @@
 //
 // FUNCS
 //
-
 function getThisFuncName(argumentsCallee) {
   // Execute this func of within any function and pass
   // arguments.callee to it, like this:
@@ -13,7 +12,6 @@ function getThisFuncName(argumentsCallee) {
   funcName = funcName.substr(0, funcName.indexOf('('))
   return funcName
 }
-
 //
 // ELES
 //
@@ -76,12 +74,9 @@ function setStyles(ele, newstyles) {
   // TODO: Instead of simply appending new styles, check if a property
   // was defined already, and replace it with the new one.
 }
-
-
 //
 // POSITIONS
 //
-
 function getCoords(ele) {
 // Requires: getEle()
   ele = getEle(ele)
@@ -101,12 +96,9 @@ function getTop(ele) {
   // Requires: getCoords()
   return getCoords(ele)[1]
 }
-
-
 //
 // BROWSER-URL
 //
-
 function setUrlWithoutReload(url) {
   window.history.pushState(null, '', url)
 }
@@ -123,7 +115,6 @@ function getUrlQueryVarVals(variable) {
   }
   return vals
 }
-
 function changeUrlQuery(variable, values){
 // Requires: setUrlWithoutReload()
   var new_search = '?'
@@ -175,41 +166,36 @@ function changeUrlQuery(variable, values){
   // Set new query:
   setUrlWithoutReload(url + new_search)
 }
-
-
 //
-// CONVERSIONS
+// CONVERSE
 //
-
 function jsonToNestedHtmlDivs(obj) {
   // Take a json-obj and return it as nested html-divs,
   // according to the given structure.
-  var txt = '';
+  var txt = ''
   var keys = [];
   for (var key in obj) {
     if (obj.hasOwnProperty(key)) {
       if ('object' == typeof(obj[key])) {
         if (jsonToNestedHtmlDivs(obj[key]) === '') {
-          txt += jsonToNestedHtmlDivs(obj[key]);
+          txt += jsonToNestedHtmlDivs(obj[key])
         }
         else {
-          txt += '<div class="nest">' + jsonToNestedHtmlDivs(obj[key]) + '</div>';
+          txt += '<div class="nest">' + 
+            jsonToNestedHtmlDivs(obj[key]) + '</div>'
         }
       }
       else {
         txt += '<div class="row"><div class="key">' + key +
-          '</div><div class="val">' + obj[key] + '</div></div>';
+          '</div><div class="val">' + obj[key] + '</div></div>'
       }
     }
   }
-  return txt;
-};
-
-
+  return txt
+}
 //
-// ANIMATIONS
+// ANIME
 //
-
 function tickerText(text_ele, text, duration, doAfter=null) {
   /*
   Promises: Insert text into an element in a ticker-like manner,
@@ -245,7 +231,6 @@ function tickerText(text_ele, text, duration, doAfter=null) {
     i += 1
   }, duration);
 }
-
 function tickerLinesSequentially(lines_ele, lines_text_list, duration) {
 /*
 Requires: addEle(), tickerText()
@@ -275,7 +260,6 @@ Examples: var lines_ele = document.getElementsByTagName('body')[0]
   }
   loopLines() // ini
 }
-
 function tickerLinesSimultaneouslyWithSameDuration(lines_ele, lines_text_list, duration) {
 /*
 Requires: addEle(), tickerText()
@@ -321,42 +305,46 @@ Examples: var lines_ele = document.getElementsByTagName('body')[0]
     }
   }, 277);
 }
+//
 // LOAD
+//
 function getJson(url) {
   var request = new XMLHttpRequest()
   request.open('GET', url, true)
   request.onload = function() {
     if(request.status >= 200 && request.status < 400) {
-      // Success!
       var data = JSON.parse(request.responseText)
       return data
     }
     else {
-      // We reached our target server, but it returned an error:
+      // Reached target server, but an error occured:
       console.error("Couldn't load JSON from '" + url + "'.")
     }
   }
   request.onerror = function() {
-    // There was a connection error of some sort
-      console.error("Cannot get a connection to '" + url + "'.")
+    // I just can't get no:
+    console.error("Cannot get a connection to '" + url + "'.")
   }
+  // Cause all I wanna do:
   request.send()
 }
 function getHtml(url) {
-  var request = new XMLHttpRequest();
-  request.open('GET', url, true);
+  var request = new XMLHttpRequest()
+  request.open('GET', url, true)
   request.onload = function() {
     if (request.status >= 200 && request.status < 400) {
-      // Success!
       var resp = request.responseText
       return resp
-    } else {
-      // We reached our target server, but it returned an error
     }
-  };
+    else {
+      // Reached target server, but an error occured:
+      console.error("Couldn't load JSON from '" + url + "'.")
+    }
+  }
   request.onerror = function() {
-    // There was a connection error of some sort
-  };
+    // I just can't get no:
+    console.error("Cannot get a connection to '" + url + "'.")
+  }
   request.send()
 }
 // EOF

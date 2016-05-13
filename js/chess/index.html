@@ -22,9 +22,18 @@ position: absolute;
 width: 50px;
 height: 50px;
 }
-.cell {
+.cell:nth-child(-2n+8) {
   background: #a2a2a2;
 }
+.cell:nth-child(2n+9) {
+  background: #a2a2a2;
+}
+.cell:nth-child(2n+18) {
+  background: #a2a2a2;
+}
+/*
+http://stackoverflow.com/questions/9114520/pure-css-chessboard-with-div-no-classes-or-ids-is-it-possible
+*/
 .cell-8-8,
 .cell-8-6,
 .cell-8-4,
@@ -59,7 +68,6 @@ height: 50px;
 .cell-1-1 {
 background: black;  
 }
-
 </style>
 <script type="text/javascript">
 function getCoords(ele) {
@@ -116,6 +124,7 @@ document.addEventListener("DOMContentLoaded", function(eve) {
   addFigures()
   listenFields()
   listenFigures()
+console.log('idw')
 }); // dom loaded
 </script>
 </head>
