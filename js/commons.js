@@ -308,41 +308,18 @@ Examples: var lines_ele = document.getElementsByTagName('body')[0]
 //
 // LOAD
 //
-function getJson(url) {
-  var request = new XMLHttpRequest()
-  request.open('GET', url, true)
-  request.onload = function() {
-    if(request.status >= 200 && request.status < 400) {
-      var data = JSON.parse(request.responseText)
-      return data
-    }
-    else {
-      // Reached target server, but an error occured:
-      console.error("Couldn't load JSON from '" + url + "'.")
-    }
-  }
-  request.onerror = function() {
-    // I just can't get no:
-    console.error("Cannot get a connection to '" + url + "'.")
-  }
-  // Cause all I wanna do:
-  request.send()
-}
-function getHtml(url) {
-  var request = new XMLHttpRequest()
-  request.open('GET', url, true)
+function loadUrlAndInsertResponseToEle(url, ele=document.body) {
+  var request = new XMLHttpRequest();
+  request.open('GET', url, true);
   request.onload = function() {
     if (request.status >= 200 && request.status < 400) {
-      var resp = request.responseText
-      return resp
+      ele.innerHTML = request.responseText
     }
     else {
-      // Reached target server, but an error occured:
-      console.error("Couldn't load JSON from '" + url + "'.")
+      console.error("Couldn't load HTML from '" + url + "'.")
     }
   }
   request.onerror = function() {
-    // I just can't get no:
     console.error("Cannot get a connection to '" + url + "'.")
   }
   request.send()
