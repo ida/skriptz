@@ -6,7 +6,10 @@ vimAndSetScreenTitleToFileName() {
     vim $1
 }
 alias ..='cd ..'
-alias ...='cd ../..'
+alias ...='..;..'
+alias ....='...;..'
+alias .....='....;..'
+alias ......='.....;..'
 alias ca='cat'
 alias cl='clear'
 alias diff='colordiff -u'
@@ -18,7 +21,7 @@ alias scr='screen -r'
 alias scs='screen -S'
 alias rf='rm -rf'
 alias vi='vim'
-alias vv=vimAndSetScreenTitleToFileName
+alias v=vimAndSetScreenTitleToFileName
 
 alias bo='buildout'
 alias boo='buildout -O'
@@ -28,7 +31,7 @@ alias boi='bo; bi'
 alias boui='bou; bi'
 
 alias br='git branch'
-alias pull='git pull origin master'
+alias pull='git pull --rebase origin master'
 alias push='git push origin master'
 alias puff='git push origin forumail'
 alias st='git status'
@@ -49,3 +52,4 @@ alias ash='git stash'
 alias pop='git stash pop'
 
 alias ali='cat ~/.bash_aliases'
+alias src='. ~/.bashrc; . ~/.bash_aliases;'

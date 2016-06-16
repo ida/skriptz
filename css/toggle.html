@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>Toggle with CSS only</title>
+<style type="text/css">
+div#wrapper {
+  background: #fff;
+  position: relative;
+}
+div#wrapper >
+  a.show {
+    position: relative;
+    top: 0;
+  }
+div#wrapper >
+  div#content {
+    background: inherit;
+    visibility: hidden;
+  }
+div#wrapper >
+  div#content:target {
+    visibility: visible;
+  }
+div#wrapper >
+  div#content >
+    a.hide {
+      background: inherit;
+      position: absolute;
+      top: 0;
+    }
+</style>
+</head>
+<body lang="en" dir="ltr">
+  <div id="wrapper">
+    <a class="show" href="#content">
+      Show content
+    </a>
+    <div id="content">
+      <a class="hide" href="#wrapper">
+        Hide content
+      </a>
+      <pre>
+&lt;div id="wrapper">
+  &lt;a class="show" href="#content">
+    Show content
+  &lt;/a>
+  &lt;div id="content">
+    &lt;a class="hide" href="#wrapper">
+      Hide content
+    &lt;/a>
+    Some content
+  &lt;/div>
+&lt;/div>
+
+#wrapper {
+  background: #fff;
+  position: relative;
+}
+  .show {
+    position: relative;
+    top: 0;
+  }
+  #content {
+    background: inherit;
+    visibility: hidden;
+  }
+  #content:target {
+    visibility: visible;
+  }
+    .hide {
+      background: inherit;
+      position: absolute;
+      top: 0;
+    }
+      </pre>
+    </div>
+  </div>
+</body>
+</html>
