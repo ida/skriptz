@@ -1,9 +1,18 @@
 sas() {
-    # Requires:
-    # pip install pyScss
-    # Usage:
-    # sas stylefile.scss
-    python -m scss < "$1" > "$1.css"
+# Requires:
+# pip install pyScss
+# Usage:
+# sas stylefile.scss
+
+    # Get currently edited filename:
+    fil=$1
+    # Split it into an array:
+    IFS='.' read -a arrayname <<< $fil
+    # Extract filename, without the extension of it:
+    filnam=${arrayname[0]:0:1}
+    # And let pyScss do the rest:
+    python -m scss < "$1" > "${filnam}".css
+    # python -m scss < "$1" > "$1"
 }
 setScreenWindowTitleToFilename() {
     echo -e '\033k'$1'\033\\'
