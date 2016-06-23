@@ -224,6 +224,16 @@ splitStringIntoArray() { IFS=', ' read -a $1 <<< $2 }
 # strg=$( printf "%s" "${arrayname[@]}" )
 #
 #
+# Get nth item of array
+# ---------------------
+#
+# item=${@:$n:1}
+#
+# Note: Replace 'n' with the desired index-position to grab,
+# where '1' defines how many items starting from that position,
+# are supposed to be returnded, it can be more, if desired.
+#
+#
 # Further reading
 # ===============
 #
