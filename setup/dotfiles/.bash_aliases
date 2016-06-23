@@ -1,3 +1,10 @@
+sas() {
+    # Requires:
+    # pip install pyScss
+    # Usage:
+    # sas stylefile.scss
+    python -m scss < "$1" > "$1.css"
+}
 setScreenWindowTitleToFilename() {
     echo -e '\033k'$1'\033\\'
 }
@@ -5,6 +12,7 @@ vimAndSetScreenTitleToFileName() {
     setScreenWindowTitleToFilename $1
     vim $1
 }
+alias dg='devgen'
 alias ..='cd ..'
 alias ...='..;..'
 alias ....='...;..'
@@ -35,6 +43,7 @@ alias pull='git pull --rebase origin master'
 alias push='git push origin master'
 alias puff='git push origin forumail'
 alias st='git status'
+alias sd='git status'
 alias di='git diff'
 alias ch='git checkout'
 alias chb='git checkout -b'
