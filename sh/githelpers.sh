@@ -70,6 +70,16 @@ checkForDiffs() {
     fileIsEmpty $reportfile
     if [[ $? == 1 ]]; then echo 'Everythings clean, no diffs :-)'; else echo There are diffs, check: $reportfile; fi
 }
+checkoutLatestTag() {
+    git fetch
+    latest_tag=$(git describe)
+    git checkout tags/$latest_tag
+}
+createTag() {
+    DATE=`date +%y%m%d%H%M%S`
+    git tag -a $DATE -m "Create annotated tag."
+    git push origin --tags
+}
 main() {
     checkForUnpushedCommits
     checkForDiffs
