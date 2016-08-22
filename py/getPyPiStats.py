@@ -119,8 +119,8 @@ def genHtlm(pckgs):
 <div>
     Generated with:
     <a alt="Link to helper-script"
-       href="https://github.com/ida/skriptz/tree/master/py/getPypiStats.py">
-       https://github.com/ida/skriptz/tree/master/py/getPypiStats.py
+       href="https://github.com/ida/skriptz/blob/master/py/getPypiStats.py">
+       https://github.com/ida/skriptz/blob/master/py/getPypiStats.py
     </a>
 </div>
 <div>
