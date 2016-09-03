@@ -7,9 +7,12 @@ vimAndSetScreenTitleToFileName() {
 }
 alias ..='cd ..'
 alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
 alias ca='cat'
 alias cl='clear'
 alias diff='colordiff -u'
+alias l='ls -l'
 alias py='python'
 alias psy='ps aux|grep python'
 alias scd='screen -dRR'
