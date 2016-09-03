@@ -1,28 +1,56 @@
 # ENTER PASSWORDS ONLY ONCE
+# =========================
+# http://mah.everybody.org/docs/ssh#run-ssh-agent
+SSH_ENV="$HOME/.ssh/environment"
 
+function start_agent {
+     echo "Initialising new SSH agent..."
+     /usr/bin/ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
+     echo succeeded
+     chmod 600 "${SSH_ENV}"
+     . "${SSH_ENV}" > /dev/null
+     /usr/bin/ssh-add;
+}
+
+# Source SSH settings, if applicable
+
+if [ -f "${SSH_ENV}" ]; then
+     . "${SSH_ENV}" > /dev/null
+     #ps ${SSH_AGENT_PID} doesn't work under cywgin
+     ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
+         start_agent;
+     }
+else
+     start_agent;
+fi
+
+# ENTER PASSWORDS ONLY ONCE
+# =========================
 # Following this very helpful article:
 # http://rabexc.org/posts/pitfalls-of-ssh-agents
 # Note: Suggests to use ssh-ident, when you have a lot of keys.
-
+#
 # For entering the pw for a remote-machine only once, do:
 # ssh-copy-id remote.machi.ne
 # That copies your pubkey and remembers you to be trustable,
 # via ssh-keys, instead of the usual login-procedure.
-
+##
 # For entering the pw for your ssh-key only once, start
 # an ssh-agent, if not done by autostart:
-ssh-add -l &>/dev/null
-if [ "$?" == 2 ]; then
-  test -r ~/.ssh-agent && \
-    eval "$(<~/.ssh-agent)" >/dev/null
 
-  ssh-add -l &>/dev/null
-  if [ "$?" == 2 ]; then
-    (umask 066; ssh-agent > ~/.ssh-agent)
-    eval "$(<~/.ssh-agent)" >/dev/null
-    ssh-add
-  fi
-fi
+
+#ssh-add -l &>/dev/null
+#if [ "$?" == 2 ]; then
+#  test -r ~/.ssh-agent && \
+#    eval "$(<~/.ssh-agent)" >/dev/null
+#
+#  ssh-add -l &>/dev/null
+#  if [ "$?" == 2 ]; then
+#    (umask 066; ssh-agent > ~/.ssh-agent)
+#    eval "$(<~/.ssh-agent)" >/dev/null
+#    ssh-add
+#  fi
+#fi
 
 # Always use an isolated local python-env, no sys-conflicts:
 export PATH=$HOME/.virtenv/bin:$PATH
@@ -44,9 +72,9 @@ if [[ "$TERM" == screen* ]]; then
     local HPWD="$PWD"
     case $HPWD in
       $HOME) HPWD="~";;
-# full path:
+# Full path:
 #      $HOME/*) HPWD="~${HPWD#$HOME}";;
-# only dirname:
+# Only dirname:
             *) HPWD=`basename "$HPWD"`;;
     esac
     printf '\ek%s\e\\' "$HPWD"

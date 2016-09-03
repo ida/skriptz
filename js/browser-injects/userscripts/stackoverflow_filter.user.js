@@ -24,6 +24,7 @@ var exclude_post_nrs = [ // Add the posts, you don't want to see, here.
 var exclude_authors = [
 'Ida Ebkes',
 ]
+var html = ''
 var posts = document.getElementsByClassName('question-summary')
 for(var i=0; i<posts.length; i++) {
     var post = posts[i]
@@ -32,6 +33,7 @@ for(var i=0; i<posts.length; i++) {
     var post_nr = post_url.split('/')[2]
     var post_author_details = post.getElementsByClassName('user-details')[0]
     var post_author_name = post_author_details.getElementsByTagName('a')[0].firstChild.nodeValue
+    var post_modification_time = post.getElementsByClassName('relativetime')[0]
     for(var j=0; j<exclude_post_nrs.length; j++) {
         if(exclude_post_nrs[j] == post_nr) {
             post.remove()
@@ -41,6 +43,9 @@ for(var i=0; i<posts.length; i++) {
         if(exclude_authors[j] == post_author_name) {
             post.remove()
         }
+        else {
+          html += post_link.outerHTML + '&nbsp;' + post_author_name.uppercase() + '&nbsp;-&nbsp;' + post_modification_time
+        }
     }
 }
-
+document.body.innerHTML = html

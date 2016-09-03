@@ -13,18 +13,33 @@ set smartindent     " Preserve indent when breaking the line.
 " Two spaces indents for js- and html-files:
 autocmd Filetype html setlocal ts=2 sts=2 sw=2
 autocmd Filetype javascript setlocal ts=2 sts=2 sw=2
+autocmd Filetype css setlocal ts=2 sts=2 sw=2
 
 " Make less-files behave like js-files for syntax-highlighting:
 au BufNewFile,BufRead *.less set filetype=javascript
+" Make sass-files behave like css-files, because:
+au BufNewFile,BufRead *.scss set filetype=css
+
+" Make sure using ! for starting a shell-cmd, always works,
+" activate interactive mode:
+set shellcmdflag=-ic
+
+" When saving SASS-files, execute 'sas' defined in '.bash_aliases':
+autocmd BufWritePost *.scss !sas <afile>
+
+" Make less-files behave like js-files for syntax-highlighting:
+au BufNewFile,BufRead *.less set filetype=javascript
+
+" For the EOF-symbol '~', set fg and bg to black, so tilde gets invisible:
+highlight NonText ctermfg=Black ctermbg=Black
 
 " http://stackoverflow.com/questions/1294790/change-tilde-color-in-vim
 " make eof-symbol (the tilde) have the same color as default-fg-col and
 " thereby dissapear visually:
 "
-" :highlight nontext ctermfg=12
+" highlight NonText ctermfg=12
 "
 " Or, set a specific color:
 " 
-" :highlight nontext ctermfg='red'
-
+" highlight NonText ctermfg='red'
 

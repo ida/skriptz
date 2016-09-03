@@ -1,0 +1,37 @@
+<script>
+var html = 'Open this document in a browser, drag and drop the shown link above\
+ into your bookmark-bar, then go to a StackoverFlows questions-list and click\
+ the bookmark.<br><br>\
+\
+The content will be transformed into a list of question-title, \
+-user and -date only, so tabbing through the title-links is much quicker and \
+less information-clutter in the screen, like points are, e.g.<br><br>\
+\
+Additionally you can set a userid-nr in the var "exclude" below, in case you \
+want to have filtered out modifications of a speficfic user.<br>'
+</script>
+<a href="javascript:( function(){
+var exclude = '2772777';
+var html = '';
+var body = document.getElementsByTagName('body')[0];
+var posts = document.getElementsByClassName('question-summary');
+for(var i=0; i < posts.length; i++) {
+  var user_link_dest = posts[i].getElementsByClassName('user-details')[0].getElementsByTagName('a')[0].getAttribute('href');
+  /* Eval inclusion: */
+  if(user_link_dest.indexOf(exclude) == -1) {
+    /* Prep strs: */
+    var time = posts[i].getElementsByClassName('relativetime')[0].innerHTML;
+    time = '<span style=\'font-size:77%\'>&nbsp;-&nbsp;' + time + '</span>';
+    var user_name = user_link_dest.split('/');
+    user_name = user_name[user_name.length-1];
+    user_name = '<span style=\'font-size:111%;text-transform:uppercase\'>&nbsp;' + user_name + '</span>';
+    /* Add strs to html: */
+    html += '<div>' + posts[i].getElementsByClassName('question-hyperlink')[0].outerHTML + user_name + time + '</div>';
+  }
+}
+/* Set html: */
+body.innerHTML = html;
+})();
+">Filter SO quest-lists</a>
+<br>
+<script>document.body.innerHTML += html</script>

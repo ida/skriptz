@@ -1,8 +1,13 @@
-.*.pyc
-.*.py[co]
-.*.sw[po]
+*.py[co]
+*.sw[po]
 *.bak*
 *.tmp*
 *.trash*
 *.orig
 *.egg-info
+.installed.cfg
+bin/
+develop-eggs/
+parts/
+var/
+

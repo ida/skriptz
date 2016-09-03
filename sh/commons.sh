@@ -5,7 +5,8 @@ strEqualsStr () { if [ "$1" = "$2" ]; then return 1; else return 0; fi }
 strStartswithStr () { if [[ "$1" = "$2"* ]]; then return 1; else return 0; fi }
 strContainsStr () { if [[ "$1" = *"$2"* ]]; then return 1; else return 0; fi }
 strEndswithStr () { if [[ "$1" = *"$2" ]]; then return 1; else return 0; fi }
-splitStringIntoArray() { IFS=', ' read -a $1 <<< $2 }
+now() { now="$(date +%y%m%d%H%M%S)"; echo "${now}"; }
+splitStringIntoArray() { IFS=', ' read -a $1 <<< $2; }
 # splitStringIntoArray arrayname "${string}"
 ###############################################################################
 #
@@ -222,6 +223,16 @@ splitStringIntoArray() { IFS=', ' read -a $1 <<< $2 }
 # -----------------------
 #
 # strg=$( printf "%s" "${arrayname[@]}" )
+#
+#
+# Get nth item of array
+# ---------------------
+#
+# item=${@:$n:1}
+#
+# Note: Replace 'n' with the desired index-position to grab,
+# where '1' defines how many items starting from that position,
+# are supposed to be returnded, it can be more, if desired.
 #
 #
 # Further reading
