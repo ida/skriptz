@@ -53,7 +53,9 @@ function downlight(ele) {
   $('#' + ele.className).css('background', '#fff')
 }
 document.addEventListener("DOMContentLoaded", function(event) { 
-  var html = ''
+  var html = 'Hover over transitions to see their target-state.<br>'
+  html += 'STATE (Roles who can edit and switch state)<br>'
+  html += '&nbsp;&nbsp;&nbsp;&nbsp;TRANSITIONS (Roles who can execute the transition)<br><br>'
 
   var state_tags = document.getElementsByTagName('state')
   for(var i=0; i < state_tags.length; i++) {
