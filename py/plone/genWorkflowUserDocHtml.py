@@ -12,15 +12,19 @@ wf_def = """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 """ + wf_def + """
 <script>
 function getStateRoles(state_id) {
+  // We only look for 'Modify portal content' and
+  // 'Change portal events' perms for now.
   var roles = []
-  $('state[state_id=' + state_id + '] permission-role').each(function() {
-    var role = $(this).text()
-console.debug(role)
-    if(roles.indexOf(role) == -1) {
-        roles.push(role)
-    }
-  });
-console.debug(roles)
+  var perms = ['Modify portal content', 'Change portal events']
+  for(var i=0;i<perms.length;i++) {
+      $('state[state_id=' + state_id + '] \
+      permission-map[name="' + perms[i] + '"] permission-role').each(function() {
+        var role = $(this).text()
+        if(roles.indexOf(role) == -1) {
+            roles.push(role)
+        }
+      });
+  }
   return ' (' + roles.join(', ') + ')'
 }
 function getTargetStateId(transition_id) {
@@ -44,6 +48,11 @@ function getTransitionRoles(transition_id) {
     });
     return string += ')'
 }
+function getTransitionTitle(transition_id) {
+    console.debug( transition_id )
+    console.debug( $('transition[transition_id=' + transition_id + ']') )
+    return $('transition[transition_id=' + transition_id + ']').attr('title')
+}
 function highlight(ele) {
   $(ele).css('background', 'yellow')
   $('#' + ele.className).css('background', 'yellow')
@@ -53,23 +62,34 @@ function downlight(ele) {
   $('#' + ele.className).css('background', '#fff')
 }
 document.addEventListener("DOMContentLoaded", function(event) { 
-  var html = 'Hover over transitions to see their target-state.<br>'
-  html += 'STATE (Roles who can edit and switch state)<br>'
-  html += '&nbsp;&nbsp;&nbsp;&nbsp;TRANSITIONS (Roles who can execute the transition)<br><br>'
+  var html = ''
+  html += Hover over transitions to see their target-state.<br><br>'
+  html += '<h2>' + $($('dc-workflow')[0]).attr('workflow_id') + '</h2>'
+  html += '<em>Legend:</em><br>'
+  //html += 'State-title [state_id] (Roles who can edit the item and switch its state)<br>'
+  html += 'State-title (Roles who can edit the item and switch its state)<br>'
+  html += '&nbsp;&nbsp;&nbsp;&nbsp;'
+  //html += 'Transition-title [transition_id] (Roles who can execute the transition)<br>'
+  html += 'Transition-title (Roles who can execute the transition)<br>'
 
   var state_tags = document.getElementsByTagName('state')
   for(var i=0; i < state_tags.length; i++) {
     var state_id = state_tags[i].getAttribute('state_id')
     html += '<div id="' + state_id + '">'
-      + state_id + getStateRoles(state_id)
-//      + ' (' + state_tags[i].getAttribute('title') + ')'
+      + state_tags[i].getAttribute('title')
+//      + ' [' + state_id + '] '
+      + getStateRoles(state_id)
 
     var transition_tags = state_tags[i].getElementsByTagName('exit-transition')
     for(var j=0; j < transition_tags.length; j++) {
         var transition_id = transition_tags[j].getAttribute('transition_id')
+        var transition_title = getTransitionTitle(transition_id)
         var target_state_id = getTargetStateId(transition_id)
-      html += '<div class="' + target_state_id + '" style="padding-left: 1em; background: #fff">'
-        + transition_tags[j].getAttribute('transition_id') + getTransitionRoles(transition_id)
+      html += '<div class="' + target_state_id + '" style="padding-left: 1em; \
+        background: #fff">'
+        + transition_title
+//        + ' [' + transition_id + '] '
+        + getTransitionRoles(transition_id)
       html += '</div>'
     }
     html += '</div>'
