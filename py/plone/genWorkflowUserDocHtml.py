@@ -1,4 +1,8 @@
-# We expect a file "definition.xml"in the same directory, outputs a 'defintion.html'-file in this directory.
+#!/usr/bin/env python
+#-*- coding: utf-8 -*-
+# We expect a file "definition.xml"in the same directory,
+# outputs a 'defintion.html'-file in this directory.
+# Usage: In a terminal/shell type: ´python genWorkflowUserDocHtml.py´
 wf_def_file = 'definition.xml'
 wf_def = ''.join(open(wf_def_file).readlines()[1:]) # omit first line
 wf_def = """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
@@ -49,8 +53,6 @@ function getTransitionRoles(transition_id) {
     return string += ')'
 }
 function getTransitionTitle(transition_id) {
-    console.debug( transition_id )
-    console.debug( $('transition[transition_id=' + transition_id + ']') )
     return $('transition[transition_id=' + transition_id + ']').attr('title')
 }
 function highlight(ele) {
@@ -63,21 +65,21 @@ function downlight(ele) {
 }
 document.addEventListener("DOMContentLoaded", function(event) { 
   var html = ''
-  html += Hover over transitions to see their target-state.<br><br>'
-  html += '<h2>' + $($('dc-workflow')[0]).attr('workflow_id') + '</h2>'
+  html += '<!--This doc was generated of a workflow-definition.xml, using "\
+https://github.com/ida/skriptz/blob/master/py/plone/genWorkflowUserDocHtml.py\
+  "-->'
   html += '<em>Legend:</em><br>'
-  //html += 'State-title [state_id] (Roles who can edit the item and switch its state)<br>'
   html += 'State-title (Roles who can edit the item and switch its state)<br>'
   html += '&nbsp;&nbsp;&nbsp;&nbsp;'
-  //html += 'Transition-title [transition_id] (Roles who can execute the transition)<br>'
   html += 'Transition-title (Roles who can execute the transition)<br>'
+  html += '<br><em>Hover over a transition, to see its target-state.</em><br><br>'
+  html += '<h2>' + $($('dc-workflow')[0]).attr('workflow_id') + '</h2>'
 
   var state_tags = document.getElementsByTagName('state')
   for(var i=0; i < state_tags.length; i++) {
     var state_id = state_tags[i].getAttribute('state_id')
     html += '<div id="' + state_id + '">'
       + state_tags[i].getAttribute('title')
-//      + ' [' + state_id + '] '
       + getStateRoles(state_id)
 
     var transition_tags = state_tags[i].getElementsByTagName('exit-transition')
@@ -88,13 +90,15 @@ document.addEventListener("DOMContentLoaded", function(event) {
       html += '<div class="' + target_state_id + '" style="padding-left: 1em; \
         background: #fff">'
         + transition_title
-//        + ' [' + transition_id + '] '
         + getTransitionRoles(transition_id)
       html += '</div>'
     }
     html += '</div>'
   }
   document.body.innerHTML = html
+  $('body > div').css('margin-bottom', '0.75em')
+  $('body > div > div').css('padding-top', '0.5em')
+  $('body > div > div').css('padding-bottom', '0.5em')
   transition_tags = $('body > div > div')
   for(var j=0; j < transition_tags.length; j++) {
     transition_tags[j].onmouseover=function() { highlight(this) }
