@@ -135,11 +135,18 @@ function setTable(csv) {
 }
 function showTable(keys=null) {
 
+  var html = ''
+
   if(keys === null) { keys = getKeys() }
   var table = getTable(keys)
   var rows = table.split(columnDeli)
 
-  var html = '<div>'
+  if(keys.length == 0) {
+    html += "<p>There's no data, yet. Click the plus-button, to enter the \
+            first column-header.</p>"
+  }
+
+  html += '<div>' // table-wrapper
 
   // Add first column, add-col-button and row-nrs:
   html += '<div>'
