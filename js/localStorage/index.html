@@ -2,11 +2,11 @@
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
-<title>localStorage</title>
+<title>Your local storage</title>
 <style>
-span {
-}
 input {
+  background: #e2e2e2;
+  background: #f2f2f2;
   border: none;
   height: 100%;
   font-size: 1em;
@@ -33,10 +33,8 @@ div > div > div {
   border-top: 1px solid;
   border-color: #a2a2a2;
 }
-.info:hover:after {
-  content: 'Put some example info about this awesome app, here.';
-position: absolute;
-background: red;
+.button {
+  background: #e2e2e2;
 }
 </style>
 <script type="text/javascript">
@@ -146,23 +144,73 @@ function showTable(keys=null) {
   // Add first column, add-col-button and row-nrs:
   html += '<div>'
     html += '<div class="info">'
-    html += 'i'
+      html += '<span class="button" style="z-index:2;position:relative;top:0;\
+              left:0">i</span>'
+      html += '<div class="text" style="z-index:1;display:none;position:\
+              absolute;top:0;left:0;width:99%;height:99%;background:#f2f2f2">'
+        html += '<h2>'
+        html += 'Browser-based spreadsheet'
+        html += '</h2>'
+        html += '<p>'
+        html += "This app shows your browser's local storage as a spreadsheet \
+                and stores any modification you do immediately to the local \
+                storage. You can close your browser and come back another \
+                time, the data will still be there."
+        html += '</p>'
+        html += '<p>'
+        html += 'The first row is for entering a new entry, if you hit the \
+                 Enter-/Return-key in any cell of it, the new row is appended \
+                 to the table. Hover over the grey buttons to get a \
+                 description of what they do.'
+        html += '</p>'
+        html += '<h3>'
+        html += 'Note'
+        html += '</h3>'
+        html += '<p>'
+        html += 'This is a not entirely finished prototype, meaning currently \
+                you cannot use commas within a cell.'
+        html += '</p>'
+        html += '<p>'
+        html += 'For more details, see the '
+        html += '<a href="README.txt" title="More about this app">README</a> '
+        html += 'of this app.'
+        html += '</p>'
+        html += '<hr>'
+        html += '<p style="font-size:70%">'
+        html += 'This is a copy of '
+        html += '<a href="https://github.com/ida/skriptz/tree/master/js/localStorage"\
+                  title="Go to the repository of this app">'
+        html += 'https://github.com/ida/skriptz/tree/master/js/localStorage</a>.'
+        html += '</p>'
+      html += '</div>'
     html += '</div>'
     html += '<div class="addKey" title="Add column" tabindex="1">'
-    html += '+'
+    html += '<span class="button">+</span>'
     html += '</div>'
   if(table != '') {
     var cells = rows[0].split(cellDeli)
     for(var j in cells) {
       if(j != 0) {
         html += '<div>'
-          html += '<span class="rowUp">'
-            html += '^'
-          html += '</span>'
+          if(j == 1) {
+            html += '<span class="rowUp dummy">'
+              html += '&nbsp;'
+            html += '</span>'
+          }
+          else {
+            html += '<span class="rowUp button" title="Move row up">'
+              html += '^'
+            html += '</span>'
+          }
           html += j
-          html += '<span class="rowDown">'
-            html += 'v'
-          html += '</span>'
+          if(j == cells.length -1) {
+            html += '&nbsp;' // dummy
+          }
+          else {
+            html += '<span class="rowDown button" title="Move row down">'
+              html += 'v'
+            html += '</span>'
+          }
         html += '</div>'
       }
     }
@@ -177,8 +225,24 @@ function showTable(keys=null) {
     var cells = row.split(cellDeli)
     for(var j in cells) {
       if(j == 0) {
-        html += '<div><span class="columnToLeft"><</span><input tabindex="1"><span class="columnToRight">></span></div>' // new-row-cell
-        html += '<div class="columnHeaderCell editCell" tabindex="' + j + 2 + '">'
+        // New-row-cell, including move-column-buttons:
+        html += '<div>'
+        if(i == 0) {
+          html += '<span>&nbsp;</span>'
+        }
+        else {
+          html += '<span class="columnToLeft button" title="Move column to left"><</span>'
+        }
+        html += '<input tabindex="1">'
+        if(i == rows.length-1) {
+          html += '<span>&nbsp;</span>'
+        }
+        else {
+          html += '<span class="columnToRight button" title="Move column to right">></span>'
+        }
+        html += '</div>'
+        html += '<div class="columnHeaderCell editCell" tabindex="'
+                + j + 2 + '">'
       }
       else { // except keys
         html += '<div class="editCell" tabindex="' + j + 2 + '">'
@@ -191,25 +255,31 @@ function showTable(keys=null) {
 
   // Add last column, delete-buttons:
   html += '<div>'
-    html += '<div class="delTable">'
+    html += '<div class="delTable button" title="Remove table">'
     html += 'X'
     html += '</div>'
-    html += '<div class="delKey" title="Remove column" tabindex="0">'
+    html += '<div class="delKey button" title="Remove column" tabindex="0">'
     html += 'X'
     html += '</div>'
-    html += '<div class="delRow" tabindex="0">X</div>'
+    html += '<div class="delRow button" title="Remove row" tabindex="0">X</div>'
     .repeat(getRowDelisAmount())
   html += '</div>'  // end of last-column
   } // table != ''
   html += '</div>' //  end of table
 
+  // Set html:
   document.getElementsByTagName('body')[0].innerHTML = html
+  // Re-apply listeners to new html:
   addListeners(keys)
+  // If table has content:
   if(document.getElementsByTagName('input').length > 0) {
+    // Focus first input:
     document.getElementsByTagName('input')[0].focus()
   }
+  // If table has no content:
   else {
-    document.getElementsByClassName('addKey')[0].click()
+    // Click the add-column-button:
+    // document.getElementsByClassName('addKey')[0].click()
   }
 }
 //
@@ -313,8 +383,20 @@ function addButtonsListener(keys) {
   var delKeyButton = document.getElementsByClassName('delKey')[0]
   var delRowButtons = document.getElementsByClassName('delRow')
   var delTableButton = document.getElementsByClassName('delTable')[0]
+  var infoButton = document.getElementsByClassName('info')[0].getElementsByClassName('button')[0]
   var rowDownButtons = document.getElementsByClassName('rowDown')
   var rowUpButtons = document.getElementsByClassName('rowUp')
+  infoButton.onclick  = function(eve) {
+    if(eve.target.nextSibling.style.display == 'none') {
+      eve.target.nextSibling.style.display = 'block'
+      eve.target.style.position = 'absolute'
+      eve.target.textContent = 'X'
+    } else {
+      eve.target.nextSibling.style.display = 'none'
+      eve.target.style.position = 'relative'
+      eve.target.textContent = 'i'
+    }
+  }
   for(var i in rowDownButtons) {
     rowDownButtons[i].onclick = function(eve) {
       // Get rowNr, subtract the first row for new cells:
@@ -342,7 +424,6 @@ function addButtonsListener(keys) {
   addKeyButton.onclick = function(eve) {
       addKeyButton.innerHTML = '<input>'
       var addKeyInput = addKeyButton.getElementsByTagName('input')[0]
-console.log(addKeyInput)
       addKeyInput.focus()
       addKeyInput.onkeydown = function(eve) {
         if(eve.keyCode == 13) {
@@ -613,13 +694,17 @@ function addListeners(keys) {
 //
 // MAIN
 //
-document.addEventListener("DOMContentLoaded", function(event) { 
+document.addEventListener("DOMContentLoaded", function(event) {
+  // An example CSV:
   var csv = 'x,y,z\nFirstname,Lastname,Passion\nIda,Ebkes,Python\nAda,Ebkes,Lion'
-//  setTable(csv)
-//  var keys = csv.split(columnDeli)[0].split(cellDeli)
-  var keys = getKeys() 
+  // For testing uncomment this line to store the example-CSV to localStorage:
+  //  setTable(csv)
+  // For always having the same order of keys, define them here:
+  //  var keys = csv.split(columnDeli)[0].split(cellDeli)
+  // Otherwise we read the localStorage-keys, as they come:
+  var keys = getKeys()
+  // And finally show the table:
   showTable(keys)
-console.log(localStorage)
 
 }); // dom loaded
 </script>
