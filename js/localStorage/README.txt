@@ -1,6 +1,11 @@
 Browser-based spreadsheet
 =========================
 
+Demo
+----
+
+http://euve4703.vserver.de:8080/adi/static/public/repos/github/ida/skriptz/js/localStorage/index.html
+
 
 What
 ----
