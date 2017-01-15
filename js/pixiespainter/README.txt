@@ -4,7 +4,7 @@ Pixiepaint
 Demo
 ----
 
-http://euve4703.vserver.de:8080/adi/static/public/repos/github/ida/skriptz/js/pixiespainter
+http://euve4703.vserver.de:8080/adi/static/public/repos/github/ida/skriptz/js/pixiespainter/i.html
 
 
 What
