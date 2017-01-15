@@ -42,7 +42,7 @@ function addStylesheet(file_path) {
     // On info-button-click:
     $('#paint-container-controls-header-info').click(function() {
       if( $(this).text() == 'i' ) {
-        $(this).html('Please go to the <a href="README.txt" title="More info about \
+        $(this).html(' x&nbsp;   Please go to the <a href="README.txt" title="More info about \
           this app">README</a> of this app, for more info.')
       }
       else {
