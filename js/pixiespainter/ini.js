@@ -35,10 +35,20 @@ function addStylesheet(file_path) {
     $(app + '-canvas-cursor').css('background', '#ff0800')
     // Set brush-mode to 'on':
     $(app + '-controls-controller-middle').addClass('selected')
-    // Hide info-text:
-    $(app + '-controls-header-info').click()
     // Focus app, so user can go right ahead to make key-inputs:
     $(app).focus()
+
+
+    // On info-button-click:
+    $('#paint-container-controls-header-info').click(function() {
+      if( $(this).text() == 'i' ) {
+        $(this).html('Please go to the <a href="README.txt" title="More info about \
+          this app">README</a> of this app, for more info.')
+      }
+      else {
+        $(this).text('i')
+      }
+    });
 
     });//docready
 })(jQuery);

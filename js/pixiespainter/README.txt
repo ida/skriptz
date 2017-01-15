@@ -31,5 +31,10 @@ How
 
 Download this folder and open the 'index.html'-file in a browser.
 
-Click on the info-button for detailed usage-instructions.
+The controller can be used for moving the brush and also shows the keyboard-equivalents.
+Click "on", respectively "off" to turn the brush on and off.
+Click the color-picker inside of controls to change the brush-color.
+Currently you can change the size of the brush, clicking on plus and minus.
+The other two parameters are not yet hooked up, to be done.
+
 
