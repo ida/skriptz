@@ -7,9 +7,7 @@ function addEle(ele_id) {
     return $(knot)
 }
 function addMarkupSkel() {
-    var fg = 999
-    var bg = fg/9
-    $(knot).append('<div id="'+ app + '-container" style="background: #' + bg + '; color: #' + fg + ';"></div>')
+    $(knot).append('<div id="'+ app + '-container"></div>')
     app = '#' + app + '-container'
     knot = app
     addEle('canvas')

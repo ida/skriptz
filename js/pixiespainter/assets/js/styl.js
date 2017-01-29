@@ -1,27 +1,22 @@
-var bg = 'lightblue'
-var fg = 'darkblue'
-var hilite = 'darkblue'
+var bg = '#fff'
+var fg = '#111'
 var basic_styles = '\
 body { margin: 0; font-family: sans; } /*DEV*/\n\
 ' + app + ' {\n\
-    font-size: 27px;\n\
+    background: ' + bg + ';\n\
+    color: ' + fg + ';\n\
     line-height: 1.5em;\n\
 }\n\
-' + app + ' input {\n\
+' + app + ' input.color {\n\
     border: 1px solid transparent;\n\
     border-radius: 50%;\n\
     color: transparent!important;\n\
     width: 1.5em;\n\
     height: 1.5em;\n\
+    margin: 0 0.75em;\n\
 }\n\
 ' + app + ' div {\n\
     display: inline-block;\n\
-}\n\
-' + app + ' div:focus {\n\
-/*\
-    outline: none;\n\
-    background: ' + hilite + ';\n\
-*/\
 }\n\
 ' + app + '-canvas {\n\
     width: 100%;\n\
@@ -32,6 +27,7 @@ body { margin: 0; font-family: sans; } /*DEV*/\n\
 }\n\
 ' + app + '-controls {\n\
     background: ' + fg + ';\n\
+    background: #172A46;\n\
     color: ' + bg + ';\n\
     position: absolute;\n\
     right: 0;\n\
@@ -45,52 +41,18 @@ body { margin: 0; font-family: sans; } /*DEV*/\n\
     float: right;\n\
     vertical-align: top;\n\
 }\n\
-' + app + '-controls-controller > div:after {\n\
-    position: absolute;\n\
-    margin-left: -.75em;\n\
-    display: none;\n\
-    color: red;\n\
-    background: yellow;\n\
-}\n\
-' + app + '-controls-controller > div:nth-child(1):after {\n\
-    content: "7";\n\
-}\n\
-' + app + '-controls-controller > div:nth-child(2):after {\n\
-    content: "8";\n\
-}\n\
-' + app + '-controls-controller > div:nth-child(3):after {\n\
-    content: "9";\n\
-}\n\
-' + app + '-controls-controller > div:nth-child(4):after {\n\
-    content: "4";\n\
-}\n\
-' + app + '-controls-controller > div:nth-child(5):after {\n\
-    content: "5";\n\
-}\n\
-' + app + '-controls-controller > div:nth-child(6):after {\n\
-    content: "6";\n\
-}\n\
-' + app + '-controls-controller > div:nth-child(7):after {\n\
-    content: "1";\n\
-}\n\
-' + app + '-controls-controller > div:nth-child(8):after {\n\
-    content: "2";\n\
-}\n\
-' + app + '-controls-controller > div:nth-child(9):after {\n\
-    content: "3";\n\
-}\n\
-' + app + '-controls-controller-middle {\n\
-    border-radius: 50%;\n\
-}\n\
-' + app + '-controls-controller:hover > div:after {\n\
-    display: inline-block;\n\
+' + app + '-controls-counters > div {\n\
+    margin-right: 0.75em;\n\
 }\n\
 ' + app + ' .buttons div,\n\
 ' + app + ' .button {\n\
     min-width: 1.5em; /* same as lineheight */\n\
     text-align: center;\n\
 }\
-' // Dont you – forget about me. 
+' + app + ' .undo {\n\
+    margin-right: 0.75em;\n\
+}\n\
+' // Dont you – forget about me. The closing apo.
 
 function addPermanentStyles(styles) {
     $('head').prepend('<style type="text/css">' + styles + '</style>')
