@@ -169,6 +169,14 @@ function changeUrlQuery(variable, values){
 //
 // CONVERSE
 //
+function decodeUrl(url) {
+// http%3A%2F%2Fwebarchive.org%23content ---> http://webarchive.org#content
+  return decodeURIComponent(url.replace(/\+/g,  " "))
+}
+function encodeUrl(url) {
+// http://webarchive.org#content ---> http%3A%2F%2Fwebarchive.org%23content
+  return encodeURIComponent(url).replace(/'/g,"%27").replace(/"/g,"%22")
+}
 function jsonToNestedHtmlDivs(obj) {
   // Take a json-obj and return it as nested html-divs,
   // according to the given structure.
