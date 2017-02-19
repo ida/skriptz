@@ -27,14 +27,18 @@ from os import system as exe
 
 def installPip(virtenv_path):
     """Install and update pip in a virtualenv to have a fresh env to start."""
-    if not os.path.exists(pip_path):
+    if not os.path.exists(virtenv_path):
         exe('virtualenv ' + virtenv_path + '; pip install pip -U')
 
-def getPckgsWithTermInName(term):
+def installVanity(virtenv_path):
+    """Install and update pip in a virtualenv to have a fresh env to start."""
+    if not os.path.exists(virtenv_path):
+        exe('virtualenv ' + virtenv_path + '; pip install pip -U')
+
+def getPckgsWithTermInName(term, virtenv_path):
     """Search for term on pypi, return pckg-names as a list."""
     pckgs = []
     exit_code = None
-    virtenv_path = 'virt'
     results_file = 'results.txt'
 
    # Search pckgs with term in name and pour results into a file:
@@ -50,7 +54,6 @@ def getPckgsWithTermInName(term):
     return pckgs
 
 def getDownloadsOfPckg(pckg_name):
-#    installVanity()
     downloads = None
     results_file = 'download_results.txt'
     find_pattern = pckg_name + ' has been downloaded '
@@ -92,7 +95,7 @@ def genHtlm(pckgs):
     for pckg in pckgs:
         downloads = getDownloadsOfPckg(pckg)
         if downloads: total_downloads += int(''.join(downloads.split(',')))
-        else: exit('No downloads retrieved for ' + pckg + ' !')
+        else: downloads = 'None'
         html += '''
     <div>
         <div>
@@ -132,7 +135,9 @@ def genHtlm(pckgs):
     return html
 
 def main(term):
-    pckgs = getPckgsWithTermInName(term)
+#    installPip()
+#    installVanity()
+    pckgs = getPckgsWithTermInName(term, '~/.virtenv')
     genHtlm(pckgs)
 
 if __name__ == '__main__':
