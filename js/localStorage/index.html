@@ -47,19 +47,33 @@ var columnDeli = '\n'
 // COMMONS
 //
 function getNextSibling(ele) {
-  var next_ele=ele.nextSibling
-  while (next_ele.nodeType != 1) {
-    next_ele=next_ele.nextSibling
+  var next_ele = null
+  if(ele.nextSibling !== null) {
+    var next_ele = ele.nextSibling
+    while (next_ele.nodeType != 1) {
+      next_ele=next_ele.nextSibling
+    }
   }
   return next_ele
-};
-
+}
 function getFirstChild(ele) {
-  var first_child=ele.firstChild
-  while (first_child.nodeType != 1) {
-    first_child=getNextSibling(first_child)
+  var first_child = null
+  if(ele.firstChild !== null) {
+    first_child = ele.firstChild
+    while (first_child.nodeType != 1) {
+      first_child = getNextSibling(first_child)
+    }
   }
   return first_child
+}
+function getFirstChilds(ele) {
+  var ele = getFirstChild(ele)
+  var eles = [ele]
+  while(getNextSibling(ele) !== null) {
+    ele = getNextSibling(ele)
+    eles.push(ele)
+  }
+  return eles
 }
 //
 // KEYS
@@ -286,7 +300,7 @@ function showTable(keys=null) {
   // If table has no content:
   else {
     // Click the add-column-button:
-    // document.getElementsByClassName('addKey')[0].click()
+    document.getElementsByClassName('addKey')[0].click()
   }
 }
 //
@@ -699,6 +713,32 @@ function addListeners(keys) {
   addArrowKeysListener(keys)
 }
 //
+// HACK
+//
+function summsumm() {
+/*
+  Get each last cell, sum their contents and show sum somewhere over the table.
+*/
+  var sum = 0
+  var table = document.getElementsByTagName('div')[0]
+  var columns = getFirstChilds(table)
+  // Last column is supposed to be column to sum,
+  // we get the second last, cause last is actually
+  // the row-delete-buttons, symobilzed with an 'X':
+  var column_sum = columns[columns.length-2]
+  var cells = getFirstChilds(column_sum)
+  for(cell in cells) {
+    // Exclude first two cells of new-row and column-header:
+    if(cell != 0 && cell != 1) {
+      var cell_content = cells[cell].textContent
+      sum += Number(cell_content)
+console.debug(sum)
+    }
+  }
+  addRow('<b>Sum</b>,' + sum)
+}
+
+//
 // MAIN
 //
 document.addEventListener("DOMContentLoaded", function(event) {
@@ -712,7 +752,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   var keys = getKeys()
   // And finally show the table:
   showTable(keys)
-
+summsumm()
 }); // dom loaded
 </script>
 </head>
