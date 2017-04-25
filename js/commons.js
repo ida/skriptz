@@ -47,13 +47,26 @@ function getFirstChild(ele) {
   return first_child
 }
 function getFirstChildren(ele) {
+  var eles = null
   var ele = getFirstChild(ele)
-  var eles = [ele]
-  while(getNextSibling(ele) !== null) {
-    ele = getNextSibling(ele)
-    eles.push(ele)
+  if(ele !== null) {
+    eles = [ele]
+    while(getNextSibling(ele) !== null) {
+      ele = getNextSibling(ele)
+      eles.push(ele)
+    }
   }
   return eles
+}
+function getNextSibling(ele) {
+  var next_ele = null
+  if(ele.nextSibling !== null) {
+    var next_ele = ele.nextSibling
+    while (next_ele.nodeType != 1) {
+      next_ele=next_ele.nextSibling
+    }
+  }
+  return next_ele
 }
 function hasClass(ele, klassName) {
   return (' ' + ele.className + ' ').indexOf(' ' + klassName + ' ') > -1
