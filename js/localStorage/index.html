@@ -68,8 +68,8 @@ function getFirstChild(ele) {
 }
 function getFirstChildren(ele) {
   var eles = null
-  var ele = getFirstChild(ele)
-  if(ele !== null) {
+  if(ele !== undefined) {
+    ele = getFirstChild(ele)
     eles = [ele]
     while(getNextSibling(ele) !== null) {
       ele = getNextSibling(ele)
