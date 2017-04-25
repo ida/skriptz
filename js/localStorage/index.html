@@ -66,7 +66,7 @@ function getFirstChild(ele) {
   }
   return first_child
 }
-function getFirstChilds(ele) {
+function getFirstChildren(ele) {
   var ele = getFirstChild(ele)
   var eles = [ele]
   while(getNextSibling(ele) !== null) {
@@ -721,12 +721,12 @@ function summsumm() {
 */
   var sum = 0
   var table = document.getElementsByTagName('div')[0]
-  var columns = getFirstChilds(table)
+  var columns = getFirstChildren(table)
   // Last column is supposed to be column to sum,
   // we get the second last, cause last is actually
   // the row-delete-buttons, symobilzed with an 'X':
   var column_sum = columns[columns.length-2]
-  var cells = getFirstChilds(column_sum)
+  var cells = getFirstChildren(column_sum)
   for(cell in cells) {
     // Exclude first two cells of new-row and column-header:
     if(cell != 0 && cell != 1) {
