@@ -36,19 +36,24 @@ function getEle(ele) {
   }
   return ele
 }
-function getNextSibling(ele) {
-  var next_ele=ele.nextSibling
-  while (next_ele.nodeType != 1) {
-    next_ele=next_ele.nextSibling
-  }
-  return next_ele
-}
 function getFirstChild(ele) {
-  var first_child=ele.firstChild
-  while (first_child.nodeType != 1) {
-    first_child=getNextSibling(first_child)
+  var first_child = null
+  if(ele.firstChild !== null) {
+    first_child = ele.firstChild
+    while (first_child.nodeType != 1) {
+      first_child = getNextSibling(first_child)
+    }
   }
   return first_child
+}
+function getFirstChildren(ele) {
+  var ele = getFirstChild(ele)
+  var eles = [ele]
+  while(getNextSibling(ele) !== null) {
+    ele = getNextSibling(ele)
+    eles.push(ele)
+  }
+  return eles
 }
 function hasClass(ele, klassName) {
   return (' ' + ele.className + ' ').indexOf(' ' + klassName + ' ') > -1
