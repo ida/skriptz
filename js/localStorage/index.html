@@ -716,32 +716,6 @@ function addListeners(keys) {
   addArrowKeysListener(keys)
 }
 //
-// HACK
-//
-function summsumm() {
-/*
-  Get each last cell, sum their contents and show sum somewhere over the table.
-*/
-  var sum = 0
-  var table = document.getElementsByTagName('div')[0]
-  var columns = getFirstChildren(table)
-  // Last column is supposed to be column to sum,
-  // we get the second last, cause last is actually
-  // the row-delete-buttons, symobilzed with an 'X':
-  var column_sum = columns[columns.length-2]
-  var cells = getFirstChildren(column_sum)
-  for(cell in cells) {
-    // Exclude first two cells of new-row and column-header:
-    if(cell != 0 && cell != 1) {
-      var cell_content = cells[cell].textContent
-      sum += Number(cell_content)
-console.debug(sum)
-    }
-  }
-  addRow('<b>Sum</b>,' + sum)
-}
-
-//
 // MAIN
 //
 document.addEventListener("DOMContentLoaded", function(event) {
