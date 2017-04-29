@@ -1,7 +1,7 @@
 //
 // GLOBAL-VARS
 //
-var cellDeli = ','
+var cellDeli = ';'
 var columnDeli = '\n'
 //
 // COMMONS
@@ -679,14 +679,11 @@ function addListeners(keys) {
 // MAIN
 //
 document.addEventListener("DOMContentLoaded", function(event) {
-  // An example CSV:
-  var csv = 'x,y,z\nFirstname,Lastname,Passion\nIda,Ebkes,Python\nAda,Ebkes,Lion'
-  // For testing uncomment this line to store the example-CSV to localStorage:
-  //  setTable(csv)
-  // For always having the same order of keys, define them here:
-  //  var keys = csv.split(columnDeli)[0].split(cellDeli)
-  // Otherwise we read the localStorage-keys, as they come:
   var keys = getKeys()
-  // And finally show the table:
   showTable(keys)
+function doSthAfterUpload (content) { setTable(content) }
+var inputContainer = document.body
+provideFileUpload(inputContainer, doSthAfterUpload)
+
+
 }); // dom loaded

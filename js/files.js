@@ -11,9 +11,9 @@
 //
 // Usage
 // =====
-// function doStWithContentAfterUpload () { console.debug(content) }
+// function doSthAfterUpload (content) { console.debug(content) }
 // var inputContainer = document.body
-// provideFileUpload(inputContainer, doStWithContentAfterUpload)
+// provideFileUpload(inputContainer, doSthAfterUpload)
 //
 // Docs
 // ====
@@ -33,7 +33,7 @@ function provideInputEle(inputContainer, reader) {
     reader.readAsText(file)                        //    load file
   }
 }
-function provideFileReader(doAfterFileUpload=null) {
+function provideFileReader(doAfterFileUpload) {
   var reader = new FileReader()           //   provide file-reader
   reader.onloadend = function(eve) {     // when a file has loaded
     doAfterFileUpload(eve.target.result)// do sth with its content
