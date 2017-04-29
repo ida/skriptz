@@ -679,11 +679,27 @@ function addListeners(keys) {
 // MAIN
 //
 document.addEventListener("DOMContentLoaded", function(event) {
-  var keys = getKeys()
-  showTable(keys)
-function doSthAfterUpload (content) { setTable(content) }
-var inputContainer = document.body
-provideFileUpload(inputContainer, doSthAfterUpload)
+  var csv = null
+  var keys = null
+
+// For testing, uncomment the following two lines:
+//  csv = 'Firstname;Lastname;Passion\nIda;Ebkes;Python\nAda;Ebkes;Lion'
+//  setTable(csv)
+// For defining an order for the keys, uncomment following line:
+//  keys = csv.split(columnDeli)[0].split(cellDeli)
+
+   showTable(keys)
+
+
+	// Requires ../files.js/provideFileUpload()
+	function doSthAfterUpload (content, csv, keys) {
+		csv = content
+		setTable(csv)
+		keys = csv.split(columnDeli)[0].split(cellDeli)
+		showTable(keys)
+	}
+	var inputContainer = document.body
+	provideFileUpload(inputContainer, doSthAfterUpload)
 
 
 }); // dom loaded
