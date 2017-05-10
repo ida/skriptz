@@ -1,22 +1,26 @@
+//
+// UPLOAD
+// ======
+//
 // What
-// ====
+// ----
 // Let a user select a file from their filesystem, immediately upload
 // it, and do something with its content.
 //
 // Why
-// ===
+// ---
 // Provide a possibility to upload a file's content into a serverless
 // browser-app. For example to read csv-files and display them in a
 // table-like manner as html-lists.
 //
 // Usage
-// =====
+// -----
 // function doSthAfterUpload (content) { console.debug(content) }
 // var inputContainer = document.body
 // provideFileUpload(inputContainer, doSthAfterUpload)
 //
 // Docs
-// ====
+// ----
 // https://developer.mozilla.org/en-US/docs/Web/API/File
 //
 function addFilesInputEle(inputContainer) {
@@ -43,4 +47,24 @@ function provideFileReader(doAfterFileUpload) {
 function provideFileUpload(inputContainer, doAfterFileUpload) {
   var reader  = provideFileReader(doAfterFileUpload)
   provideInputEle(inputContainer, reader)
+}
+//
+// DOWNLOAD
+//
+// Example:
+//  var containerEle = document.body
+//  var downloadContent = document.body.innerHTML
+//  provideFileExport(containerEle, downloadContent)
+//
+function provideFileExport(containerEle, downloadContent) {
+  var exportButton = document.createElement('a')
+  exportButton.id = 'download'
+  exportButton.textContent = 'Download'
+  exportButton.setAttribute('download', 'tesa.csv')
+  updateDownloadButton(exportButton, downloadContent)
+  containerEle.appendChild(exportButton)
+}
+function updateDownloadButton(button, downloadContent) {
+  button.href = 'data:application/csv;charset=utf-8,'
+              + encodeURIComponent(downloadContent)
 }
