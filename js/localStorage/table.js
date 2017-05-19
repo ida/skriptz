@@ -312,6 +312,7 @@ function moveRow(pos, direction, keys=null) {
     else {
       vals = moveArrayItemToLeft(vals, vals[pos])
     }
+    vals = vals.join(cellDeli)
     localStorage.setItem(keys[i], vals)
     showTable(keys)
   }
