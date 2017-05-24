@@ -1,0 +1,51 @@
+$glob_bg: #fff;
+$glob_fg: #000;
+ul, ol {
+  background: $glob_bg;
+  color: $glob_fg;
+  padding: 0;
+  margin: 0;
+  white-space: pre;
+}
+li {
+  vertical-align: top;
+  display: inline-block;
+  line-height: 1.5em;
+  height: 1.5em;
+  min-width: 10em;
+  width: 10em;
+  overflow: hidden;
+  border-top: 1px solid;
+  border-left: 1px solid;
+}
+li:hover,
+li:focus {
+  height: auto;
+  width: auto;
+  overflow: visible;
+  background: $glob_bg;
+}
+ul:last-child li,
+ol:last-child li {
+  border-bottom: 1px solid;
+}
+li:last-of-type {
+  border-right: 1px solid;
+}
+/*
+h2 {
+  display: inline-block;
+  border-bottom: 0.1em solid;
+}
+li {
+  vertical-align: top;
+  display: inline-block;
+  line-height: 1.5em;
+  height: 1.5em;
+  width: 50%;
+}
+*/
+em {
+  font-style: normal;
+  font-weight: bold;
+}
