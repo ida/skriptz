@@ -39,10 +39,21 @@ function getFirstChildren(ele) {
   return eles
 }
 //
+// SPECIFICA
+//
+function showTableAfterUpload (content) {
+  var csv = content
+  var rows = csv.split(columnDeli)
+  var keys = rows[0].split(cellDeli)
+  // Upload appends a line, remove it:
+  csv = rows.join(columnDeli).slice(0, -columnDeli.length)
+  setTable(csv)
+  showTable(keys)
+}
+//
 // MAIN
 //
 document.addEventListener("DOMContentLoaded", function(event) {
-  var csv = null
   var keys = null
 
 // For testing, uncomment the following two lines:
@@ -51,18 +62,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 // For defining an order for the keys, uncomment following line:
 //  keys = csv.split(columnDeli)[0].split(cellDeli)
 
-   showTable(keys)
-
-
-	// Requires ../files.js/provideFileUpload()
-	function doSthAfterUpload (content, csv, keys) {
-		csv = content
-		setTable(csv)
-		keys = csv.split(columnDeli)[0].split(cellDeli)
-		showTable(keys)
-	}
-	var inputContainer = document.body
-	provideFileUpload(inputContainer, doSthAfterUpload)
-
+  showTable(keys)
+	provideFileUpload(document.body, showTableAfterUpload) // requires ../files.js
 
 }); // dom loaded
