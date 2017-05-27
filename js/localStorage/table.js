@@ -288,16 +288,21 @@ function getRowNr(cellEle) {
   return rowNr
 }
 function delRow(pos, keys=null) {
+  var vals = ''
   if(keys === null) {
     keys = getKeys()
   }
   for(var i in keys) {
-    var vals = localStorage.getItem(keys[i])
+    vals = localStorage.getItem(keys[i])
     vals = vals.split(cellDeli)
     vals.splice(pos, 1)
-    vals.join(cellDeli)
+    vals = vals.join(cellDeli)
     localStorage.setItem(keys[i], vals)
   }
+    vals = localStorage.getItem(keys[0])
+    vals = vals.split(cellDeli)
+    vals.splice(pos, 1)
+    vals = vals.join(cellDeli)
 }
 function moveRow(pos, direction, keys=null) {
   if(keys === null) {
