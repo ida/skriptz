@@ -38,9 +38,13 @@ function provideInputEle(inputContainer, reader) {
   }
 }
 function provideFileReader(doAfterFileUpload) {
+  var content = null
   var reader = new FileReader()           //   provide file-reader
   reader.onloadend = function(eve) {     // when a file has loaded
-    doAfterFileUpload(eve.target.result)// do sth with its content
+    content = eve.target.result         // fetch content
+    // Remove last empty line that has been appended after upload:
+    content = content.slice(0, content.length-1)
+    doAfterFileUpload(content)       // pass content to callback
   }
   return reader
 }
