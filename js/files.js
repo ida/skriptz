@@ -34,7 +34,7 @@ function provideInputEle(inputContainer, reader) {
   var input = addFilesInputEle(inputContainer)        // add input
   input.onchange = function(eve) {      //  when user selects file
     var file = eve.target.files[0]                  //    get file
-    reader.readAsText(file)                        //    load file
+    reader.readAsText(file, 'ascii')               //    load file
   }
 }
 function provideFileReader(doAfterFileUpload) {
