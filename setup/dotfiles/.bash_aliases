@@ -1,7 +1,7 @@
 fn() {
 # Search for files whose names contain
 # the passed searchterm.
-# Usage: `fun somesearchterm`
+# Usage: `fn somesearchterm`
     term=$1
     find . -name "*$term*"
 }
