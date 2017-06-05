@@ -27,6 +27,9 @@ set shellcmdflag=-ic
 " When saving SASS-files, execute 'sas' defined in '.bash_aliases':
 autocmd BufWritePost *.scss !sas <afile>
 
+" When saving PYJS-files, execute 'pytojs' defined in '.bash_aliases':
+autocmd BufWritePost *.pyjs !pytojs <afile>
+
 " Make less-files behave like js-files for syntax-highlighting:
 au BufNewFile,BufRead *.less set filetype=javascript
 
