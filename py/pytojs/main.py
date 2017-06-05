@@ -68,7 +68,8 @@ def pyToJs(string):
                 BLOCK = True
         else:
             if BLOCK:
-                if string[i] == '\n' and i + 1 < len(string) and string[i+1] == '\n':
+                if string[i] == '\n' and i == len(string)\
+                    or (i + 1 < len(string) and string[i+1] == '\n'):
                     BLOCK = False
                     string_new += '\n}' # insert end-deli of for/if/function-block
             string_new += string[i]
