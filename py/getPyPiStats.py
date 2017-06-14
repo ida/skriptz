@@ -57,12 +57,10 @@ def getDownloadsOfPckg(pckg_name):
     downloads = None
     results_file = 'download_results.txt'
     find_pattern = pckg_name + ' has been downloaded '
-    theline = 'Walk the line' 
     exe('vanity ' + pckg_name + ' 2> ' + results_file)
     lines = open(results_file).readlines()
     for line in lines:
         if line.startswith(find_pattern):
-            theline = line
             downloads = line.split(find_pattern)[1].split(' ')[0]
     return downloads
 
