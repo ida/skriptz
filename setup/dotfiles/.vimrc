@@ -1,3 +1,29 @@
+" http://vim.wikia.com/wiki/Automatically_append_closing_characters
+" if you quickly press Enter after the open brace (to begin a code block), the closing brace will be inserted on the line below the cursor. If you quickly press the open brace key again after the open brace, nothing extra will be inserted—you will just get a single open brace. Finally, if you quickly type an open and close brace, Vim will not do anything special.
+
+inoremap {      {}<Left>
+inoremap {<CR>  {<CR>}<Esc>O
+inoremap {{     {
+inoremap {}     {}
+
+inoremap [      []<Left>
+inoremap [<CR>  [<CR>]<Esc>O
+inoremap [[     [
+inoremap []     []
+
+inoremap (      ()<Left>
+inoremap (<CR>  (<CR>)<Esc>O
+inoremap ((     (
+inoremap ()     ()
+
+" Do these replacements only in js-files:
+autocmd Filetype javascript inoremap fun  function() {<CR>}<Esc>O
+autocmd Filetype javascript inoremap fori for(var i=0; i < items.length; i++) {<CR>}<Esc>O
+autocmd Filetype javascript inoremap forj for(var j=0; j < jtems.length; j++) {<CR>}<Esc>O
+
+" Exit insertion-mode, when double-hitting 'k':
+inoremap kk <Esc>
+
 " Show always currently opened filename in window-title:
 " Prepare window-title of filename-var... 
 autocmd BufEnter * let &titlestring = ' ' . expand("%:t") 
