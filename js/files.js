@@ -36,6 +36,7 @@ function provideInputEle(inputContainer, reader) {
     var file = eve.target.files[0]                  //    get file
     reader.readAsText(file, 'ascii')               //    load file
   }
+  return input
 }
 function provideFileReader(doAfterFileUpload) {
   var content = null
@@ -50,7 +51,8 @@ function provideFileReader(doAfterFileUpload) {
 }
 function provideFileUpload(inputContainer, doAfterFileUpload) {
   var reader  = provideFileReader(doAfterFileUpload)
-  provideInputEle(inputContainer, reader)
+  var input = provideInputEle(inputContainer, reader)
+  return input
 }
 //
 // DOWNLOAD
