@@ -82,7 +82,21 @@ function getStyle(ele, prop) {
 // Requires: getEle(), getStyles()
   return parseFloat( ( getStyles(ele) ).getPropertyValue(prop) )
 }
-
+function getCssVars(ele) {
+  // Look for CSS-props which start with '--' and return them as an array.
+  var vars = []
+  var styles = getStyles(ele)
+  for(var i=0; i < styles.length; i++) {
+    var property = styles[i]
+    if(property.startsWith('--')) {
+      vars.push(styles)
+    }
+  }
+  return vars
+}
+function getCssVarVal(ele, cssVar) {
+  return String( ( getStyles(ele) ).getPropertyValue(cssVar) ).trim()
+}
 function setStyles(ele, newstyles) {
 // Requires: getEle()
   ele = getEle(ele)
