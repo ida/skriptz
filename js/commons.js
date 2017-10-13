@@ -12,10 +12,15 @@ function getThisFuncName(argumentsCallee) {
   funcName = funcName.substr(0, funcName.indexOf('('))
   return funcName
 }
+function isExistingFunction(funcName) {
+  if(funcName !== undefined && typeof funcName == 'function') {
+    return true
+  }
+  return false
+}
 //
 // ELES
 //
-
 function addEle(parent_ele, ele_tag_name, ele_text='') {
 /*
 Promises: Add ele to parent, set a min-height, insert text if passed.
@@ -83,7 +88,8 @@ function getStyle(ele, prop) {
   return parseFloat( ( getStyles(ele) ).getPropertyValue(prop) )
 }
 function getCssVars(ele) {
-  // Look for CSS-props which start with '--' and return them as an array.
+// Look for CSS-props which start with '--' and return them as an array.
+// Requires: getStyles()
   var vars = []
   var styles = getStyles(ele)
   for(var i=0; i < styles.length; i++) {
