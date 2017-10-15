@@ -95,7 +95,7 @@ function getCssVars(ele) {
   for(var i=0; i < styles.length; i++) {
     var property = styles[i]
     if(property.startsWith('--')) {
-      vars.push(styles)
+      vars.push(property)
     }
   }
   return vars
