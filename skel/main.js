@@ -1,5 +1,15 @@
+function addEle(parentEle, eleTagName='div') {
+  var ele = document.createElement(eleTagName)
+  parentEle.appendChild(ele)
+  return ele
+}
 function main() {
- alert('Hello!')
+var appEle = document.body
+var scriptEle = addEle(appEle, 'script')
+//scriptEle.text = 'alert("I")'
+var scriptEle = document.createElement('script')
+scriptEle.innerHTML = 'alert("I")'
+appEle.appendChild(scriptEle)
 }
 
 function doAfterDocReady(funcName) {
