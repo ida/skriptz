@@ -21,7 +21,7 @@ function isExistingFunction(funcName) {
 //
 // ELES
 //
-function addEle(parent_ele, ele_tag_name, ele_text='') {
+function addEle(parent_ele, ele_tag_name='span', ele_text='') {
 /*
 Promises: Add ele to parent, set a min-height, insert text if passed.
 Requires: getStyle()
@@ -75,6 +75,9 @@ function getNextSibling(ele) {
 }
 function hasClass(ele, klassName) {
   return (' ' + ele.className + ' ').indexOf(' ' + klassName + ' ') > -1
+}
+function prependEle(parentEle) {
+  parentEle.insertBefore(ele, parentEle.firstChild)
 }
 //
 // STYLES
