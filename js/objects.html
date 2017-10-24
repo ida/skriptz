@@ -1,0 +1,31 @@
+<script> document.addEventListener("DOMContentLoaded", function(event) { 
+
+// Declare an empty obj:
+var obj = {}
+
+// Declare an obj with prop-val-pairs:
+obj = {
+  prop: 'val',
+  anotherProp: null,
+  funkyProp: function() {
+    console.log(this.prop)
+  },
+}
+
+// Call an object's function:
+obj.funkyProp()
+
+// Get a prop' val:
+var val= obj.prop
+
+// Add a prop to obj (same for modifying):
+obj.gotProp = 'ably'
+
+// Show object's props and vals:
+for(key in obj) {
+  console.log(key)
+  console.log(obj.key)
+}
+
+
+}); </script>
