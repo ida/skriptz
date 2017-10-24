@@ -3,12 +3,14 @@
 // Declare an empty obj:
 var obj = {}
 
-// Declare an obj with prop-val-pairs:
+// Declare an obj with properties (a property is a key-value-pair):
 obj = {
   prop: 'val',
   anotherProp: null,
   funkyProp: function() {
-    console.log(this.prop)
+    // Props can be called of the obj
+    // by prepending the this-keyword:
+    console.log("The val of prop is " + this.prop)
   },
 }
 
@@ -20,6 +22,9 @@ var val= obj.prop
 
 // Add a prop to obj (same for modifying):
 obj.gotProp = 'ably'
+
+// Delete a prop of object:
+delete obj.anotherProp
 
 // Show object's props and vals:
 for(key in obj) {
