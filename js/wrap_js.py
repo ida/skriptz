@@ -33,7 +33,7 @@ Why
 ===
 
 Former global var- and func-names are now wrapped into one function and cannot
-conflict with other globs anymore, just the one fuc-name must be guaranteed to
+conflict with other globs anymore, just the one func-name must be guaranteed to
 be unique within the global scope, the window-object.
 
 After the DOM loaded the app can then be intialized like: `appName(appEle)`.
@@ -44,7 +44,7 @@ How
 
 Of the commandline execute this script:
 
-    python classify_scripts.py appsolutely
+    python wrap_js.py appsolutely
 
 
 Where "appsolutely" stands for the function-name you want to use, if omitted
