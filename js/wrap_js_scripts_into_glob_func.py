@@ -8,6 +8,25 @@ wrap it into one global function, that takes exactly one parameter
 named 'appEle', following the approach to bind an app to an ele and
 furtheron operate within that scope, independently of other apps.
 
+It is assumed that one of your scripts contains a function named 'main',
+that takes the appEle as a parameter, it will be added as the last line
+before the closing bracket to get started within the glob-func, also a
+var is added inside of the glob-func, named 'appName' and equals the
+funcname, that is a convention of the author, ment to be used to share
+the glob-name with stylesheets, using the name as prepending selector
+for any style-rule.
+
+The result then looks like this:
+
+    function yourGlobalFuncName(appEle) {
+
+      var appName = 'yourGlobalFuncName'
+
+      // Here all your js-scripts are inserted.
+
+      main(appEle)
+
+    } // End of yourGlobalFuncName
 
 
 Why
@@ -83,7 +102,8 @@ def main(app_name, input_files_path, output_file_path):
     def doSth(path):
         os.system('cat ' + path + ' >> ' + output_file_path)
     forEachJsFile(input_files_path, doSth)
-    os.system('echo "}" >> ' + output_file_path)
+    os.system('echo "  main(appEle)" >> ' + output_file_path)
+    os.system('echo "} // End of ' + app_name + '()" >> ' + output_file_path)
 
 if __name__ == '__main__':
     args = sys.argv
