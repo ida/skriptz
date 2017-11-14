@@ -18,15 +18,15 @@ for any style-rule.
 
 The result then looks like this:
 
-    function yourGlobalFuncName(appEle) {
+    function youAppName(appEle) {
 
-      var appName = 'yourGlobalFuncName'
+      var appName = 'yourAppName'
 
       // Here all your js-scripts are inserted.
 
       main(appEle)
 
-    } // End of yourGlobalFuncName
+    } // End of yourAppName
 
 
 Why
@@ -44,22 +44,23 @@ How
 
 Of the commandline execute this script:
 
-    python wrap_js.py appsolutely
+    python [THIS_SCRIPT_NAME].py appsolutely
 
 
 Where "appsolutely" stands for the function-name you want to use, if omitted
 defaults to 'app'.
 
-By default the script will look for a folder called 'scripts' in the directory
+By default the results will be poured into a js-file which gets the same
+name than the app has, in this example that would be 'appsolutely.js',
+you change that to anyother name like this:
+
+    python [THIS_SCRIPT_NAME].py appsolutely my_output.js
+
+
+By default the script will look for js-files within the folder
 where you execute this script, you can specify another folder:
 
-    python classify_scripts.py appsolutely path/to/js-scripts
-
-
-By default the results will be poured into a file called 'merged.js' in the
-directory where you execute this script, you can change that like this:
-
-    python classify_scripts.py appsolutely path/to/js-scripts path/to/my.js
+    python [THIS_SCRIPT_NAME].py appsolutely my_output.js path/to/js-scripts
 
 
 """
@@ -96,12 +97,13 @@ def read(path):
 def write(path, string):
     with open(path, 'w') as fil: fil.write(string)
 
-def main(app_name, input_files_path, output_file_path):
+def main(app_name, output_file_path, input_files_path):
     os.system('echo "function ' + app_name + '(appEle) {" > ' + output_file_path)
     os.system('echo "var appName = \'' + app_name + '\'" >> ' + output_file_path)
-    def doSth(path):
-        os.system('cat ' + path + ' >> ' + output_file_path)
-    forEachJsFile(input_files_path, doSth)
+    def appendFileToOutputFile(path):
+        if not path.endswith('/' + output_file_path):
+            os.system('cat ' + path + ' >> ' + output_file_path)
+    forEachJsFile(input_files_path, appendFileToOutputFile)
     os.system('echo "  main(appEle)" >> ' + output_file_path)
     os.system('echo "} // End of ' + app_name + '()" >> ' + output_file_path)
 
@@ -109,7 +111,8 @@ if __name__ == '__main__':
     args = sys.argv
     args.pop(0) # remove 1st in-built arg, is no userinput
     if len(args) < 1: args.append('app')
-    if len(args) < 2: args.append('scripts/')
-    if len(args) < 3: args.append('merged.js')
+    if len(args) < 2: args.append(args[0] + '.js')
+    if len(args) < 3: args.append('./')
+    if not args[2].endswith('/'): args[2] += '/'
     main(args[0], args[1], args[2])
 
