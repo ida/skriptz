@@ -245,12 +245,12 @@ function jsonToNestedHtmlDivs(obj) {
 //
 // LOAD
 //
-function loadUrlAndInsertResponseToEle(url, ele=document.body) {
-  var request = new XMLHttpRequest();
-  request.open('GET', url, true);
+function loadUrl(url, doSthWithLoadedContent) {
+  var request = new XMLHttpRequest()
+  request.open('GET', url, true)
   request.onload = function() {
     if (request.status >= 200 && request.status < 400) {
-      ele.innerHTML = request.responseText
+      doSthWithLoadedContent(request.responseText)
     }
     else {
       console.error("Couldn't load HTML from '" + url + "'.")
@@ -260,5 +260,28 @@ function loadUrlAndInsertResponseToEle(url, ele=document.body) {
     console.error("Cannot get a connection to '" + url + "'.")
   }
   request.send()
+}
+function loadTemplate(url, dict, ele=document.body) {
+  // Example: loadTemplate('user.html', {name:'Ouzo'})
+  // Where "{name}" in "user.html" will be replaced with
+  // "Ouzo" and the result is inserted to the ele.
+  function processLoadedContent(content) {
+    content = substitute(content, dict)
+    ele.innerHTML = content
+  }
+  loadUrl(url, processLoadedContent)
+}
+//
+//  STRINGS
+//
+function substitute(string, dict, startSubstStr='{', endSubstStr='}') {
+  // "Substitute your lies for fact." – The Who
+  for(var prop in dict) {
+    string = string.replace(
+      new RegExp(startSubstStr + prop + endSubstStr, 'g'),
+      dict[prop]
+    );
+  }
+  return string
 }
 // EOF
