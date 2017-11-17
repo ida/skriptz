@@ -14,7 +14,7 @@ var userUrls = []
 var userEles = document.getElementsByClassName('mastodon')
 for(var i=0; i < userEles.length; i++) {
   var userUrl = userEles[i].getElementsByTagName('a')[0]
-  if(userUrl !== undefined) userUrls.push(userUrl)
+  if(userUrl !== undefined) userUrls.push(userUrl.innerHTML)
 }
 
 // Convert to csv:
