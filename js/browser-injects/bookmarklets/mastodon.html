@@ -1,0 +1,71 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>Mastodon helpies</title>
+<style>
+body {
+  line-height: 1.61em;
+  max-width: 777px;
+  margin: 0 auto;
+}
+ol {
+  margin: 0;
+  padding: 0;
+}
+li {
+  list-style-position: inside;
+  margin: 0.5em 0;
+}
+</style>
+</head>
+<body lang="en" dir="ltr">
+<b>This doc aims to help transitioning from Twitter to Mastodon.</b>
+
+<h2>Follow all peeps on Mastodon which you are following on Twitter</h2>
+<p>
+<b>1.)</b>
+Drag and drop this link to your browser's bookmarks-bar:
+</p>
+<p>
+<a style="margin-left: 3em;" title="Export peeps" href="javascript:( function() {
+if(window.location.href != 'https://bridge.joinmastodon.org/friends') {
+  alert(`This bookmark only works on:\n\nhttps://bridge.joinmastodon.org/friends\n\nYou might want to navigate there first.`)
+}
+else {
+var userUrls = [];
+var userEles = document.getElementsByClassName('mastodon');
+for(var i=0; i < userEles.length; i++) {
+  var userUrl = userEles[i].getElementsByTagName('a')[0];
+  if(userUrl !== undefined) userUrls.push(userUrl.innerHTML);
+}
+var csv = userUrls.join('\n');
+var downloadButton = document.createElement('a');
+downloadButton.innerHTML = 'Download all matching Mastodon-users as CSV-file';
+downloadButton.setAttribute('download', 'mastodon_users.csv');
+downloadButton.href = 'data:application/csv; charset=utf-8,'
+                     + encodeURIComponent(csv);
+document.body.appendChild(downloadButton);
+}
+
+})();
+">Add export-link</a>
+</p>
+<p>
+<b>2.)</b>
+Go to <a title="Bridge over troubled waters" href="https://bridge.joinmastodon.org">bridge.joinmastodon.org</a>
+and activate app-permissions for your Twitter and your Mastodon-account.
+</p>
+<p>
+<b>3.)</b>
+Click the bookmark and scroll to the bottom of the page, there should be a link now, saying: "Download all matching Mastodon-users as CSV-file". Click it, save the file.
+</p>
+<p>
+<b>4.)</b>
+Go to your Mastodon-account, click "settings" and then "import".
+For "Import type" choose "Following list", click "Browse" and upload the exported file.
+</p>
+
+
+</body>
+</html>
