@@ -218,6 +218,50 @@ function encodeUrl(url) {
 // http://webarchive.org#content ---> http%3A%2F%2Fwebarchive.org%23content
   return encodeURIComponent(url).replace(/'/g,"%27").replace(/"/g,"%22")
 }
+
+function objToHtml(obj) {
+
+  var html = '<dl>'
+
+  for (var key in obj) {
+
+    var val = obj[key]
+
+    html += '<dt>' + key + '</dt><dd>'
+
+function objToHtml(obj) {
+
+  var html = '<dl>'
+
+  for (var key in obj) {
+
+    var val = obj[key]
+
+    html += '<dt>' + key + '</dt><dd>'
+
+    if(val === '' ) {
+      html += '[Empty string]'
+    }
+    else if(val === null) {
+      html += '[None]'
+    }
+    else if(typeof(val) === 'object') {
+      html += objToHtml(val)    
+    }
+    else {
+      html += val
+    }
+
+
+    html += '</dd>'
+  }
+
+  html += '<dl>'
+
+  return html
+}
+
+
 function jsonToNestedHtmlDivs(obj) {
   // Take a json-obj and return it as nested html-divs,
   // according to the given structure.
