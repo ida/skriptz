@@ -76,6 +76,14 @@ function getNextSibling(ele) {
 function hasClass(ele, klassName) {
   return (' ' + ele.className + ' ').indexOf(' ' + klassName + ' ') > -1
 }
+function insertAfter(insertEle, afterEle) {
+  if(afterEle.nextElementSibling === null) {
+    afterEle.parentNode.appendChild(insertEle)
+  }
+  else {
+    afterEle.parentNode.insertBefore(insertEle, afterEle.nextElementSibling)
+  }
+}
 function prependEle(parentEle) {
   parentEle.insertBefore(ele, parentEle.firstChild)
 }
@@ -218,16 +226,6 @@ function encodeUrl(url) {
 // http://webarchive.org#content ---> http%3A%2F%2Fwebarchive.org%23content
   return encodeURIComponent(url).replace(/'/g,"%27").replace(/"/g,"%22")
 }
-
-function objToHtml(obj) {
-
-  var html = '<dl>'
-
-  for (var key in obj) {
-
-    var val = obj[key]
-
-    html += '<dt>' + key + '</dt><dd>'
 
 function objToHtml(obj) {
 
