@@ -1,3 +1,8 @@
+function appendAray(array, otherArray) {
+  array.concat(otherArray)
+}
+
+
 function appendItem(array, item) {
   array.push(item)
 }
