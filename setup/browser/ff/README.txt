@@ -1,7 +1,6 @@
-Must have addons:
-- Firebug
+Must-have add-ons:
 - Menu Wizard (includes customizable shortcuts)
 - Hide Navigation Bar
-- Hide Tab Bar With One Tab
-- NASA Night Launch (theme)
-- Scriptish (inject browser-stored JS-files) 
+- Hide Tabbar
+- Dark Blue Firefox Theme
+- Tampermonkey (inject userscripts) 
