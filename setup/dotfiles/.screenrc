@@ -1,10 +1,14 @@
-# Caption - Stausbar at bottom:
+# Statusbar at bottom:
 #caption always "%{= kc}%H %{= kw}%?%-Lw%?%{+b kw}%n*%t%f %?(%u)%?%{= kw}%?%+Lw%? %-21=%{= .m}%D %d.%m.%Y %0c"
-caption always "%{= kc}%H %{= kw}%?%-Lw%?%{+b kw}%n*%t%f %?(%u)%?%{= kw}%?%+Lw%? %-12=%{= .m}%y%m%d.%c"
+caption always "%{= kc}%{= kw}%?%-Lw%?%{+b kw}%n*%t %?(%u)%?%{= kw}%?%+Lw%? %-12=%{= .m}%y%m%d.%c"
+#caption always "%{= kc}%H %{= kw}%?%-Lw%?%{+b kw}%n*%t%f %?(%u)%?%{= kw}%?%+Lw%? %-12=%{= .m}%y%m%d.%c"
 # Compname:                     %{= kc}%H 
-# Windowlist:                   %{= kw}%?%-Lw%?%{+b kw}%n*%t%f %?(%u)%?%{= kw}%?%+Lw%?
-# Right aline for date'n'time:  %-21=%{= .m}
+# Windowlist:                   %{= kw}%?%-Lw%?%{+b kw}%n*%t%f %?(%u)%?
+# Right align for date'n'time:  %{= kw}%?%+Lw%?
+# Format date'n'time:           %-21=%{= .m}
 # Date'n'time:                  %D %d.%m.%Y %0c
 
 # Use Strg+a and space instead of Strg+a and " to see list of screens:
-bind ' ' windowlist -b
+bind ' ' windowlist i-b
+
+# http://www.softpanorama.org/Utilities/Screen/screenrc_examples.shtml#Sven_Guckes_
