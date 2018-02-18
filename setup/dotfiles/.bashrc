@@ -1,3 +1,44 @@
+# COlOR-VARS
+# ======
+#
+# stackoverflow.com/questions/5947742
+CYAN='\033[0;36m'
+RED='\033[0;31m'
+LIGHT_GRAY='\033[0;37m'
+
+
+# PROMPT
+# ======
+#
+# stackoverflow.com/questions/3058325
+#
+# Make prompt look like this:
+# username@hostname|gitbranchname Error: errormessage $
+#
+# Where gitbranchname and errormessage are only shown, if given.
+PROMPT_COMMAND='RET=$?;\
+#  CUSTOM_HOSTNAME=$HOSTNAME;\
+  if [[ "$CUSTOM_HOSTNAME" = "localhost"* ]]; then\
+    CUSTOM_HOSTNAME=loco;\
+  fi;\
+  BRANCH="";\
+  ERRMSG="";\
+  if [[ $RET != 0 ]]; then\
+    ERRMSG=" $RET";\
+    ERRMSG=" Error:$ERRMSG";\
+  fi;\
+  if git branch &>/dev/null; then\
+    BRANCH=$(git branch 2>/dev/null | grep \* |  cut -d " " -f 2);\
+    BRANCH="|$BRANCH";\
+  fi;
+PS1="$GREEN\u@\h$CYAN$BRANCH$RED$ERRMSG$LIGHT_GRAY\$ ";'
+
+
+#PS1="$GREEN\u@$CUSTOM_HOSTNAME:$CYAN$BRANCH$RED$ERRMSG $LIGHT_GRAY";'
+#PS1="$GREEN\u@$CUSTOM_HOSTNAME:$BLUE\W${CYAN}$BRANCH$RED$ERRMSG $LIGHT_GRAY";'
+#PS1="$GREEN\u@$CUSTOM_HOSTNAME:$BLUE\W$CYAN$BRANCH$RED$ERRMSG $LIGHT_GRAY";'
+
+
 # ENTER PASSWORDS ONLY ONCE
 # =========================
 # http://mah.everybody.org/docs/ssh#run-ssh-agent
@@ -132,7 +173,7 @@ esac
 # uncomment for a colored prompt, if the terminal has the capability; turned
 # off by default to not distract the user: the focus in a terminal window
 # should be on the output of commands, not on the prompt
-#force_color_prompt=yes
+force_color_prompt=yes
 
 if [ -n "$force_color_prompt" ]; then
     if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
@@ -191,9 +232,9 @@ if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
-#if [ -f ~/.bash_profile ]; then
-#    . ~/.bash_profile
-#fi
+if [ -f ~/.bash_profile ]; then
+    . ~/.bash_profile
+fi
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
