@@ -17,7 +17,7 @@ LIGHT_GRAY='\033[0;37m'
 #
 # Where gitbranchname and errormessage are only shown, if given.
 PROMPT_COMMAND='RET=$?;\
-#  CUSTOM_HOSTNAME=$HOSTNAME;\
+  CUSTOM_HOSTNAME=$HOSTNAME;\
   if [[ "$CUSTOM_HOSTNAME" = "localhost"* ]]; then\
     CUSTOM_HOSTNAME=loco;\
   fi;\
@@ -31,12 +31,12 @@ PROMPT_COMMAND='RET=$?;\
     BRANCH=$(git branch 2>/dev/null | grep \* |  cut -d " " -f 2);\
     BRANCH="|$BRANCH";\
   fi;
-PS1="$GREEN\u@\h$CYAN$BRANCH$RED$ERRMSG$LIGHT_GRAY\$ ";'
-
-
+PS1="$GREEN\u@$CUSTOM_HOSTNAME$CYAN$BRANCH$RED$ERRMSG$LIGHT_GRAY\$ ";'
+#PS1="$GREEN\u@\h$CYAN$BRANCH$RED$ERRMSG$LIGHT_GRAY\$ ";'
 #PS1="$GREEN\u@$CUSTOM_HOSTNAME:$CYAN$BRANCH$RED$ERRMSG $LIGHT_GRAY";'
 #PS1="$GREEN\u@$CUSTOM_HOSTNAME:$BLUE\W${CYAN}$BRANCH$RED$ERRMSG $LIGHT_GRAY";'
 #PS1="$GREEN\u@$CUSTOM_HOSTNAME:$BLUE\W$CYAN$BRANCH$RED$ERRMSG $LIGHT_GRAY";'
+
 
 
 # ENTER PASSWORDS ONLY ONCE
@@ -106,6 +106,7 @@ export EDITOR="$VISUAL"
 # export PATH="$GOPATH/bin:$PATH"
 
 
+# STATUSBAR-TITLE IN SCREEN, WHEN NOT EDITING FILE:
 # Set screen window-title to show currently opened file-name or complete path:
 # Thanks to Gilles: http://unix.stackexchange.com/questions/6065/gnu-screen-new-window-name-change
 if [[ "$TERM" == screen* ]]; then

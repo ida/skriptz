@@ -2,13 +2,16 @@
 
 " http://learnvimscriptthehardway.stevelosh.com/chapters/04.html
 
-
 " When pressing Strg+d in editmode, switch to normalmode,
 " cut line with 'dd' and switch back to editmode ("delete line"):
-:imap <c-d> <esc>ddii
+inoremap <c-d> <esc>ddi
 
+" When pressing Strg+s in editmode, save file and
+" switch back to insertion-mode:
+" inoremap <c-s> <esc><esc>:w<CR>
 
-" Exit insertion-mode, when double-hitting 'k':
+" Exit insertion-mode, when double-hitting 'k',
+" thereby go into normal-mode:
 inoremap kk <Esc>
 
 
@@ -21,7 +24,7 @@ inoremap kk <Esc>
 " the closing brace will be inserted on the line below the cursor. If you
 " quickly press the open brace key again after the open brace, nothing
 " extra will be inserted—you will just get a single open brace. Finally,
-"  if you quickly type an open and close brace, Vim will not do anything special.
+" if you quickly type an open and close brace, Vim will not do anything special.
 
 inoremap "      ""<Left>
 inoremap "<CR>  "<CR>"<Esc>O
@@ -48,14 +51,16 @@ inoremap (<CR>  (<CR>)<Esc>O
 inoremap ((     (
 inoremap ()     ()
 
-inoremap els else {<CR>}<Esc>O
-inoremap elsi else if(27) {<CR>}<Esc>O
-inoremap funn function() {<CR>}<Esc>O
-inoremap fori for(var i=0; i < items.length; i++) {<CR>}<Esc>O
-inoremap forj for(var j=0; j < jtems.length; j++) {<CR>}<Esc>O
-inoremap iff if(1) {<CR>}<Esc>O
-inoremap ons console.debug()<Left>
-inoremap onso <CR>console.debug('''<CR>''')<Esc>0
+" Do these replacements only in js-files:
+autocmd Filetype javascript inoremap devv <Esc>Odev(`<CR>`)<Esc>O
+autocmd Filetype javascript inoremap funn function() {<CR>}<Esc>O
+autocmd Filetype javascript inoremap fori for(var i=0; i < items.length; i++) {<CR>}<Esc>O
+autocmd Filetype javascript inoremap forj for(var j=0; j < jtems.length; j++) {<CR>}<Esc>O
+autocmd Filetype javascript inoremap kel  else {<CR>}<Esc>O
+autocmd Filetype javascript inoremap keli else if(27) {<CR>}<Esc>O
+autocmd Filetype javascript inoremap kif  if(42) {<CR>}<Esc>O
+autocmd Filetype javascript inoremap kon  <Esc>Oconsole.debug(<CR>)<Esc>O
+
 
 
 " SPACES
@@ -72,11 +77,6 @@ autocmd Filetype javascript setlocal ts=2 sts=2 sw=2
 autocmd Filetype css setlocal ts=2 sts=2 sw=2
 
 
-" autocmd does not work in PureOS, set 2 as global indent-width:
-set shiftwidth=2
-set softtabstop=2
-
-
 
 " SYNTAX-HIGHLIGHTNING
 
@@ -86,9 +86,6 @@ syntax on
 au BufNewFile,BufRead *.less set filetype=javascript
 " Make sass-files behave like css-files, because:
 au BufNewFile,BufRead *.scss set filetype=css
-
-" Make less-files behave like js-files for syntax-highlighting:
-au BufNewFile,BufRead *.less set filetype=javascript
 
 
 
@@ -105,7 +102,6 @@ set title           " .. and set it.
 
 " For the EOF-symbol '~', set fg and bg to black, so tilde gets invisible:
 highlight NonText ctermfg=Black ctermbg=Black
-
 " http://stackoverflow.com/questions/1294790/change-tilde-color-in-vim
 " make eof-symbol (the tilde) have the same color as default-fg-col and
 " thereby dissapear visually:
@@ -122,7 +118,6 @@ highlight NonText ctermfg=Black ctermbg=Black
 
 " When saving SASS-files, execute 'sas' defined in '.bash_aliases':
 autocmd BufWritePost *.scss !sas <afile>
-
 " When saving PYJS-files, execute 'pytojs' defined in '.bash_aliases':
 autocmd BufWritePost *.pyjs !pytojs <afile>
 
@@ -130,7 +125,7 @@ autocmd BufWritePost *.pyjs !pytojs <afile>
 
 " MISCELLANEOUS
 
-" Make sure using ! for starting a shell-cmd of vim's lastline,
+" Make sure using :! for starting a shell-cmd of vim's lastline
 " always works, activate interactive mode:
 set shellcmdflag=-ic
 

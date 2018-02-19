@@ -1,6 +1,4 @@
-# Statusbar at bottom:
-#caption always "%{= kc}%H %{= kw}%?%-Lw%?%{+b kw}%n*%t%f %?(%u)%?%{= kw}%?%+Lw%? %-21=%{= .m}%D %d.%m.%Y %0c"
-caption always "%{= kc}%{= kw}%?%-Lw%?%{+b kw}%n*%t %?(%u)%?%{= kw}%?%+Lw%? %-12=%{= .m}%y%m%d.%c"
+caption always "%{= kc}%{= kw}%?%-Lw%?%{+b kw}%n*%t%f %?(%u)%?%{= kw}%?%+Lw%? %-12=%{= .m}%y%m%d.%c"
 #caption always "%{= kc}%H %{= kw}%?%-Lw%?%{+b kw}%n*%t%f %?(%u)%?%{= kw}%?%+Lw%? %-12=%{= .m}%y%m%d.%c"
 # Compname:                     %{= kc}%H 
 # Windowlist:                   %{= kw}%?%-Lw%?%{+b kw}%n*%t%f %?(%u)%?

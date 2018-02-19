@@ -51,7 +51,8 @@ replace() {
     find ./ -type f -exec sed -i "$regex" {} \;
 }
 setScreenWindowTitleToFilename() {
-    echo -e '\033k'$1'\033\\'
+    filename=$(basename $1)
+    echo -e '\033k'$filename'\033\\'
 }
 vimAndSetScreenTitleToFileName() {
     setScreenWindowTitleToFilename $1
@@ -59,7 +60,7 @@ vimAndSetScreenTitleToFileName() {
 }
 alias dg='devgen'
 alias sq='devgen squash'
-
+alias :wq='exit'
 alias ..='cd ..'
 alias ...='..;..'
 alias ....='...;..'
@@ -104,6 +105,7 @@ alias co='git commit -m'
 alias coa='git commit -am'
 alias com='git commit -m "up"'
 alias coma='git commit -am "up"'
+alias cos='coma; sq'
 alias koma='coma; push'
 alias ga='git add'
 alias ash='git stash'
