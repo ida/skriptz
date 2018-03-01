@@ -15,6 +15,15 @@ function moveItem(array, itemPos, targetPos) {
   array.splice(targetPos, 0, item) // at targetPos remove nothing and add item
   return array
 }
+function removeItem(array, itemPos) {
+  // 'splice' returns the item at itemPos, this would not work,
+  // if we'd do this upon loop like this:
+  //
+  //     for(var key in array) removeItem(array, key)
+  //
+  // Let's fetch the return in a var, so looping works:
+  var removedItem = array.splice(itemPos, 1)
+}
 function removeAndReturnFirstItem(array) {
   array.shift()
 }
