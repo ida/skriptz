@@ -1,3 +1,6 @@
+" Good overview:
+" http://www.worldtimzone.com/res/vi.html
+
 " KEY-MAPPINGS
 
 " http://learnvimscriptthehardway.stevelosh.com/chapters/04.html

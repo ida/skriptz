@@ -1,10 +1,11 @@
-function appendAray(array, otherArray) {
-  array.concat(otherArray)
+function appendArray(array, otherArray) {
+  array.push.apply(array, otherArray)
 }
-
-
 function appendItem(array, item) {
   array.push(item)
+}
+function getItemPos(array, item) {
+  return array.indexOf(item)
 }
 function prependItem(array, item) {
   array.unshift(item)
