@@ -1,0 +1,108 @@
+body {
+  background: #111;
+  color: #e2e2e2;
+  background: lightyellow;
+  color: #272727;
+  font-family: sans;
+  font-size: 18px;
+  line-height: 1.61em;
+  margin: 0 auto;
+  width: 90%;
+}
+
+a, a:visited {
+  color: inherit;
+}
+
+div {
+  min-width: 1em;
+  min-height: 1em;
+  padding: 0.7em 0.27em;
+}
+
+div div {
+  margin-left: 1em;
+
+}
+
+dl, dt, dd { 
+  margin: 0;
+  padding: 0.27em;
+}
+
+dl {
+  outline: 1px solid lightblue;
+}
+
+dl dl {
+  margin-left: 1em;
+}
+
+pre.showCode {
+  background: #333;
+  color: #fff;
+  padding: 0.7em;
+  margin: 0;
+  font-size: 1em;
+  line-height: 1.5em;
+}
+
+
+.error,
+.showError {
+  padding: 0.7em;
+  background: red;
+}
+.showError:before {
+  content: "Error: ";
+}
+
+
+
+.showLinkOfCalledFile {
+  margin-top: 1.81em;
+  padding: 1.7em 0.;
+  font-size: 0.77em;
+  font-style: italic;
+  border: 1px dotted darkblue;
+}
+.showLinkOfCalledFile:before {
+  content: "Called from ";
+}
+.showLinkOfCalledFile:after {
+  content: ":";
+}
+
+
+.showHtmlOutput {
+  border: 1px dashed lightblue;
+}
+
+
+.showReturn {
+  padding: 0.7em;
+}
+.showReturn:before {
+  font-size: 0.77em;
+  font-style: italic;
+  content: ">>> ";
+}
+
+
+.showWarning {
+  background: orange;
+}
+.showWarning:before {
+  content: 'Warning: ';
+}
+
+
+.success {
+  background: lightgreen;
+}
+
+
+.val { // used in showObj()
+  border: 1px dotted orange;
+  margin-left: 1em;
+}
