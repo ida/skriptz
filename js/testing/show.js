@@ -35,7 +35,7 @@ function showWarning(text) {
 }
 
 function showLinkOfCalledFile(fileName) {
-  showHtml( '<div class="showLinkOfCalledFile"><a href="/' + fileName + '">'
+  showHtml( '<div class="showLinkOfCalledFile"><a href="' + fileName + '">'
            + fileName + '</a></div>')
 }
 
