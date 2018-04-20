@@ -1,3 +1,8 @@
+# Always use an isolated local python-env, no sys-conflicts:
+export PATH=$HOME/.py-2.7.14-virtualenv/bin:$PATH
+#export PATH=$HOME/.buildout/builds/unis/5.1.0/build/Python-2.7/bin:$PATH
+
+
 # COlOR-VARS
 # ======
 #
@@ -91,9 +96,6 @@ fi
 #    ssh-add
 #  fi
 #fi
-
-# Always use an isolated local python-env, no sys-conflicts:
-export PATH=$HOME/.virtenv/bin:$PATH
 
 # Meh alwayz wanna haz vim at meh handz, no nano or other default-editor
 # opening, like e.g. when editing git-commit-msg after a merge or rebase:

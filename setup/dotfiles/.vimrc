@@ -31,12 +31,12 @@ inoremap kk <Esc>
 
 inoremap "      ""<Left>
 inoremap "<CR>  "<CR>"<Esc>O
-inoremap ""     "
+inoremap """     "
 inoremap ""     ""
 
 inoremap '      ''<Left>
 inoremap '<CR>  '<CR>''<Esc>O
-inoremap ''     '
+inoremap '''     '
 inoremap ''     ''
 
 inoremap {      {}<Left>
@@ -62,7 +62,8 @@ autocmd Filetype javascript inoremap forj for(var j=0; j < jtems.length; j++) {<
 autocmd Filetype javascript inoremap kel  else {<CR>}<Esc>O
 autocmd Filetype javascript inoremap keli else if(27) {<CR>}<Esc>O
 autocmd Filetype javascript inoremap kif  if(42) {<CR>}<Esc>O
-autocmd Filetype javascript inoremap kon  <Esc>Oconsole.debug(<CR>)<Esc>O
+autocmd Filetype javascript inoremap kon  <Esc>Oconsole.debug()<Left>
+" autocmd Filetype javascript inoremap kon  <Esc>Oconsole.debug(<CR>)<Esc>O
 
 
 
