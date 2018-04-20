@@ -93,21 +93,20 @@ function addSelectionChangedListener(selectionEle, onChangeDoWithEle) {
 
     var selectedIndex = null
 
-    // We have an arrow-up or -down key-event:
-    if( isArrowDownKey(eve) || isArrowUpKey(eve) ) {
+    // Abort, if key is not arrow-up or -down:
+    if( isArrowDownKey(eve) === false || isArrowUpKey(eve) === false ) return
 
-      // Key-event is keydown:
-      if(isKeyDownEvent(eve)) {
-        // Remember current selectedIndex:
-        selectedIndex = eve.target.selectedIndex
-      }
-      // Key-event is keyup:
-      else if(isKeyUpEvent(eve)) {
-        // If current selection differs remembered selection:
-        if(selectedIndex != eve.target.selectedIndex) {
-          // Trigger passed event-handler:
-          onChangeDoWithEle(eve.target)
-        }
+    // Key-event is keydown:
+    if(isKeyDownEvent(eve)) {
+      // Remember current selectedIndex:
+      selectedIndex = eve.target.selectedIndex
+    }
+    // Key-event is keyup:
+    else if(isKeyUpEvent(eve)) {
+      // If current selection differs remembered selection:
+      if(selectedIndex != eve.target.selectedIndex) {
+        // Trigger passed event-handler:
+        onChangeDoWithEle(eve.target)
       }
     }
   }
