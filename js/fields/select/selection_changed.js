@@ -65,9 +65,16 @@ function addSelectionChangedListener(selectionEle, onChangeDoWithEle) {
 // covered here, the callback had been fired already.
 //
 // Solution:
-// Listen for change-event caused by by a click, which is the case if
+// Listen only for change-events caused by by a click, which is the case if
 // the triggering ele is an option-ele, unlike with the blur-event where
 // the triggering ele is the selection-ele.
+//
+// Problem that also got solved with the last solution above:
+// The native change-event is also fired of some browsers, when arrow-keys are
+// the cause of the change.
+//
+// Solution:
+// Narrow change-event-listening down to those caused by click-events, only.
 
   function isArrowDownKey(eve)  { return eve.keyCode == 40 }
   function isArrowUpKey(eve)    { return eve.keyCode == 38 }
