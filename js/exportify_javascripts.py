@@ -149,7 +149,6 @@ def processScript(fileName, INDENT=False):
     globs = []
     orig_string = read(fileName)
     string = stripMultilineComments(orig_string)
-    string = stripInnerFuncs(string)
     lines = string.split('\n')
 
     for i, line in enumerate(lines):
