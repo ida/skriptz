@@ -1,3 +1,4 @@
+define([], function() {
 function addSelectionChangedListener(selectionEle, onChangeDoWithEle) {
 //
 // What
@@ -76,9 +77,8 @@ function addSelectionChangedListener(selectionEle, onChangeDoWithEle) {
 // Solution:
 // Narrow change-event-listening down to those caused by click-events, only.
 
-  function isArrowDownKey(eve)  { return eve.keyCode == 40 }
-  function isArrowUpKey(eve)    { return eve.keyCode == 38 }
-  function isKeyDownEvent(eve)  { return eve.type == 'keydown' }
+  var selectedIndex = null
+
   function isKeyUpEvent(eve)    { return eve.type == 'keyup' }
 
   function onChangeEvent(eve) {
@@ -91,21 +91,14 @@ function addSelectionChangedListener(selectionEle, onChangeDoWithEle) {
 
   function onKeyEvent(eve) {
 
-    var selectedIndex = null
-
-    // Key is arrow-up or -down:
-    if( isArrowDownKey(eve) === true || isArrowUpKey(eve) === true ) {
-
     // Key-event is keydown, remember current selectedIndex:
-    if(isKeyDownEvent(eve)) selectedIndex = eve.target.selectedIndex
+    if(eve.type == 'keydown') selectedIndex = eve.target.selectedIndex
 
     // Key-event is keyup, if selection changed, trigger passed handler:
-    else if(isKeyUpEvent(eve)) {
-      if(selectedIndex != eve.target.selectedIndex) {
-        onChangeDoWithEle(eve.target)
-      }
+    else if(selectedIndex != eve.target.selectedIndex) {
+      onChangeDoWithEle(eve.target)
     }
-    }
+
   }
 
   selectionEle.onchange  = function(eve) onChangeEvent(eve)
@@ -113,3 +106,9 @@ function addSelectionChangedListener(selectionEle, onChangeDoWithEle) {
   selectionEle.onkeyup   = function(eve) onKeyEvent(eve)
 
 }
+
+
+  return {
+    addSelectionChangedListener: addSelectionChangedListener
+  }
+});
