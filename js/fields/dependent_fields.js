@@ -1,5 +1,10 @@
 /* Requires './select/select_helpers.js' and './select/selection_changed.js'.
 
+!!!
+    This is a prototype for super-quick generation of depending select-eles.
+    You probably want to use './dependent_field_actions.js', instead.
+!!!
+
 
 Dependent (select-)fields
 =========================
@@ -12,7 +17,7 @@ on the current value of the field.
 Usage
 -----
 
-// Firest define some values for the (select-)fields:
+// First define some values for the (select-)fields:
 
 var field_one_value = ['dog', 'cat']
 var field_two_value_for_dog = ['dependent', 'self-dirtying', 'submissive', 'attentive']
