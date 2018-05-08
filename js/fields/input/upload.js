@@ -40,6 +40,6 @@ function addUploadButton(containerEle, doWithContentAfterUpload) {
     return input
   }
 
-  provideFileUpload(containerEle, doWithContentAfterUpload)
+  return provideFileUpload(containerEle, doWithContentAfterUpload)
 
 } // addUploadButton

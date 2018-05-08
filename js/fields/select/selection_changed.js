@@ -79,35 +79,42 @@ function addSelectionChangedListener(selectionEle, onChangeDoWithEle) {
 
   var selectedIndex = null
 
-  function isKeyUpEvent(eve)    { return eve.type == 'keyup' }
+  selectionEle.onkeydown = function(eve) {              // a key was pressed
+    selectedIndex = eve.target.selectedIndex           //  remember selection
+  }
 
-  function onChangeEvent(eve) {
-    // If selection-change was caused of an option's click-event:
+  // onImmediateChange
+  //  Listen to native change-event deriving of click,
+  //  and if user types anything and selection changed:
+
+  selectionEle.onkeyup = function(eve) {             //    a key was released
+    if(selectedIndex != eve.target.selectedIndex) { //     selection changed
+      onChangeDoWithEle(eve.target)                //      call passed func
+    }
+  }
+  selectionEle.onchange = function(eve) {       // an option was clicked
     if(eve.explicitOriginalTarget.tagName.toLowerCase() == 'option') {
-      // We want to trigger passed event-handler:
+      onChangeDoWithEle(eve.target)           //   call passed func
+    }
+  }
+/*
+
+  // onConfirmedChange
+  //  Listen to native change-event,
+  //  and if user types Enter and selection changed:
+
+  selectionEle.onchange = function(eve) {
+    onChangeDoWithEle(eve.target)
+  }
+  selectionEle.onkeyup = function(eve) {
+    if(eve.keyCode == 13 && eve.target.selectedIndex != selectedIndex) {
       onChangeDoWithEle(eve.target)
     }
   }
-
-  function onKeyEvent(eve) {
-
-    // Key-event is keydown, remember current selectedIndex:
-    if(eve.type == 'keydown') selectedIndex = eve.target.selectedIndex
-
-    // Key-event is keyup, if selection changed, trigger passed handler:
-    else if(selectedIndex != eve.target.selectedIndex) {
-      onChangeDoWithEle(eve.target)
-    }
-
-  }
-
-  selectionEle.onchange  = function(eve) onChangeEvent(eve)
-  selectionEle.onkeydown = function(eve) onKeyEvent(eve)
-  selectionEle.onkeyup   = function(eve) onKeyEvent(eve)
-
-}
+*/
 
 
+} // EO addSelectionChangedListener
   return {
     addSelectionChangedListener: addSelectionChangedListener
   }

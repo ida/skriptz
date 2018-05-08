@@ -1,3 +1,4 @@
+define([], function() {
 //
 // FUNCS
 //
@@ -21,7 +22,7 @@ function isExistingFunction(funcName) {
 //
 // ELES
 //
-function addEle(parent_ele, ele_tag_name='span', ele_text='') {
+function addEle(parent_ele, ele_tag_name='span', ele_text=null) {
 /*
 Promises: Add ele to parent, set a min-height, insert text if passed.
 Requires: getStyle()
@@ -29,8 +30,7 @@ Examples: addEle(some_ele, 'div', 'blabla')
           addEle(some_ele, 'span')
 */
   var ele = document.createElement(ele_tag_name)
-  ele.innerHTML = ele_text
-  ele.setAttribute('style', 'min-height: ' + getStyle(parent_ele, 'line-height'))
+  if(ele_text !== null) ele.innerHTML = ele_text
   parent_ele.appendChild(ele)
   return ele
 }
@@ -327,3 +327,36 @@ function substitute(string, dict, startSubstStr='{', endSubstStr='}') {
   return string
 }
 // EOF
+
+
+  return {
+    getThisFuncName: getThisFuncName,
+    isExistingFunction: isExistingFunction,
+    addEle: addEle,
+    getEle: getEle,
+    getFirstChild: getFirstChild,
+    getFirstChildren: getFirstChildren,
+    getNextSibling: getNextSibling,
+    hasClass: hasClass,
+    insertAfter: insertAfter,
+    prependEle: prependEle,
+    getStyles: getStyles,
+    getStyle: getStyle,
+    getCssVars: getCssVars,
+    getCssVarVal: getCssVarVal,
+    setStyles: setStyles,
+    getCoords: getCoords,
+    getLeft: getLeft,
+    getTop: getTop,
+    setUrlWithoutReload: setUrlWithoutReload,
+    getUrlQueryVarVals: getUrlQueryVarVals,
+    changeUrlQuery: changeUrlQuery,
+    decodeUrl: decodeUrl,
+    encodeUrl: encodeUrl,
+    objToHtml: objToHtml,
+    jsonToNestedHtmlDivs: jsonToNestedHtmlDivs,
+    loadUrl: loadUrl,
+    loadTemplate: loadTemplate,
+    substitute: substitute
+  }
+});
