@@ -51,7 +51,7 @@ define([], function() {
 Why
 ===
 
-Folling the pythonic pilosophy of "keep it modular", modulize all the
+Following the pythonic philosophy of "keep it modular", modulize all the
 scripts with require.js and expose its globs as props to make them
 importable of other modules.
 
