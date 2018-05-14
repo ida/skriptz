@@ -1,6 +1,9 @@
-function isFloat(n){
-  return Number(n) === n && n % 1 !== 0
+function isFloat(value){
+  return isNan(Number(value)) === false && value % 1 !== 0
 }
-function isInt(n){
-  return Number(n) === n && n % 1 === 0
+function isInt(value) {
+  return Number.isInteger(value)
+}
+function isNr(value) {
+  return isNaN(Number(value)) === false
 }
