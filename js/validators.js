@@ -5,5 +5,6 @@ function isInt(value) {
   return Number.isInteger(value)
 }
 function isNr(value) {
-  return isNaN(Number(value)) === false
+  // Regard `Number` converts empty strings to zero.
+  return value != '' && isNaN(Number(value)) === false
 }
