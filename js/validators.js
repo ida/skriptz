@@ -1,10 +1,10 @@
 function isFloat(value){
-  return isNan(Number(value)) === false && value % 1 !== 0
+  return ! Number.isInteger(Number(value))
 }
 function isInt(value) {
-  return Number.isInteger(value)
+  return Number.isInteger(Number(value))
 }
 function isNr(value) {
-  // Regard `Number` converts empty strings to zero.
+  // Regard `Number` returns zero for empty strings.
   return value != '' && isNaN(Number(value)) === false
 }
