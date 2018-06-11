@@ -119,12 +119,14 @@ function addDependentFieldAction(major, minor, majorValue, action) {
         }
         // Action is an array, insert it as option-eles in minor-field:
         else if(action instanceof Array) {
+          var selectedValue = minor.value // remember selection
           minor.innerHTML = ''
           for(var j=0; j < action.length; j++) {
             var option = document.createElement('option')
             option.innerHTML = action[j]
             minor.appendChild(option)
           }
+          minor.value = selectedValue // reset selection
         }
         // Action is a string, insert it as value in minor-field:
         else {
@@ -142,7 +144,7 @@ function addDependentFieldAction(major, minor, majorValue, action) {
   // Initially create dependentFields-map and attach change-listener:
   if(major.dependentFields === undefined) {
     major.dependentFields = new Map()
-    major.onchange = function(eve){ major.changeDependentFields(eve.target) }
+    major.onchange = function(eve) { major.changeDependentFields(major) }
   }
 
   // If it's the first action for the dependent-field, add and empty
