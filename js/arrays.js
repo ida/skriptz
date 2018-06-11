@@ -7,6 +7,12 @@ function appendItem(array, item) {
 function getItemPos(array, item) {
   return array.indexOf(item)
 }
+function insertItem(array, item, insertPos) {
+  array.splice(insertPos, 0, item)
+}
+function insertItems(array, items, insertPos) {
+  array.splice(insertPos, 0, ...items)
+}
 function prependItem(array, item) {
   array.unshift(item)
 }
@@ -17,7 +23,7 @@ function moveItem(array, itemPos, targetPos) {
 }
 function removeItem(array, itemPos) {
   // 'splice' returns the item at itemPos, this would not work,
-  // if we'd do this upon loop like this:
+  // if we'd do a loop like this:
   //
   //     for(var key in array) removeItem(array, key)
   //
