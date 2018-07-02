@@ -1,30 +1,36 @@
-# Create a file 'versions.cfg', holding the additional egg-names and their
-# versions, in comparison to another eggs-cache.
+# Create a file 'cached_versions.cfg', holding the additional egg-names and
+# their versions of an eggs-cache, in comparison to another eggs-cache.
 #
-# Assumes in every cache each egg occurs only once, and if it exist in the other
-# cache, too, they are of same version.
-#
-# TODO. Print warning, if there's a negative difference, meaning the first eggs-cache has not
-# eggs which the other eggs-cache has.
+# Print warning, if there's a negative difference, meaning the first
+# eggs-cache has not eggs which the other eggs-cache has.
 #
 # Usage:
 # $ python [this_script_path] [eggs_cache_path] [other_eggs_cache_path]
 #
+# To get a complete list of an eggs-cache, omit [other_eggs_cache_path].
 
 import os
 import sys
 
-config_path = 'versions.cfg'
+config_path = 'cached_versions.cfg'
 
 def getDiffOfConfigStrings(config_string, other_config_string):
     additional_lines = []
+    missing_lines = []
     lines = config_string.split('\n')
     other_lines = other_config_string.split('\n')
     for other_line in other_lines:
         if other_line not in lines:
             additional_lines.append(other_line)
-#        if line not in other_lines:
-#            print "The first config has an egg, which the other doesn't have:"
+    for line in lines:
+        if line not in other_lines:
+            missing_lines.append(line)
+    if len(missing_lines) > 0:
+            print "\nWARNING:"
+            print "\nThe first config has the following lines, \
+which the other doesn't have:\n"
+            print missing_lines
+            print '\n'
     return '\n'.join(additional_lines)
         
 def fileNamesToConfigString(file_names):
@@ -44,18 +50,20 @@ def genConfigStringOfEggsPath(eggs_path):
     config_string = fileNamesToConfigString(file_names)
     return config_string
 
-def createFile(filename, string):
+def writeFile(filename, string):
     fil = open(filename, 'w')
     fil.write(string)
     fil.close()
 
 def main():
     eggs_path = sys.argv[1]
-    other_eggs_path = sys.argv[2]
     string = genConfigStringOfEggsPath(eggs_path)
-    other_string = genConfigStringOfEggsPath(other_eggs_path)
+    other_string = ''
+    if len(sys.argv) > 2:
+        eggs_path = sys.argv[2]
+        other_string = genConfigStringOfEggsPath(eggs_path)
     string = getDiffOfConfigStrings(string, other_string)
     string = '[versions]\n' + string
-    createFile(config_path, string)
+    writeFile(config_path, string)
 
 main()
