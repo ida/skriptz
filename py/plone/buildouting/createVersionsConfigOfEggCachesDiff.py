@@ -27,21 +27,21 @@ def getDiffOfConfigStrings(config_string, other_config_string):
 #            print "The first config has an egg, which the other doesn't have:"
     return '\n'.join(additional_lines)
         
-def fileNamesListToConfigString(fileNamesList):
+def fileNamesToConfigString(file_names):
     string = ''
-    fileNames = [] # let's check for dups
-    for fileName in fileNamesList:
-        fileName = fileName.split('-')
-        if fileName[0] in fileNames:
-            print 'We have a dup for "' + fileName[0] + '" !'
-        fileNames.append(fileName[0])
-        string += fileName[0] + ' = ' + fileName[1] + '\n'
+    collected_file_names = [] # let's check for dups
+    for file_name in file_names:
+        file_name = file_name.split('-')
+        if file_name[0] in file_names:
+            print 'We have a dup for "' + file_name[0] + '" !'
+        collected_file_names.append(file_name[0])
+        string += file_name[0] + ' = ' + file_name[1] + '\n'
     return string
 
 def genConfigStringOfEggsPath(eggs_path):
-    file_names_list = os.listdir(eggs_path)
-    file_names_list.sort()
-    config_string = fileNamesListToConfigString(file_names_list)
+    file_names = os.listdir(eggs_path)
+    file_names.sort()
+    config_string = fileNamesToConfigString(file_names)
     return config_string
 
 def createFile(filename, string):
