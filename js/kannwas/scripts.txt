@@ -1,0 +1,9 @@
+./misc/info.js
+./misc/helpers.js
+./misc/validate.js
+./move/move.js
+./main/create.js
+./main/style.js
+./main/listen.js
+./main/inis.js
+./main/main.js

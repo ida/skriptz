@@ -1,0 +1,294 @@
+<html><head><meta charset="utf-8"><title></title><script>
+
+// Load scripts listed in a file and wrap them into one function.
+
+var scriptPathsFile = 'scripts.txt'   // File with a path per line (no quotes).
+var scriptPaths = []   // Optionally add paths here, they'll precede the above.
+var appName = null    // Defaults to dir-name, you can set any other name here.
+var download = false // Set to true, to download wrapped script after a reload.
+var debug = true//false   // Set to true, to load each path in a script-ele, no wrap.
+
+
+
+/*
+
+develoader
+==========
+
+A helper-script for developing JS-applications.
+
+
+What
+====
+
+
+1. Set a variable 'appName' to be this file's capitalized parent-folder-name.
+
+
+2. Load scripts of paths listed in a file, in found order.
+
+
+3. Wrap scripts into one function named after the appName and pass a variable
+   appName with the default-value being the appName, then insert it as the
+   text-content of a script-element in the head-element. The result looks like:
+
+    function Thisdirname(appName='Thisdirname') { CONTENT_OF_LOADED_SCRIPTS }
+
+
+4. If the variable debug is true, don't wrap scripts, instead insert each
+   as a script-element with the script-path set as its src-attribute.
+
+5. If the variable download is true, download the wrapped script as a file
+   named after the app's name.
+
+
+
+Why
+===
+
+
+1. Define app-name only once by naming your working-directory accordingly.
+   Set doc-title to be app-name, so we can find our app better amongst
+   browser-tabs.
+
+
+2. No typing for registering scripts, as we can generate a paths-file.
+   Load-order can then automagically be defined by naming files accordingly.
+
+
+3. Isolating scripts into one function keeps the global-namespace tidy.
+   The appName can be used of within the loaded scripts.
+   While everything is wrapped into one script, we can still operate in
+   several files, during development.
+
+
+4. Show me the source, Luce.
+
+
+5. Export wrapped script as a file for production.
+
+
+
+
+How
+===
+
+
+Drop this file into any directory, to make it a develoading-app.
+
+Then either write paths manually into a file named 'scripts.txt', or generate
+a file, containing all found scripts of this directory, by opening a terminal
+and executing this:
+
+    find . -type f -name "*.js" | sort -V > scripts.txt
+
+That will create or overwrite a file named 'scripts.txt' with found paths in
+numerical ascending order (lowest number comes first), so you can control
+load-order by choosing file-names acordingly. Version-numbers separated with
+dots work, too.
+
+The app's scripts are expected to live within this directory, their paths
+must be relative to it.
+
+You can also include external script-paths for loading dependency-scripts,
+their paths must start with '../' or 'http'.
+
+Finally, open this file in a browser.
+
+
+
+Author
+=====
+
+Ida Ebkes <contact@ida-ebkes.eu>, 2018
+
+
+Repository
+==========
+
+htps:/github.com/ida/develoader
+
+
+Feedback
+========
+
+Feel free to open an issue on github to say hi or bye:
+
+htps:/github.com/ida/develoader/issues/new
+
+Or send an email to the address above and cross toes it gets
+through my spam-killer-filters.
+
+
+License
+=======
+
+MIT, a copy is attached.
+
+
+*/
+
+///////////////////////////////////////////////////////////////////////////////
+///////// That's it. Beyond there may be scary Javascript. ////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+
+
+var script = ''
+
+
+
+function addScriptEle(scriptPath=null, scriptText=null) {
+  var scriptEle = document.createElement('script')
+  if(scriptPath !== null) scriptEle.src = scriptPath
+  else if(scriptText !== null) scriptEle.textContent = scriptText
+  document.head.appendChild(scriptEle)
+}
+
+
+
+function composeAndSetAppName() {
+// Set capitalized name of this file's parent-director.
+  if(appName === null) {
+    appName = window.location.href  // get url of browser-address-bar
+    if( appName.endsWith('/') ) {
+      appName = appName.slice(0, appName.length-2) // remove ending slash
+    }
+    appName = appName.split('/')        // split by slashes
+    appName = appName[appName.length-2] // get second last split: parent-dir-name
+    appName = appName.charAt(0).toUpperCase() + appName.slice(1) // capitalize name
+  }
+}
+
+
+
+function downloadWrappedScripts() {
+
+  setTimeout(function() { // delay to give body time to render
+
+    var a = document.createElement('a')
+    var fileName = appName + '.js'
+
+    a.setAttribute('download', fileName)
+    a.textContent = 'Download'
+    a.href = 'data: application/octet-stream; charset=utf-8,'
+           + encodeURIComponent(script)
+    document.body.appendChild(a)
+    a.click()
+    a.remove()
+
+  }, 27)
+
+}
+
+
+
+function getScriptPaths(scriptPathsFile, doAfter) {
+    loadFileAndDoSthWithText(scriptPathsFile, function(text) {
+    text = text.split('\n')
+    for(i in text) {
+      if(text[i] == '') {
+        text.pop(i) // remove empty strings
+      }
+    }
+    scriptPaths.push.apply(scriptPaths, text) // append new paths to paths
+    doAfter()
+  });
+}
+
+
+
+function loadFileAndDoSthWithText(filePath, doSthWithText) {
+
+  if(filePath.startsWith('../') || filePath.startsWith('http')) { // is external-script
+    addScriptEle(filePath)
+    doSthWithText('') // we need to exe doSthWithText to keep the loop going
+  }
+  else { // is internal-script
+  if(filePath.startsWith('./')) filePath = filePath.slice(2)
+  if(filePath.endsWith('/')) filePath = filePath.slice(0, filePath.length-2)
+  filePath = filePath.trim()
+  if( filePath != '' && ! filePath.startsWith('"') && ! filePath.startsWith('#')
+     && ! filePath.startsWith('//')) { // not a comment
+    if(filePath.endsWith('.js') === true && debug === true) addScriptEle(filePath)
+    var request = new XMLHttpRequest()
+    request.overrideMimeType("text/plain") // fixes err 'not well formed'
+    request.open('GET', filePath, true)
+    request.onload = function() {
+      if (request.status >= 200 && request.status < 400) {
+        doSthWithText(request.responseText)
+      }
+    }
+    request.send()
+  } // not a comment
+  else doSthWithText('') // we need to exe doSthWithText to keep the loop going
+  }
+}
+
+
+
+function loadFilesAndDoSthWithTexts(filePaths, doSthWithTexts) {
+  var texts = ''
+  function addTextToTexts(text) {
+    texts += '\n' + text
+    script += '\n' + text
+    if(filePaths.length > 0) {
+      loadFileAndDoSthWithText(filePaths.shift(), addTextToTexts)
+    }
+    else {
+      doSthWithTexts(texts)
+      if(download === true) downloadWrappedScripts()
+    }
+  }
+  loadFileAndDoSthWithText(filePaths.shift(), addTextToTexts)
+}
+
+
+
+function doAfterScriptsLoaded() {
+
+  script += `
+}
+
+${appName}()`
+
+
+  if(debug === false) addScriptEle(null, script)
+
+}
+
+
+
+function loadScripts() {
+  loadFilesAndDoSthWithTexts(scriptPaths, doAfterScriptsLoaded)
+}
+
+
+
+function main() {
+
+  // Set appName:
+  if(appName === null) composeAndSetAppName()
+
+  // Set doc-title to be appName:
+  document.getElementsByTagName('title')[0].innerHTML = appName
+
+  // Set script-begin:
+  script = `function ${appName}(appName='${appName}') {`
+
+  // If there's a script-paths-file, get paths of it, afterwards load scripts:
+  if(scriptPathsFile !== null ) getScriptPaths(scriptPathsFile, loadScripts)
+
+  // Otherwise, if there are manually added paths in `scriptPaths`, load them:
+  else if(scriptPaths.length > 0) loadScripts()
+
+  // Remove this script-ele:
+  document.getElementsByTagName('script')[0].remove()
+
+}
+
+
+main()
+
+
+</script></head><body></body></html>
