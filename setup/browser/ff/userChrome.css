@@ -1,0 +1,76 @@
+/*
+
+Firefox visual customizations
+-----------------------------
+
+This file modifies the appearance of everything in a Firefox-window
+which is no content, e.g the reload-button, tabs or the address-bar.
+
+Tested with version 61, a.k.a Quantum.
+
+
+Usage
+-----
+
+Put this file with the name 'userChrome.css' in your browser-profile's
+'chrome'-directory.
+
+The profile-directory is located in '~/.mozilla/firefox' and its name
+ends with '.default'.
+
+If the profile-directory does not contain a directory named 'chrome'
+already, you'll need to create it.
+
+
+Inspect window-elements
+-----------------------
+
+You can enable an inspector for the browser-window, like this:
+
+  - Open webinspector with Ctrl+Shift+i
+  - Open webinspector's settings with F1
+  - Where it says 'Advanced settings', check boxes for:
+    - 'Enable browser chrome and add-on debugging toolboxes'
+    - 'Enable remote debugging'
+
+Now, the window-inspector can be opened with Ctrl+Shift+Alt+i
+
+
+Quick-reference
+---------------
+
+The markup of everything in top of window (top-bars):
+
+  <toolbox>
+    <toolbar id="toolbar-menubar">
+    </toolbar>
+    <toolbar id="TabsToolbar">
+    </toolbar>
+    <toolbar id="nav-bar">
+    </toolbar>
+    <toolbar id="PersonalToolbar">
+    </toolbar>
+  </toolbox>
+
+*/
+
+/* Declare namespace, so Firefox knows how to interpret this file: */
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+/* Hide tabs entirely: */
+#TabsToolbar {
+    visibility: collapse !important;
+}
+
+/*
+Make everything else in top-bar dissapear by consuming *no* height,
+but let address-bar still be focusable (Ctrl+l), for entering an URL:
+*/
+toolbox * {
+  height: 0;
+  min-height: 0;
+  --tab-min-height: 0;
+  --toolbarbutton-inner-padding: 0;
+  --toolbarbutton-outer-padding: 0;
+}
+
