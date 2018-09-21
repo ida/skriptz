@@ -1,26 +1,27 @@
 fn() {
-# Search for files whose names contain
-# the passed searchterm.
+# Search for files whose names contain the passed searchterm.
 # Usage: `fn somesearchterm`
-    term=$1
-    find . -name "*$term*"
+    find . -name "*$1*"
 }
 gr() {
-# Search file-contents recursively for
-# the passed searchterm.
+# Search this directory recursively for the passed searchterm.
 # Usage: `gr somesearchterm`
-    term=$1
     grep -r "$1" .
 }
+grx() {
+# Same as `gr`, but exclude directories named 'tests' and files ending with '.pyc'.
+    find . -type f ! -path "./*bak*" ! -path "./tests*" ! -path "*.pyc" -exec grep -il "$1" {} \;
+}
 grr() {
-# Search file-contents recursively for
-# the first passed searchterm in files
-# whose names end with the second passed
-# searchterm, show the filenames.
-# Usage: `grr somesearchterm .css`
+# Search term only in files with certain extension:
+#     grr somesearchterm .css
+# Optionally exclude a directory:
+#     grr somesearchterm .css tests
     firstterm=$1
     secondterm=$2
-    find . -type f -name "*$secondterm" -exec grep -il "$firstterm" {} \;
+    thirdterm=$3
+#    find . -type f -name "*$secondterm" -exec grep -il "$firstterm" {} \;
+    find . -type f -name "*$secondterm" -not -path "./$thirdterm/*" -exec grep -il "$firstterm" {} \;
 }
 pytojs() {
 # Usage:
@@ -82,7 +83,9 @@ alias v=vimAndSetScreenTitleToFileName
 
 alias bb='./bin/buildout'
 alias bi='./bin/instance fg'
+alias bil='bi > instance_output.txt 2>&1'
 alias bo='buildout -o'
+alias bol='buildout  > build_output.txt 2>&1 ; cat build_output.txt'
 alias boi='bo; bi'
 alias boo='buildout -O'
 alias bu='bo -U'

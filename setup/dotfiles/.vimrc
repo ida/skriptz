@@ -5,6 +5,10 @@
 
 " http://learnvimscriptthehardway.stevelosh.com/chapters/04.html
 
+" Save file when pressing Strg+x and return to edit-mode:
+inoremap <c-x> <Esc>:w<CR>i<right>
+
+
 " When pressing Strg+d in editmode, switch to normalmode,
 " cut line with 'dd' and switch back to editmode ("delete line"):
 inoremap <c-d> <esc>ddi
@@ -21,6 +25,8 @@ inoremap kk <Esc>
 
 
 " AUTOCOMPLETIONS
+
+inoremap pdb    from pdb import set_trace; set_trace()
 
 " http://vim.wikia.com/wiki/Automatically_append_closing_characters
 " if you quickly press Enter after the open brace (to begin a code block),
