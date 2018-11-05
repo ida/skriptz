@@ -63,7 +63,7 @@ For personal memory, as done in version 63.0 (Quantum).
 Menu -> Edit -> Preferences
 ---------------------------
 
-- Set homepage to ~/.mozilla7firefox/default.html with this content:
+- Set homepage to ~/.mozilla/firefox/default.html and provide the file with this content:
     <style>
     body {
         background: #000;
