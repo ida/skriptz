@@ -1,5 +1,7 @@
 var bg = '#fff'
 var fg = '#111'
+var bg = '#000'
+var fg = '#e2e2e2'
 var basic_styles = '\
 body { margin: 0; font-family: sans; } /*DEV*/\n\
 ' + app + ' {\n\

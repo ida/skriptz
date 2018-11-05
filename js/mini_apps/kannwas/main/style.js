@@ -1,29 +1,29 @@
-function computeStyles() {
+function computeStyles(app) {
   //
-  // Center canvas and cursor in viewport.
+  // Compute centering canvas and cursor in viewport.
   //
 
-  viewport.height = getHeight(viewport.ele)
+  app.viewport.height = getHeight(viewport.ele)
 
-  viewport.width = getWidth(viewport.ele)
-
-
-  canvas.left = (viewport.width - canvas.width)/2
-
-  canvas.top = (viewport.height - canvas.height)/2
+  app.viewport.width = getWidth(viewport.ele)
 
 
-  cursor.left = canvas.width/2 - cursor.width/2 + canvas.left
+  app.canvas.left = (viewport.width - canvas.width)/2
 
-  cursor.top = canvas.height/2 - cursor.height/2 + canvas.top
+  app.canvas.top = (viewport.height - canvas.height)/2
+
+
+  app.cursor.left = canvas.width/2 - cursor.width/2 + canvas.left
+
+  app.cursor.top = canvas.height/2 - cursor.height/2 + canvas.top
 
 }
 
-function styleElements() {
+function styleElements(app) {
 
 
   // Set dimensions, so we can measure ele:
-  viewport.ele.style = `
+  app.viewport.ele.style = `
     margin: 0;
     position: absolute;
     top: 0;
@@ -34,11 +34,11 @@ function styleElements() {
   `
 
   // Compute styles with measurable height:
-  computeStyles()
+  computeStyles(app)
 
 
   // Set computed styles:
-  canvas.ele.style = `
+  app.canvas.ele.style = `
     position: absolute;
     top: ${canvas.top}px;
     left: ${canvas.left}px;
@@ -47,7 +47,7 @@ function styleElements() {
     background: url(media/mandala.svg);
     opacity: 0.7;
   `
-  cursor.ele.style = `
+  app.cursor.ele.style = `
     position: absolute;
     top: ${cursor.top}px;
     left: ${cursor.left}px;

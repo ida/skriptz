@@ -6,7 +6,7 @@ function isArrowKey(keyCode) {
   }
   return isArrowKey
 }
-function listenElements() {
+function onArrowKey(app) {
   window.onkeydown = function(eve) {
     if(isArrowKey(eve.keyCode) === true) {
       var direction = null
@@ -30,15 +30,20 @@ function listenElements() {
 
       // Move canvas in contrary direction of pressed arrow-key:
       moveElement(canvas.ele, distance * -1, direction)
+
       // If canvas is not visible, move back to former position:
-      //if(canvasIsInsideOfViewport() === false) {
-      if(cursorIsInsideOfCanvas() === false) {
+      if(canvasIsInsideOfViewport() === false) {
+      //if(cursorIsInsideOfCanvas() === false) {
         moveElement(canvas.ele, distance, direction)
       }
+
+      // Othersie check if naction is attachedto new pos:
+      else {
+        doAction(app)
+      }
+
       // Test a position-action:
       if(cursorIsInUpperLeftCornerOfCanvas()) {
-        if(cursor.ele.style.backgroundColor == 'red') cursor.ele.style.backgroundColor = 'white'
-        else cursor.ele.style.backgroundColor = 'red'
       }
     }
   }

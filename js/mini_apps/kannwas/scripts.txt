@@ -1,6 +1,9 @@
+./action/actions.js
+./action/main.js
 ./misc/info.js
 ./misc/helpers.js
 ./misc/validate.js
+./misc/coords.js
 ./move/move.js
 ./main/create.js
 ./main/style.js

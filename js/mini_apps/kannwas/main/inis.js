@@ -1,12 +1,12 @@
-function initiateApp() {
+function initiateApp(app) {
 
-  viewport.ele = document.body  // set app-ele
+  app.viewport.ele = document.body  // set app-ele
 
-  createElements()              // set app-children-eles
-  styleElements()
-  listenElements()
+  createElements(app)              // set app-children-eles
+  styleElements(app)
+  onArrowKey(app)
 
-  cursor.ele.tabIndex = 0       // make cursor focusable
-  cursor.ele.focus()            // focus cursor
+  app.cursor.ele.tabIndex = 0       // make cursor focusable
+  app.cursor.ele.focus()            // focus cursor
 
 }

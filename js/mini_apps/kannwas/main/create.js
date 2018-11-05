@@ -1,12 +1,12 @@
-function createElements() {
+function createElements(app) {
 
-  viewport.ele.innerHTML = '' // destroy before possible re-creation
+  app.viewport.ele.innerHTML = '' // destroy before possible re-creation
 
-  canvas.ele = document.createElement('div')
-  viewport.ele.appendChild(canvas.ele)
+  app.canvas.ele = document.createElement('div')
+  app.viewport.ele.appendChild(canvas.ele)
 
-  cursor.ele = document.createElement('div')
-  viewport.ele.appendChild(cursor.ele)
+  app.cursor.ele = document.createElement('div')
+  app.viewport.ele.appendChild(cursor.ele)
 
 }
 

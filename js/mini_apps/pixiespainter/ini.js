@@ -1,33 +1,24 @@
-var app = 'paint'
-var knot = 'body'
-var srcs_path = 'assets/js/'
+var app = 'paint';
+var knot = 'body';
+(function ($) {
 
-function addAppScripts() {
+  function addAppScripts() {
+    var file_path= null
+    var srcs_path = 'assets/js/'
     var srcs = [
-        'skel.js',
-        'styl.js',
-        'ctrl.js',
-        'keys.js',
-        'brush.js',
+      'skel.js',
+      'styl.js',
+      'ctrl.js',
+      'keys.js',
+      'brush.js',
     ]
     for(var i=0; i < srcs.length; i++) {
-        addScript(srcs_path + srcs[i])
+      file_path = srcs_path + srcs[i]
+      $('head').append('<script type="text/javascript" src="' + file_path + '"></script>')
     } 
-}
-function addDependencies() {
-    addStylesheet('assets/3rd/jqui/jquery-ui.min.css')
-    addScript('assets/3rd/jqui/jquery-ui.min.js')
-}
-function addScript(file_path) {
-    $('head').append('<script type="text/javascript" src="' + file_path + '"></script>')
-}
-function addStylesheet(file_path) {
-    $('head').append('<link rel="stylesheet" type="text/javascript" href="' + file_path + '">')
-}
-(function ($) {
-    $(document).ready(function() {
-        addDependencies()
-        addAppScripts()
+  }
+  $(document).ready(function() {
+    addAppScripts()
 
     // Set brush-color to 'red':
     $(app + '-controls .color').val('ff0800')
@@ -42,13 +33,13 @@ function addStylesheet(file_path) {
     // On info-button-click:
     $('#paint-container-controls-header-info').click(function() {
       if( $(this).text() == 'i' ) {
-        $(this).html(' x&nbsp;   Hi, this is pixiespainter, for more info click here:  <a href="README.txt" title="More info about \
-          this app">README</a>.')
+        $(this).html(' x&nbsp;   Hi, this is pixiespainter, for more info click here:' + 
+        '<a href="README.txt" title="More info about this app">README</a>.')
       }
       else {
         $(this).text('i')
       }
     });
 
-    });//docready
+  });//docready
 })(jQuery);

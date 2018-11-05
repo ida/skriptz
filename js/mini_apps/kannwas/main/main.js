@@ -22,8 +22,12 @@ canvas.width = cursor.width * 19
 canvas.height = canvas.width
 
 var tolerance = cursor.width/2
-
-initiateApp()
+var app = {
+  viewport: viewport,
+  canvas: canvas,
+  cursor: cursor,
+}
+initiateApp(app)
 
 // EOF ////////////////////////////////////////////////////
 

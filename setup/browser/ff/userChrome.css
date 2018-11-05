@@ -6,7 +6,6 @@ Firefox visual customizations
 This file modifies the appearance of everything in a Firefox-window
 which is no content, e.g the reload-button, tabs or the address-bar.
 
-Tested with version 61, a.k.a Quantum.
 
 
 Usage
@@ -36,41 +35,49 @@ You can enable an inspector for the browser-window, like this:
 Now, the window-inspector can be opened with Ctrl+Shift+Alt+i
 
 
-Quick-reference
----------------
-
-The markup of everything in top of window (top-bars):
-
-  <toolbox>
-    <toolbar id="toolbar-menubar">
-    </toolbar>
-    <toolbar id="TabsToolbar">
-    </toolbar>
-    <toolbar id="nav-bar">
-    </toolbar>
-    <toolbar id="PersonalToolbar">
-    </toolbar>
-  </toolbox>
 
 */
 
 /* Declare namespace, so Firefox knows how to interpret this file: */
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
 
-/* Hide tabs entirely: */
-#TabsToolbar {
-    visibility: collapse !important;
-}
-
-/*
-Make everything else in top-bar dissapear by consuming *no* height,
-but let address-bar still be focusable (Ctrl+l), for entering an URL:
-*/
-toolbox * {
+toolbox {
   height: 0;
   min-height: 0;
-  --tab-min-height: 0;
-  --toolbarbutton-inner-padding: 0;
-  --toolbarbutton-outer-padding: 0;
+  overflow: hidden;
 }
 
+#titlebar-close {
+  display: none;
+}
+
+
+/*
+
+Manual adjustments
+==================
+
+For personal memory, as done in version 63.0 (Quantum).
+
+
+Menu -> Edit -> Preferences
+---------------------------
+
+- Set homepage to ~/.mozilla7firefox/default.html with this content:
+    <style>
+    body {
+        background: #000;
+    }
+    </style>
+
+- Set default colors to bg:black col:white
+
+
+Menu -> View -> Toolbars -> Customize...
+-----------------------------------------
+
+- Disable title-bar display
+
+
+
+*/

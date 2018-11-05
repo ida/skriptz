@@ -22,3 +22,7 @@ function getTop(ele) {
   return getPropVal(ele, 'top')
 }
 
+function getPosis(ele) {
+  return [getLeft(ele), getTop(ele)]
+}
+

@@ -1,17 +1,18 @@
-function knotUp() {
-    knot = '#' + $(knot).parent().attr('id')
+function addEle(parentEle, id=null, tagName='div') {
+  var ele = document.createElement(tagName)
+  parentEle.appendChild(ele)
+  if(id !== null) ele.id = id
+  return ele
 }
-function addEle(ele_id) {
-    $(knot).append('<div id="'+ knot.slice(1) + '-' + ele_id + '"></div>')
-    knot += '-' + ele_id
-    return $(knot)
+function addMarkupSkel(appEle) {
+  var app = 'pixiespainter'
+  var id = app + '-container'
+  var ele = addEle(addEle, id)
+
+  id  = 'canvas'
+  addEle(addEle, id)
+
+  id  = 'controls'
+  addEle(addEle, id)
 }
-function addMarkupSkel() {
-    $(knot).append('<div id="'+ app + '-container"></div>')
-    app = '#' + app + '-container'
-    knot = app
-    addEle('canvas')
-    knotUp()
-    addEle('controls')
-}
-addMarkupSkel()
+addMarkupSkel(document.body)
