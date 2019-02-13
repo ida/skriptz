@@ -84,6 +84,7 @@ set smartindent     " Preserve indent when breaking the line.
 " Two spaces indents for js- and html-files:
 autocmd Filetype html setlocal ts=2 sts=2 sw=2
 autocmd Filetype javascript setlocal ts=2 sts=2 sw=2
+autocmd Filetype json setlocal ts=2 sts=2 sw=2
 autocmd Filetype css setlocal ts=2 sts=2 sw=2
 
 
