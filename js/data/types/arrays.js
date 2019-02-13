@@ -16,6 +16,18 @@ function insertItems(array, items, insertPos) {
 function prependItem(array, item) {
   array.unshift(item)
 }
+function mergeArrays(arrayOfArrays) {
+  // Make several arrays become one, exclude duplicate items.
+  var mergedArray = []
+  for(var i in arrayOfArrays) {
+    var array = arrayOfArrays[i]
+    for(var j in array) {
+      var item = array[j]
+      if( ! mergedArray.includes(item)) mergedArray.push(item)
+    }
+  }
+  return mergedArray
+}
 function moveItem(array, itemPos, targetPos) {
   var item = array.splice(itemPos, 1) // at itemPos remove 1 item
   array.splice(targetPos, 0, item) // at targetPos remove nothing and add item
