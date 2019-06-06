@@ -4,6 +4,10 @@ function appendArray(array, otherArray) {
 function appendItem(array, item) {
   array.push(item)
 }
+function copyArray(array) {
+  var copiedArray = array.slice()
+  return copiedArray
+}
 function getItemPos(array, item) {
   return array.indexOf(item)
 }
