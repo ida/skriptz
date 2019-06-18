@@ -1,4 +1,3 @@
-define([], function() {
 function addOptionEles(optionsParent, options, selectedIndex=0) {
   for(var i=0; i < options.length; i++) {
     var optionEle = document.createElement('option')
@@ -36,16 +35,3 @@ function setOptions(selectEle, values) {
 function selectByValue(selectEle, value) {
   var values = getValues(selectEle)
 }
-
-
-  return {
-    addOptionEles: addOptionEles,
-    addSelectEle: addSelectEle,
-    getOptions: getSelectionValues,
-    getSelectedOptionEle: getSelectedOptionEle,
-    getSelectedValue: getSelectedValue,
-    getSelectionValues: getSelectionValues,
-    setOptions: setOptions,
-    selectByValue: selectByValue
-  }
-});

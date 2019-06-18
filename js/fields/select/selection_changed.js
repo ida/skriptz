@@ -1,4 +1,3 @@
-define([], function() {
 function addSelectionChangedListener(selectionEle, onChangeDoWithEle) {
 //
 // What
@@ -115,7 +114,3 @@ function addSelectionChangedListener(selectionEle, onChangeDoWithEle) {
 
 
 } // EO addSelectionChangedListener
-  return {
-    addSelectionChangedListener: addSelectionChangedListener
-  }
-});

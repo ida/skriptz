@@ -1,4 +1,3 @@
-define([], function() {
 //
 // FUNCS
 //
@@ -326,37 +325,3 @@ function substitute(string, dict, startSubstStr='{', endSubstStr='}') {
   }
   return string
 }
-// EOF
-
-
-  return {
-    getThisFuncName: getThisFuncName,
-    isExistingFunction: isExistingFunction,
-    addEle: addEle,
-    getEle: getEle,
-    getFirstChild: getFirstChild,
-    getFirstChildren: getFirstChildren,
-    getNextSibling: getNextSibling,
-    hasClass: hasClass,
-    insertAfter: insertAfter,
-    prependEle: prependEle,
-    getStyles: getStyles,
-    getStyle: getStyle,
-    getCssVars: getCssVars,
-    getCssVarVal: getCssVarVal,
-    setStyles: setStyles,
-    getCoords: getCoords,
-    getLeft: getLeft,
-    getTop: getTop,
-    setUrlWithoutReload: setUrlWithoutReload,
-    getUrlQueryVarVals: getUrlQueryVarVals,
-    changeUrlQuery: changeUrlQuery,
-    decodeUrl: decodeUrl,
-    encodeUrl: encodeUrl,
-    objToHtml: objToHtml,
-    jsonToNestedHtmlDivs: jsonToNestedHtmlDivs,
-    loadUrl: loadUrl,
-    loadTemplate: loadTemplate,
-    substitute: substitute
-  }
-});
