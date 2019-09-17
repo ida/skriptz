@@ -26,10 +26,10 @@ function validateNumberInput(ele) {
     if(eve.keyCode == 16)  altIsPressed = false
     if(eve.keyCode == 17) strgIsPressed = false
 
-    if( eve.target.value > Number(eve.target.max) ) {
+    if( eve.target.max != '' && eve.target.value > Number(eve.target.max) ) {
       eve.target.value = Number(eve.target.max)
     }
-    if( eve.target.value < Number(eve.target.min) ) {
+    if( eve.target.min != '' && eve.target.value < Number(eve.target.min) ) {
       eve.target.value = Number(eve.target.min)
     }
 
