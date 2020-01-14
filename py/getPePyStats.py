@@ -1,7 +1,7 @@
 # Take a given list of egg-names,
 # crawl and collect download-numbers of pepy.tech for each,
 # compute the downloads-sum of all eggs and write it into a
-# file named 'result.txt', it should look like:
+# file named 'pepy_stats.html', it should look like:
 #
 # some-egg: 14k
 # another-egg: 3k
@@ -16,6 +16,7 @@ egg_names = ["adi.dropdownmenu","adi.simplestructure","adi.simplesite",
 "adi.playlist","adi.slickstyle","adi.ttw_styles","adi.devgen"]
 
 
+import datetime
 from os import system as exe
 
 stats = {} #  { "egg_name": "downloads_amount_prettyfied" , }
@@ -48,17 +49,23 @@ def main():
             downloads_prettified = format(downloads_amount_in_kilo, ',').replace(',', '')
             total_downloads_amount_in_kilo += downloads_amount_in_kilo
             total_downloads_amount += downloads_amount
-            stats[egg_name] = downloads_string
+            #stats[egg_name] = downloads_string
+            stats[egg_name] = str(downloads_amount_in_kilo) + ' 000'
 
         exe('rm ' + egg_name)
 
-    content = ''
+    content = 'Python packages and their download numbers taken from <a href="https://pepy.tech" title="Get download numbers of Python packages">pepy.tech</a><table>'
     for key in stats:
-        content += key + ': ' + stats[key] + '\n'
+        content += '<tr><td><a title="To the description on pypi" href="https://pypi.org/project/' + key + '">' + key + '</a></td><td>' + stats[key] + '</td></tr>'
     total_downloads_amount = format(total_downloads_amount, ',')
-    content += '____________________\n\ntotal:   ' + str(total_downloads_amount_in_kilo) + ' k'
-    with open('result.txt', 'w') as fil:
+    content += '<tr><td>Total</td><td>' + str(total_downloads_amount_in_kilo) + ' 000</td>'
+    content += '</table>'
+    content += 'These stats were generated using <a title="The script for generating download statistics" href="https://github.com/ida/skriptz/blob/master/py/getPePyStats.py">https://github.com/ida/skriptz/blob/master/py/getPePyStats.py</a>'
+    content += '<br>Generated on: ' + str(datetime.datetime.now())[:16]
+
+    with open('pepy_stats.html', 'w') as fil:
         fil.write(content)
+
 
 if __name__ == '__main__':
     main()
