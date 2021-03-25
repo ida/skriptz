@@ -10,7 +10,7 @@
 
 # Exchange these list-items with the eggs you want to be counted, then
 # run this script of the commandline `python this_script.py`:
-egg_names = ["adi.dropdownmenu","adi.simplestructure","adi.simplesite",
+egg_names = ["adi.bookmark","adi.dropdownmenu","adi.simplestructure","adi.simplesite",
 "adi.trash","adi.revertorder","adi.workingcopyflag","adi.commons","adi.suite",
 "adi.enabletopics","adi.samplecontent","adi.init","adi.fullscreen",
 "adi.playlist","adi.slickstyle","adi.ttw_styles","adi.devgen"]
