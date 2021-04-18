@@ -77,6 +77,9 @@ alias scd='screen -dRR'
 alias scl='screen -ls'
 alias scr='screen -r'
 alias scs='screen -S'
+sck() {
+    screen -X -S $1 quit
+}
 alias rf='rm -rf'
 alias vi='vim'
 alias v=vimAndSetScreenTitleToFileName
