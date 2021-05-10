@@ -1,6 +1,12 @@
 # For Plone-4.3.11 with LDAP-support:
-sudo apt-get install -y build-essential libjpeg-dev libldap2-dev libreadline-dev libsasl2-dev libssl-dev libxml2-dev libxslt1-dev libz-dev python-dev
+sudo apt-get install -y build-essential libjpeg-dev libldap2-dev libreadline-dev libsasl2-dev libssl-dev libxml2-dev libxslt1-dev libz-dev python-dev libjpeg62-dev libreadline-gplv2-dev wv libsasl2-dev poppler-utils libdb-dev
+#virtualenv .virtenv
+#. .virtenv/bin/activate
 
+# Overcome "pkg_resources.DistributionNotFound: setuptools>=3.3"
+#pip install setuptools -U
+
+""
 mkdir .buildout
 mkdir .buildout/eggs
 cat <<EOM > '.buildout/default.cfg'
