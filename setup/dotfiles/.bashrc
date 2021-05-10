@@ -1,5 +1,5 @@
-export PATH=$HOME/.virtenv/bin/python:$PATH
-./$HOME/.virtenv/bin/activate
+#export PATH=$HOME/.virtenv/bin/python:$PATH
+#./$HOME/.virtenv/bin/activate
 # UNDO DEFAULT KEY-MAPPINGS
 # =========================
 # unix.stackexchange.com/questions/72086
