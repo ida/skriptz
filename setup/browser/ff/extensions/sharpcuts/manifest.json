@@ -1,0 +1,24 @@
+{
+
+  "manifest_version": 2,
+  "name": "sharpcuts",
+  "version": "0.1",
+
+  "description": "Add custom shortcuts to every page.",
+
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "js": ["script.js"]
+    }
+  ],
+
+
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "sharpcuts@example.org"
+    }
+  }
+
+
+}
