@@ -17,7 +17,7 @@ getProfilePath() {
 }
 
 allowUnsignedAddons() {
-    echo 'user_pref("xpinstall.signatures.required", false)' >> $profilePath/user.js
+    echo 'user_pref("xpinstall.signatures.required", false);' >> $profilePath/user.js
 }
 
 registerAddon() {
