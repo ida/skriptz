@@ -59,6 +59,7 @@ vimAndSetScreenTitleToFileName() {
     setScreenWindowTitleToFilename $1
     vim $1
 }
+alias ff='firefox'
 alias dg='devgen'
 alias sq='devgen squash'
 alias :wq='exit'
