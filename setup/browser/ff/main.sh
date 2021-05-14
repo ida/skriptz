@@ -1,8 +1,13 @@
 addonPath='extensions/sharpcuts@example.org.xip'
+
 profileName=ala
+
 profilePath=''
 
+displayLogs=0
+
 main() {
+    setProfilePath # ini
     setupProfile
     installAddon
     #firefox example.org -P $profileName
@@ -11,31 +16,53 @@ main() {
 
 
 allowUnsignedAddons() {
-    echo 'user_pref("xpinstall.signatures.required", false);' >> $profilePath/user.js
+    local text='user_pref("xpinstall.signatures.required", false);'
+    local path=$profilePath/user.js
+    (grep "$text" $path &> /dev/null) && log Unsigned addons are allowed. || (
+        log Unsigned addons are not allowed.
+        echo 'user_pref("xpinstall.signatures.required", false);' >> $profilePath/user.js
+        log Unsigned addons are now allowed.
+    )
+}
+
+copyAddonToAddonsFolder() {
+    test -f $profilePath/extensions/$addonPath && cp $addonPath $profilePath/extensions
 }
 
 createAddonsFolder() {
-    mkdir $profilePath/extensions
+    test ! -d $profilePath/extensions && mkdir $profilePath/extensions
 }
 
 createProfileDirectory() {
-    firefox -CreateProfile $profileName
-    setProfilePath
+    test ! -z $profilePath && log We have a profile-directory. || (
+        log Creating profile.
+        firefox -CreateProfile $profileName
+        setProfilePath
+        log Created profile.
+    )
 }
 
 createProfileFiles() {
-    # Run profile once in background, so profile-files get generated:
-    firefox -P $profileName --headless &
-    sleep 7
-    pkill firefox
+    test -f $profilePath/extensions.json && log We have profile-files. || (
+        log Running profile once in background, so profile-files get generated.
+        firefox -P $profileName --headless > /dev/null 2>&1 &
+        sleep 7
+        # Assume we are the only firefox process:
+        pkill firefox &> /dev/null
+        log Profile-files were generated.
+    )
 }
 
+
 installAddon() {
-    setProfilePath
     allowUnsignedAddons
     registerAddon
     createAddonsFolder
-    cp $addonPath $profilePath/extensions
+    copyAddonToAddonsFolder
+}
+
+log() {
+    test $displayLogs == 0 && echo $@
 }
 
 registerAddon() {
@@ -47,17 +74,12 @@ registerAddon() {
 setProfilePath() {
     # Assume find returns only one result:
     profilePath=$( find ~/.mozilla/firefox -name "*.$profileName" )
+    log Now profilePath is: $profilePath
 }
 
-exists() {
-    test -f $1 && exit 0
-    test -d $1 && exit 0
-    exit 1
-}
 setupProfile() {
-                                               setProfilePath
-    test ! -d $profilePath &&                  createProfileDirectory
-    test ! -f $profilePath/extensions.json &&  createProfileFiles
+    createProfileDirectory
+    createProfileFiles
 }
 
 main
