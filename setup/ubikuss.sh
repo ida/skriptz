@@ -1,5 +1,5 @@
-# Install git:
-wget -qO- https://raw.githubusercontent.com/ida/skriptz/master/setup/installs/install_system_packages.sh | bash -s git 
+# Install git and ubuntu-restricted-extras(video-codecs):
+wget -qO- https://raw.githubusercontent.com/ida/skriptz/master/setup/installs/install_system_packages.sh | bash -s git ubuntu-restricted-extras
 
 # Clone and source dotfiles:
 mkdir -p ~/repos/github/ida

@@ -4,13 +4,13 @@ fn() {
     find . -name "*$1*"
 }
 gr() {
-# Search this directory recursively for the passed searchterm.
+# Search this directory recursively for the passed searchterm, ignore upper- and lowercase differentiation.
 # Usage: `gr somesearchterm`
-    grep -r "$1" .
+    grep -ir "$1" .
 }
 grx() {
 # Same as `gr`, but exclude directories named 'tests' and files ending with '.pyc'.
-    find . -type f ! -path "./*bak*" ! -path "./tests*" ! -path "*.pyc" -exec grep -il "$1" {} \;
+    find . -type f ! -path "./*bak*" ! -path "./tests*" ! -path "*.pyc" -exec grep -ir "$1" {} \;
 }
 grr() {
 # Search term only in files with certain extension:
@@ -62,7 +62,6 @@ vimAndSetScreenTitleToFileName() {
 alias ff='firefox'
 alias dg='devgen'
 alias sq='devgen squash'
-alias :wq='exit'
 alias ..='cd ..'
 alias ...='..;..'
 alias ....='...;..'
@@ -70,10 +69,15 @@ alias .....='....;..'
 alias ......='.....;..'
 alias ca='cat'
 alias cl='clear'
-#alias diff='colordiff -u'
 alias l='ls -l'
+alias rf='rm -rf'
+alias vi='vim'
+alias v=vimAndSetScreenTitleToFileName
+alias :wq='exit'
+
 alias py='python'
 alias psy='ps aux|grep python'
+
 alias scd='screen -dRR'
 alias scl='screen -ls'
 alias scr='screen -r'
@@ -81,9 +85,7 @@ alias scs='screen -S'
 sck() {
     screen -X -S $1 quit
 }
-alias rf='rm -rf'
-alias vi='vim'
-alias v=vimAndSetScreenTitleToFileName
+
 
 alias bb='./bin/buildout'
 alias bi='./bin/instance fg'
