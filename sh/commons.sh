@@ -26,7 +26,7 @@ splitStringIntoArray() { IFS=', ' read -a $1 <<< $2; }
 # execution_location_path=$(pwd)
 # execution_location_realpath=$(readlink -f $execution_location)
 #
-# parent_path_of_path=${path%/*}
+# THIS_DIR_PATH=$(basename $PWD)
 #
 # Thanks for getting real to Barry, as cited on:
 # https://andy.wordpress.com/2008/05/09/bash-equivalent-for-php-realpath/
