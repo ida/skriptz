@@ -10,8 +10,8 @@ python create_android_app.py $1
 
 cd $1
 
-cp ~/build.sh .
+cp ../build_android_app.sh .
 
-./build.sh
+./build_android_app.sh
 
 echo "You have an installable android-app-file: ./$1/build/$1.apk"
