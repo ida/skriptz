@@ -1,6 +1,10 @@
 # Install system-packages. Tested with Ubuntu 20. Usage:
 # ./install_system_packages.sh git vim screen curl wget
 
+if \! test -f /var/lib/apt/periodic/update-success-stamp; then
+    javac -help 2>/dev/null || ( echo "Install failed, please add javac to PATH"; exit 1 )
+    exit 0;
+fi
 
 # Update package-manager, if not done already within the last day:
 (find /var/lib/apt/periodic/update-success-stamp -mtime +1 |
