@@ -7,6 +7,14 @@
 # Important: your-app must not end with a slash.
 
 
+# These must be the same than used in ./install_android.sh:
+
+SDK="${HOME}/.android-sdk-linux"
+
+BUILD_TOOLS="${SDK}/build-tools/25.0.0"
+
+PLATFORM="${SDK}/platforms/android-16"
+
 
 
 # If exitcode of a line is not 0, or if a var is not set, exit with error:
@@ -25,13 +33,7 @@ APP_ID_PATH="com/example/$APP_NAME"
 
 JAVA_HOME=/usr/bin/java
 
-PATH=${JAVA_HOME}/bin:$PATH
-
-SDK="${HOME}/.android-sdk-linux"
-
-BUILD_TOOLS="${SDK}/build-tools/25.0.0"
-
-PLATFORM="${SDK}/platforms/android-16"
+PATH=${JAVA_HOME}/bin:$PATH # make sure jdk-tools are in PATH
 
 
 

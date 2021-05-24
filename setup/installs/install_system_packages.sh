@@ -1,6 +1,7 @@
 # Install system-packages. Tested with Ubuntu 20. Usage:
 # ./install_system_packages.sh git vim screen curl wget
 
+
 # Update package-manager, if not done already within the last day:
 (find /var/lib/apt/periodic/update-success-stamp -mtime +1 |
 grep update-success-stamp &> /dev/null) && (sudo apt update &> /dev/null)
