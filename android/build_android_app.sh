@@ -1,23 +1,14 @@
 # Usage:
 #
-# In your app's directory do on the commandline: ./build_android_app.sh app-name
+# In your app's directory do on the commandline: ./build_android_app.sh
 #
-# You may change these values beforehand:
 APP_NAME=$(basename $PWD) # this dir path
 
 APP_ID_PATH="com/example/$APP_NAME" # Must correspond with app-directory-paths.
 
-#
-#
-#
-#
-# Do not change anything below this line.
+JAVA_HOME=/usr/bin/java
 
-
-
-export JAVA_HOME=/usr/bin/java
-
-export PATH=${JAVA_HOME}/bin:$PATH
+PATH=${JAVA_HOME}/bin:$PATH
 
 SDK="${HOME}/android-sdk-linux"
 
