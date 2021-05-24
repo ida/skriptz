@@ -8,7 +8,7 @@ SDK_PATH=$HOME/.android-sdk-linux
 set -eu
 
 # Install Java-Development-Kit, including Java, if not done already:
-bash ../setup/installs/install_system_packages.sh default-jdiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiik
+bash ../setup/installs/install_system_packages.sh default-jdk
 
 # Do nothing, if SDK directory exists already:
 test -d $SDK_PATH && echo \"$SDK_PATH\" exists. Delete to recreate. || (
