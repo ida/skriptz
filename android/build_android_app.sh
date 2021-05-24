@@ -2,9 +2,12 @@
 #
 # In your app's directory do on the commandline: ./build_android_app.sh
 #
-APP_NAME=$(basename $PWD) # this dir path
 
-APP_ID_PATH="com/example/$APP_NAME" # Must correspond with app-directory-paths.
+
+
+APP_NAME=$(basename $PWD)
+
+APP_ID_PATH="com/example/$APP_NAME"
 
 JAVA_HOME=/usr/bin/java
 
@@ -15,6 +18,8 @@ SDK="${HOME}/android-sdk-linux"
 BUILD_TOOLS="${SDK}/build-tools/25.0.0"
 
 PLATFORM="${SDK}/platforms/android-16"
+
+
 
 
 # If exitcode of a line is not 0, or if a var is not set, exit with error:
@@ -54,7 +59,7 @@ javac -source 1.7 -target 1.7 -bootclasspath "${JAVA_HOME}/jre/lib/rt.jar" \
 "${BUILD_TOOLS}/zipalign" -f -p 4 \
     build/$APP_NAME.unsigned.apk build/$APP_NAME.aligned.apk
 
-# Generate key (do this only once, must be same for future app versions):
+# Generate key for the app-signature, if not existing:
 test ! -f keystore.jks &&
 keytool -genkeypair -keystore keystore.jks -alias androidkey \
      -validity 10000 -keyalg RSA -keysize 2048 \
@@ -63,5 +68,5 @@ keytool -genkeypair -keystore keystore.jks -alias androidkey \
 # Build signed apk:
 "${BUILD_TOOLS}/apksigner" sign --ks keystore.jks \
     --ks-key-alias androidkey --ks-pass pass:android \
-    --key-pass pass:android --out build/$APP_NAME.apk \
+    --key-pass pass:android --out ../$APP_NAME.apk \
     build/$APP_NAME.aligned.apk
