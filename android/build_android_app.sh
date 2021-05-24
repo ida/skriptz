@@ -1,11 +1,18 @@
 # Usage:
 #
-# In your app's directory do on the commandline: ./build_android_app.sh
+# In your app's directory do on the commandline: bash build_android_app.sh an-app-name
 #
+# Important: app-name must not end with a slash.
 
 
 
-APP_NAME=$(basename $PWD)
+# If exitcode of a line is not 0, or if a var is not set, exit with error:
+
+set -eu
+
+test ! $1 && (echo You must give an app-name.; exit 1)
+
+APP_NAME=$1
 
 APP_ID_PATH="com/example/$APP_NAME"
 
@@ -22,51 +29,54 @@ PLATFORM="${SDK}/platforms/android-16"
 
 
 
-# If exitcode of a line is not 0, or if a var is not set, exit with error:
-
-set -eu
 
 
 # Create needed directories:
 
-mkdir -p build/gen build/obj build/apk
+mkdir -p $APP_NAME/build/gen $APP_NAME/build/obj $APP_NAME/build/apk
 
 
 # Generate build files of res-directory:
 
-"${BUILD_TOOLS}/aapt" package -f -m -J build/gen/ -S res \
-    -M AndroidManifest.xml -I "${PLATFORM}/android.jar"
+"${BUILD_TOOLS}/aapt" package -f -m -J $APP_NAME/build/gen/ -S $APP_NAME/res \
+    -M $APP_NAME/AndroidManifest.xml -I "${PLATFORM}/android.jar"
 
 
 # Compile Java-file:
 
 javac -source 1.7 -target 1.7 -bootclasspath "${JAVA_HOME}/jre/lib/rt.jar" \
-    -classpath "${PLATFORM}/android.jar" -d build/obj \
-    build/gen/$APP_ID_PATH/R.java java/$APP_ID_PATH/MainActivity.java
+    -classpath "${PLATFORM}/android.jar" -d $APP_NAME/build/obj \
+    $APP_NAME/build/gen/$APP_ID_PATH/R.java $APP_NAME/java/$APP_ID_PATH/MainActivity.java
 
 
 # Generate build files of compiled Java-file:
 
-"${BUILD_TOOLS}/dx" --dex --output=build/apk/classes.dex build/obj/
+"${BUILD_TOOLS}/dx" --dex --output=$APP_NAME/build/apk/classes.dex $APP_NAME/build/obj/
 
 
 # Build unsigned apk:
-"${BUILD_TOOLS}/aapt" package -f -M AndroidManifest.xml -S res/ \
+"${BUILD_TOOLS}/aapt" package -f -M $APP_NAME/AndroidManifest.xml -S $APP_NAME/res/ \
     -I "${PLATFORM}/android.jar" \
-    -F build/$APP_NAME.unsigned.apk build/apk/
+    -F $APP_NAME/build/$APP_NAME.unsigned.apk $APP_NAME/build/apk/
 
 # Build aligned apk:
 "${BUILD_TOOLS}/zipalign" -f -p 4 \
-    build/$APP_NAME.unsigned.apk build/$APP_NAME.aligned.apk
+    $APP_NAME/build/$APP_NAME.unsigned.apk $APP_NAME/build/$APP_NAME.aligned.apk
 
 # Generate key for the app-signature, if not existing:
-test ! -f keystore.jks &&
-keytool -genkeypair -keystore keystore.jks -alias androidkey \
+test ! -f $APP_NAME/keystore.jks &&
+keytool -genkeypair -keystore $APP_NAME/keystore.jks -alias androidkey \
      -validity 10000 -keyalg RSA -keysize 2048 \
      -storepass android -keypass android
 
 # Build signed apk:
-"${BUILD_TOOLS}/apksigner" sign --ks keystore.jks \
+"${BUILD_TOOLS}/apksigner" sign --ks $APP_NAME/keystore.jks \
     --ks-key-alias androidkey --ks-pass pass:android \
-    --key-pass pass:android --out ../$APP_NAME.apk \
-    build/$APP_NAME.aligned.apk
+    --key-pass pass:android --out $APP_NAME.apk \
+    $APP_NAME/build/$APP_NAME.aligned.apk
+
+# Remove build-directory:
+rm -rf $APP_NAME/build
+
+
+echo You have an installable android-app: ./$APP_NAME.apk
