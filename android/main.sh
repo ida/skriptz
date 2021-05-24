@@ -9,5 +9,3 @@ test ! $1 && (echo You must give an app-name.; exit 1)
 python create_android_app.py $1
 
 bash build_android_app.sh $1
-
-echo "You have an installable android-app-file: ./$1/build/$1.apk"
