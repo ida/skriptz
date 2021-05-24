@@ -28,7 +28,3 @@ for pkg in $@; do
     fi
 
 done
-
-
-# Mission completed, happy end:
-echo Finished successfully installing packages!

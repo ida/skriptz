@@ -1,16 +1,23 @@
 # Usage:
 #
-# In your app's directory do on the commandline: bash build_android_app.sh an-app-name
+# In your app's parent directory, do on the commandline:
 #
-# Important: app-name must not end with a slash.
+#   bash build_android_app.sh your-app
+#
+# Important: your-app must not end with a slash.
+
 
 
 
 # If exitcode of a line is not 0, or if a var is not set, exit with error:
-
 set -eu
 
+# If no app-name was given, error and abort:
 test ! $1 && (echo You must give an app-name.; exit 1)
+
+# Make sure required packages are installed:
+bash install_android.sh
+
 
 APP_NAME=$1
 
@@ -20,7 +27,7 @@ JAVA_HOME=/usr/bin/java
 
 PATH=${JAVA_HOME}/bin:$PATH
 
-SDK="${HOME}/android-sdk-linux"
+SDK="${HOME}/.android-sdk-linux"
 
 BUILD_TOOLS="${SDK}/build-tools/25.0.0"
 
@@ -36,7 +43,7 @@ PLATFORM="${SDK}/platforms/android-16"
 mkdir -p $APP_NAME/build/gen $APP_NAME/build/obj $APP_NAME/build/apk
 
 
-# Generate build files of res-directory:
+# Generate 'R.java'-file:
 
 "${BUILD_TOOLS}/aapt" package -f -m -J $APP_NAME/build/gen/ -S $APP_NAME/res \
     -M $APP_NAME/AndroidManifest.xml -I "${PLATFORM}/android.jar"
@@ -49,7 +56,7 @@ javac -source 1.7 -target 1.7 -bootclasspath "${JAVA_HOME}/jre/lib/rt.jar" \
     $APP_NAME/build/gen/$APP_ID_PATH/R.java $APP_NAME/java/$APP_ID_PATH/MainActivity.java
 
 
-# Generate build files of compiled Java-file:
+# Translate compiled Java to Dalvik EXecutable, needed to run on Android :
 
 "${BUILD_TOOLS}/dx" --dex --output=$APP_NAME/build/apk/classes.dex $APP_NAME/build/obj/
 

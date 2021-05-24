@@ -1,23 +1,34 @@
-sudo apt install default-jdk -y # install java development kit
+SDK_PATH=$HOME/.android-sdk-linux
 
-export JAVA_HOME=/usr/bin/java
-export PATH=${JAVA_HOME}/bin:$PATH
+# Install Java-Development-Kit, including Java, if not done already:
+bash ../setup/installs/install_system_packages.sh default-jdk
 
-cd
+# Abort, if exitcode is not 0, or used var is not set:
+set -eu
+
+# Do nothing, if SDK directory exists already:
+test -d $SDK_PATH && echo \"$SDK_PATH\" exists. Delete to recreate. || (
 
 
-curl -O https://dl.google.com/android/repository/android-ndk-r13b-linux-x86_64.zip
-unzip android-ndk-r13b-linux-x86_64.zip
-NDK="${HOME}/android-ndk-r13b"
+    # Otherwise create SDK directory:
+    mkdir $SDK_PATH
 
-curl -O https://dl.google.com/android/repository/build-tools_r25-linux.zip
-unzip build-tools_r25-linux.zip
-mkdir android-sdk-linux/build-tools
-mv android-7.1.1 android-sdk-linux/build-tools/25.0.0
+    # Locate into SDK directory:
+    cd $SDK_PATH
 
-curl -O https://dl.google.com/android/repository/android-16_r05.zip
-unzip android-16_r05.zip
-mv android-4.1.2 android-sdk-linux/platforms/android-16
+    echo 'Installing Android and Android-App-build-tools...'
 
-curl -O https://dl.google.com/android/repository/platform-tools_r25-linux.zip
-unzip platform-tools_r25-linux.zip -d android-sdk-linux/
+    # Install Android:
+    curl -O https://dl.google.com/android/repository/android-16_r05.zip
+    unzip android-16_r05.zip
+    mkdir $SDK_PATH/platforms
+    mv android-4.1.2 $SDK_PATH/platforms/android-16
+
+    # Install tools for building an Android app file (.apk):
+    curl -O https://dl.google.com/android/repository/build-tools_r25-linux.zip
+    unzip build-tools_r25-linux.zip
+    mkdir -p $SDK_PATH/build-tools
+    mv android-7.1.1 $SDK_PATH/build-tools/25.0.0
+
+
+) # End of SDK_PATH does not exist already.

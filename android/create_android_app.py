@@ -1,6 +1,11 @@
 import os
 
 
+def log(msg):
+
+    os.system('echo ' + msg)
+
+
 def writeFile(path, content):
 
     os.makedirs('/'.join(path.split('/')[:-1]))
@@ -20,11 +25,17 @@ class AndroidApp:
 
         self.name = name
 
-        self.create()
+        if os.path.exists(name):
+
+            log('Initialized AndroidApp for existing directory "' + name + '".')
+
+            return
+
+        self.create() 
 
 
     def create(self):
- 
+
         self.addManifest()
 
         self.addJava()
