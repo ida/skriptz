@@ -9,7 +9,7 @@ cp skriptz/setup/dotfiles/.[!.]* ~
 . ~/.bashrc
 
 # Configure git:
-git config --global user.name "User"
-git config --global user.email "user@example.org"
+git config --global user.name "ida"
+git config --global user.email "1715762+ida@users.noreply.github.com"
 git config --global credential.helper "cache --timeout=36000" 
 git config --global core.excludesfile ~/.gitignore_global
