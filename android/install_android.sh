@@ -11,7 +11,7 @@ set -eu
 bash ../setup/installs/install_system_packages.sh default-jdk
 
 # Do nothing, if SDK directory exists already:
-test -d $SDK_PATH && echo \"$SDK_PATH\" exists. Delete to recreate. || (
+test -d $SDK_PATH && exit 0 || (
 
 
     # Otherwise create SDK directory:

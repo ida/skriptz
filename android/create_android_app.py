@@ -93,6 +93,8 @@ public class MainActivity extends Activity {
     mywebview = (WebView)findViewById(R.id.webView);
     WebSettings webSettings = mywebview.getSettings();
     webSettings.setJavaScriptEnabled(true);
+    webSettings.setUseWideViewPort(true);
+    webSettings.setLoadWithOverviewMode(true);
     mywebview.loadUrl("https://dashing-four-crest.glitch.me");
     mywebview.setWebViewClient(new WebViewClient());
   }
