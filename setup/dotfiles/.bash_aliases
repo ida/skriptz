@@ -23,25 +23,11 @@ grr() {
 #    find . -type f -name "*$secondterm" -exec grep -il "$firstterm" {} \;
     find . -type f -name "*$secondterm" -not -path "./$thirdterm/*" -exec grep -il "$firstterm" {} \;
 }
-pytojs() {
-# Usage:
-# pytojs inputfile.pyjs
-# Where the extension (here: 'pyjs') can be anything.
-# Results in a converted js-file within the same directory.
-python /home/ida/repos/github/ida/skriptz/py/pytojs/main.py $1
-}
-sas() {
-# Requires:
-# pip install pyScss
-# Usage:
-# sas stylefile.scss
-    # Get passed filename:
-    filename=$1
-    # Remove its extension (here: '.scss'):
-    filename=${filename%.*}
-    # (OR: `basename hugo.scss .scss` ---> hugo)
-    # And let pyScss do the rest ('-C' means 'do not minify'):
-    python -m scss -C < "$1" > "${filename}.css"
+prepend() {
+# Usage: prepend "some string" file.txt
+
+# If file does not exist or is empty, write str, otherwise prepend str:
+if [[ ! -f $2 ]] || [[ $( <"$2" ) == '' ]]; then echo $1 > $2; else sed -i 1i"$1" $2; fi
 }
 replace() {
 # What: Replace one string with another in

@@ -1,3 +1,4 @@
+prependStrToFile() { sed -i '1i"$1"' $2 } # works if file exists and contains at least one line
 forEachDo() { arrayname=$1[@] array=("${!arrayname}") kommand=$2; for i in "${array[@]}" ; do "$kommand" "$i"; done }
 fileExists() { if [ -f $1 ]; then return 1; else return 0; fi }
 fileIsEmpty () { if [[ $( <"$1" ) = '' ]]; then return 1; else return 0; fi; }
