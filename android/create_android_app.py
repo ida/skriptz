@@ -53,12 +53,11 @@ class AndroidApp:
   tools:context=".{app_main}">
 
   <WebView
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:id="@+id/webView"
     android:layout_alignParentLeft="true"
     android:layout_alignParentTop="true"
-    android:layout_alignParentRight="true"
   />
 
 </RelativeLayout>'''.format(app_main=self.main)
@@ -119,7 +118,8 @@ public class MainActivity extends Activity {
         path = self.name + '/AndroidManifest.xml'
 
         content = '''<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="{app_id}" android:installLocation="auto">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="{app_id}" android:installLocation="internalOnly">
+  <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="30" />
   <uses-permission android:name="android.permission.INTERNET"/>
   <application android:label="{app_name}" android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen">
     <activity android:name=".{app_main}">
