@@ -1,6 +1,6 @@
 # Usage:
 #
-# In your app's parent directory, do on the commandline:
+# Move your app into this directory and do on the commandline:
 #
 #   bash build_android_app.sh your-app
 #
@@ -11,10 +11,9 @@
 
 SDK="${HOME}/.android-sdk-linux"
 
-BUILD_TOOLS="${SDK}/build-tools/25.0.0"
+BUILD_TOOLS="${SDK}/build-tools/30.0.0"
 
-PLATFORM="${SDK}/platforms/android-16"
-
+PLATFORM="${SDK}/platforms/android-24"
 
 
 # If exitcode of a line is not 0, or if a var is not set, exit with error:
@@ -34,10 +33,6 @@ APP_ID_PATH="com/example/$APP_NAME"
 JAVA_HOME=/usr/bin/java
 
 PATH=${JAVA_HOME}/bin:$PATH # make sure jdk-tools are in PATH
-
-
-
-
 
 
 # Create needed directories:
@@ -81,8 +76,11 @@ keytool -genkeypair -keystore $APP_NAME/keystore.jks -alias androidkey \
 # Build signed apk:
 "${BUILD_TOOLS}/apksigner" sign --ks $APP_NAME/keystore.jks \
     --ks-key-alias androidkey --ks-pass pass:android \
-    --key-pass pass:android --out $APP_NAME.apk \
+    --key-pass pass:android --out $APP_NAME/build/$APP_NAME.apk \
     $APP_NAME/build/$APP_NAME.aligned.apk
+
+# Move apk-file into current directory:
+mv $APP_NAME/build/$APP_NAME.apk .
 
 # Remove build-directory:
 rm -rf $APP_NAME/build

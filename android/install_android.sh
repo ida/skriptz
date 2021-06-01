@@ -1,6 +1,5 @@
 # Usage: $ bash install_android.sh
 
-
 # All used paths must correspond with those in './build_android_app.sh':
 SDK_PATH=$HOME/.android-sdk-linux
 
@@ -23,16 +22,16 @@ test -d $SDK_PATH && exit 0 || (
     echo 'Installing Android and Android-App-build-tools...'
 
     # Install Android:
-    curl -O https://dl.google.com/android/repository/android-16_r05.zip
-    unzip android-16_r05.zip
+    curl -O https://dl.google.com/android/repository/android-23_r02.zip
+    unzip android-23_r02c.zip
     mkdir $SDK_PATH/platforms
-    mv android-4.1.2 $SDK_PATH/platforms/android-16
+    mv android-6.0 $SDK_PATH/platforms/android-24
 
     # Install tools for building an Android app file (.apk):
-    curl -O https://dl.google.com/android/repository/build-tools_r25-linux.zip
-    unzip build-tools_r25-linux.zip
+    curl -O https://dl.google.com/android/repository/build-tools_r30-linux.zip
+    unzip build-tools_r30-linux.zip
     mkdir -p $SDK_PATH/build-tools
-    mv android-7.1.1 $SDK_PATH/build-tools/25.0.0
+    mv android-11 $SDK_PATH/build-tools/30.0.0
 
 
 ) # End of SDK_PATH does not exist already.
