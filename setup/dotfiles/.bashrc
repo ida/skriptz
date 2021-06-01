@@ -1,13 +1,7 @@
+export PATH=$HOME/.local/bin:$PATH
 #export PATH=$HOME/.virtenv/bin/python:$PATH
 #./$HOME/.virtenv/bin/activate
-# UNDO DEFAULT KEY-MAPPINGS
-# =========================
-# unix.stackexchange.com/questions/72086
-# Ctrl-S will freeze the screen, yet still get input, and is exitable with
-# Ctrl-Q, which will return to current state, including done keyboard-inputs
-# during freeze-state. Disable both key-bindings:
-# stty -ixon
-# Ooops, after reboot got a severe err-msg (couldn't copy msg) because of this...
+
 
 
 

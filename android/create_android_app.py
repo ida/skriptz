@@ -53,12 +53,11 @@ class AndroidApp:
   tools:context=".{app_main}">
 
   <WebView
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:id="@+id/webView"
     android:layout_alignParentLeft="true"
     android:layout_alignParentTop="true"
-    android:layout_alignParentRight="true"
   />
 
 </RelativeLayout>'''.format(app_main=self.main)
@@ -93,8 +92,6 @@ public class MainActivity extends Activity {
     mywebview = (WebView)findViewById(R.id.webView);
     WebSettings webSettings = mywebview.getSettings();
     webSettings.setJavaScriptEnabled(true);
-    webSettings.setUseWideViewPort(true);
-    webSettings.setLoadWithOverviewMode(true);
     mywebview.loadUrl("https://dashing-four-crest.glitch.me");
     mywebview.setWebViewClient(new WebViewClient());
   }
@@ -120,7 +117,17 @@ public class MainActivity extends Activity {
 
         content = '''<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="{app_id}" android:installLocation="auto">
+
   <uses-permission android:name="android.permission.INTERNET"/>
+
+  <supports-screens
+	android:smallScreens="true"
+	android:normalScreens="true"
+	android:largeScreens="true"
+	android:xlargeScreens="true"
+	android:resizeable="true"
+	android:anyDensity="true" />
+
   <application android:label="{app_name}" android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen">
     <activity android:name=".{app_main}">
       <intent-filter>

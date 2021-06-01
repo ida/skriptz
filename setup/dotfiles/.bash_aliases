@@ -1,3 +1,7 @@
+append() {
+# Usage: append "some string" file.txt
+    echo $1 >> $2
+}
 fn() {
 # Search for files whose names contain the passed searchterm.
 # Usage: `fn somesearchterm`
@@ -48,6 +52,8 @@ vimAndSetScreenTitleToFileName() {
 alias ff='firefox'
 alias dg='devgen'
 alias sq='devgen squash'
+alias ap='append'
+alias pp='prepend'
 alias ..='cd ..'
 alias ...='..;..'
 alias ....='...;..'
@@ -55,6 +61,7 @@ alias .....='....;..'
 alias ......='.....;..'
 alias ca='cat'
 alias cl='clear'
+alias he='head -n42'
 alias l='ls -l'
 alias rf='rm -rf'
 alias vi='vim'
