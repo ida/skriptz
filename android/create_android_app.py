@@ -120,6 +120,8 @@ public class MainActivity extends Activity {
 
   <uses-permission android:name="android.permission.INTERNET"/>
 
+  <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="30" />
+
   <supports-screens
 	android:smallScreens="true"
 	android:normalScreens="true"
