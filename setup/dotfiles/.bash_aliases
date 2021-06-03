@@ -33,6 +33,10 @@ prepend() {
 # If file does not exist or is empty, write str, otherwise prepend str:
 if [[ ! -f $2 ]] || [[ $( <"$2" ) == '' ]]; then echo $1 > $2; else sed -i 1i"$1" $2; fi
 }
+pushToWhateverIsAvailable() {
+git push origin master &> /dev/null
+if [[ $? != 0 ]]; then git push origin main; fi
+}
 replace() {
 # What: Replace one string with another in
 # all child-files of the current directory.
@@ -92,7 +96,7 @@ alias bui='bu; bi'
 
 alias br='git branch'
 alias pull='git pull --rebase origin master'
-alias push='git push origin master'
+alias push=pushToWhateverIsAvailable
 alias puff='git push origin forumail'
 alias st='git status'
 alias sd='git status'

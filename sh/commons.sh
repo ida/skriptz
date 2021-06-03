@@ -20,12 +20,13 @@ splitStringIntoArray() { IFS=', ' read -a $1 <<< $2; }
 # -------------------------------
 #
 # last_returned_val=$?
+# passed_arguments=$@
 #
 # this_script_path=$0
 # this_script_realpath=$(readlink -f $0)
 #
 # execution_location_path=$(pwd)
-# execution_location_realpath=$(readlink -f $execution_location)
+# execution_location_realpath=$(readlink -f $execution_location_path)
 #
 # THIS_DIR_PATH=$(basename $PWD)
 #
