@@ -1,6 +1,8 @@
 append() {
-# Usage: append "some string" file.txt
-    echo $1 >> $2
+# append whatever you need to write file.txt
+	array=( "$@" )
+	lastArg="${@: -1}" # bash only
+	unset "array[${#array[@]}-1]" # remove last item                                              echo "${array[@]}" >> $lastArg
 }
 fn() {
 # Search for files whose names contain the passed searchterm.
@@ -28,7 +30,7 @@ grr() {
     find . -type f -name "*$secondterm" -not -path "./$thirdterm/*" -exec grep -il "$firstterm" {} \;
 }
 prepend() {
-# Usage: prepend "some string" file.txt
+# prepend "some string" file.txt
 
 # If file does not exist or is empty, write str, otherwise prepend str:
 if [[ ! -f $2 ]] || [[ $( <"$2" ) == '' ]]; then echo $1 > $2; else sed -i 1i"$1" $2; fi
@@ -44,6 +46,12 @@ replace() {
 # $ replace 'Replace me' 'With this'
     regex=s/$1/$2/g
     find ./ -type f -exec sed -i "$regex" {} \;
+}
+removeFirstLine() {
+    sed -i '1d' $1
+}
+removeLastLine() {
+    sed -i '$d' $1
 }
 setScreenWindowTitleToFilename() {
     filename=$(basename $1)
@@ -67,6 +75,8 @@ alias ca='cat'
 alias cl='clear'
 alias he='head -n42'
 alias l='ls -l'
+alias rmf=removeFirstLine
+alias rml=removeLastLine
 alias rf='rm -rf'
 alias vi='vim'
 alias v=vimAndSetScreenTitleToFileName

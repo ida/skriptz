@@ -21,7 +21,7 @@ splitStringIntoArray() { IFS=', ' read -a $1 <<< $2; }
 #
 # last_returned_val=$?
 # passed_arguments=$@
-#
+# amount_of_passed_arguments=$#
 # this_script_path=$0
 # this_script_realpath=$(readlink -f $0)
 #
@@ -214,6 +214,21 @@ splitStringIntoArray() { IFS=', ' read -a $1 <<< $2; }
 # http://stackoverflow.com/questions/16461656/bash-how-to-pass-array-as-an-argument-to-a-function
 #
 #
+# Remove last item of array:
+# --------------------------
+#
+# array=( "$@" ) 				# store passed arguments
+# unset "array[${#array[@]}-1]" # remove last element, see: help unset
+# for item in "${array[@]}"; do echo "$item"; done
+#
+#
+# Get last item of array:
+# -----------------------
+#
+# lastArg="${@: -1}"
+#
+#
+#
 # Split string into an array
 # ---------------------------
 #
@@ -234,7 +249,7 @@ splitStringIntoArray() { IFS=', ' read -a $1 <<< $2; }
 #
 # Note: Replace 'n' with the desired index-position to grab,
 # where '1' defines how many items starting from that position,
-# are supposed to be returnded, it can be more, if desired.
+# are supposed to be returned, it can be more, if desired.
 #
 #
 # Further reading
