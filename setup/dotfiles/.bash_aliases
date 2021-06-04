@@ -2,7 +2,8 @@ append() {
 # append whatever you need to write file.txt
 	array=( "$@" )
 	lastArg="${@: -1}" # bash only
-	unset "array[${#array[@]}-1]" # remove last item                                              echo "${array[@]}" >> $lastArg
+	unset "array[${#array[@]}-1]" # remove last item
+    echo "${array[@]}" >> $lastArg
 }
 fn() {
 # Search for files whose names contain the passed searchterm.
