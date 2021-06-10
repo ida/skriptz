@@ -5,7 +5,7 @@ function appendItem(array, item) {
   array.push(item)
 }
 function copyArray(array) {
-  var copiedArray = array.slice()
+  var copiedArray = (...array)
   return copiedArray
 }
 function getItemPos(array, item) {

@@ -6,8 +6,12 @@
 *.orig
 *.egg-info
 .installed.cfg
+DOING.txt
+package-lock.json
+answers/
 bin/
 develop-eggs/
+node_modules/
 parts/
 var/
 

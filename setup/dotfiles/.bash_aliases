@@ -5,10 +5,56 @@ append() {
 	unset "array[${#array[@]}-1]" # remove last item
     echo "${array[@]}" >> $lastArg
 }
+doing() {
+
+test -f DOING.txt && (
+
+    if [[ $@ = '' ]] ; then cat DOING.txt; else append "$@" DOING.txt; fi) || (
+
+    echo Error: No DOING.txt found!; exit 1 )
+
+}
+
+donn() {
+# echo Take last line of DOING.txt, add it to CHANGELOG, commit changes with last line as commit-message. Rmove last line of DOING.txt.
+lastLine=$(getLastNthLineOfFile 1 DOING.txt)
+echo lastLine is $lastLine
+insertAttNthLineToFile "* $lastLine" 3 CHANGELOG.md
+insertAttNthLineToFile "..........." 3 CHANGELOG.md
+insertAttNthLineToFile "..........." 3 CHANGELOG.md
+git add .
+git commit -m "$lastLine"
+removeLastLine DOING.txt
+}
 fn() {
 # Search for files whose names contain the passed searchterm.
 # Usage: `fn somesearchterm`
     find . -name "*$1*"
+}
+getNthLineOfFile(){
+
+    head -$1 $2 | tail -1
+
+}
+getLastNthLineOfFile(){
+
+    tail -$1 $2 | head -1
+
+}
+getVersionOfPackageJson(){
+
+    versionline=$(grep version package.json)
+
+    IFS='"' read -ra arrayname <<< "$versionline"
+
+    for index in "${!arrayname[@]}"; do
+        if [[ $index == 3 ]] ; then
+            version="${arrayname[index]}"
+        fi
+    done
+
+    echo version is \'$version\'
+
 }
 gr() {
 # Search this directory recursively for the passed searchterm, ignore upper- and lowercase differentiation.
@@ -30,6 +76,10 @@ grr() {
 #    find . -type f -name "*$secondterm" -exec grep -il "$firstterm" {} \;
     find . -type f -name "*$secondterm" -not -path "./$thirdterm/*" -exec grep -il "$firstterm" {} \;
 }
+insertAttNthLineToFile() {
+# Usage: 'some text' 3 file.txt
+    sed -i $2i"$1" $3
+}
 prepend() {
 # prepend "some string" file.txt
 
@@ -42,9 +92,10 @@ if [[ $? != 0 ]]; then git push origin main; fi
 }
 replace() {
 # What: Replace one string with another in
-# all child-files of the current directory.
+# all child-files of the current det
+    :rectory.
 # Usage:
-# $ replace 'Replace me' 'With this'
+# $ replace 'Replace me' 'With this'||
     regex=s/$1/$2/g
     find ./ -type f -exec sed -i "$regex" {} \;
 }

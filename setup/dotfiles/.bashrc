@@ -1,6 +1,10 @@
 export PATH=$HOME/.local/bin:$PATH # pip2.7
-export NVM_DIR=$HOME/.nvm; . $NVM_DIR/nvm.sh
-nvm use 12
+export NVM_DIR=$HOME/.nvm
+test ! $(command -v nvm) && . $NVM_DIR/nvm.sh
+test ! $(command -v npm) && nvm use 12
+
+
+
 #export PATH=$HOME/.virtenv/bin/python:$PATH
 #./$HOME/.virtenv/bin/activate
 
