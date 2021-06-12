@@ -4,14 +4,14 @@ let clientId = 0
 let clients = {}
 
 function sendToClient(client, data) {
-	client.write('id: ' + (new Date()).toLocaleTimeString() + '\n')
-	client.write('data: ' + data + '\n\n')
+  client.write('id: ' + (new Date()).toLocaleTimeString() + '\n')
+  client.write('data: ' + data + '\n\n')
 }
 
 function sendToClients(data) {
-	for(clientId in clients) {
-		sendToClient(clients[clientId], data)
-	}
+  for(clientId in clients) {
+    sendToClient(clients[clientId], data)
+  }
 }
 
 function collectClient(req, res) {
@@ -36,13 +36,13 @@ let html = `
 
   <script>
 
-	var stream = new EventSource('/serverstream')
+  var stream = new EventSource('/serverstream')
 
-	stream.onmessage = msgEvent => {
+  stream.onmessage = msgEvent => {
 
-		console.log('Got a message from server:', msgEvent.data)
+    console.log('Got a message from server:', msgEvent.data)
 
-	}
+  }
 
   </script>
 
