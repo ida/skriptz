@@ -182,5 +182,5 @@ alias tag='git tag'
 alias tagg='git tag -a `date +%y%m%d%H%M%S` -m "Create annotated tag."'
 alias tagp='git push origin --tags'
 
-alias ali='cat ~/.bash_aliases'
+alias ali='cat ~/.bash_aliases | less'
 alias src='. ~/.bashrc; . ~/.bash_aliases;'
