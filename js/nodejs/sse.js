@@ -59,7 +59,7 @@ require('http').createServer((request, response) => {
       'Connection': 'keep-alive'
     });
 
-		collectClient(request, response)
+    collectClient(request, response)
 
   }
 
