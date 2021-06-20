@@ -7,12 +7,27 @@ append() {
 }
 doing() {
 
-test -f DOING.txt && (
+test ! -f ~/DOING.txt && touch ~/DOING.txt || (
 
-    if [[ $@ = '' ]] ; then cat DOING.txt; else append "$@" DOING.txt; fi) || (
+  if [[ $@ = '' ]] ; then cat ~/DOING.txt; else append "$@" ~/DOING.txt; fi
 
-    echo Error: No DOING.txt found!; exit 1 )
+)
 
+}
+doo() {
+test ! -f ~/DOING.txt && touch ~/DOING.txt || (
+
+  if [[ $@ = '' ]] ; then cat ~/DOING.txt; else prepend "$@" ~/DOING.txt; fi
+
+)
+
+
+}
+
+doon() {
+removeFirstLine ~/DOING.txt
+clear
+cat ~/DOING.txt
 }
 
 donn() {
@@ -24,7 +39,7 @@ insertAttNthLineToFile "..........." 3 CHANGELOG.md
 insertAttNthLineToFile "..........." 3 CHANGELOG.md
 git add .
 git commit -m "$lastLine"
-removeLastLine DOING.txt
+removeLastLine ~/DOING.txt
 }
 fn() {
 # Search for files whose names contain the passed searchterm.
@@ -182,5 +197,6 @@ alias tag='git tag'
 alias tagg='git tag -a `date +%y%m%d%H%M%S` -m "Create annotated tag."'
 alias tagp='git push origin --tags'
 
-alias ali='cat ~/.bash_aliases | less'
-alias src='. ~/.bashrc; . ~/.bash_aliases;'
+alias ali='cat ~/.bash_aliases'
+alias alli='cat ~/.bash_aliases | less'
+alias src='. ~/.bashrc; . ~/.bash_aliases'

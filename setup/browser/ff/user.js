@@ -8,9 +8,11 @@ user_pref("browser.urlbar.placeholderName", "DuckDuckGo");
 user_pref("extensions.webextensions.tabhide.enable", true);
 // localhost when opening ff:
 user_pref("browser.startup.homepage", "localhost:3000");
-// no fluff for new tabs:
+// no fluff in new tab-pages:
 user_pref("browser.newtabpage.activity-stream.feeds.section.topstories", false);
 user_pref("browser.newtabpage.activity-stream.feeds.topsites", false);
 user_pref("browser.newtabpage.activity-stream.showSearch", false);
 // dont show bookmarks beneath addressbar:
 user_pref("browser.toolbars.bookmarks.visibility", "never");
+// re-enable userChrome.css:
+user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);

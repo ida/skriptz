@@ -1,16 +1,22 @@
-export PATH=$HOME/.local/bin:$PATH # pip2.7
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+
+export PATH=$HOME/.local/bin:$JAVA_HOME/bin:$PATH # pip2.7 && jdk-tools
+
 export NVM_DIR=$HOME/.nvm
 test ! $(command -v nvm) && . $NVM_DIR/nvm.sh
 test ! $(command -v npm) && nvm use 12
 
 
 
-#export PATH=$HOME/.virtenv/bin/python:$PATH
-#./$HOME/.virtenv/bin/activate
 
 
 
+#export SDK_PATH=$HOME/.android-sdk-linux # github.com/ida/akriptz/android
 
+# cordova (npm):
+#export ANDROID_SDK_ROOT=$SDK_PATH # /.android-sdk-linux/platforms/android-16
+#export ANDROID_SDK_ROOT=/usr/lib/jvm/java-11-openjdk-amd64/bin
+export ANDROID_SDK_ROOT=$HOME/.androidjs/cache/androidjs-sdk
 # COLORS
 # ======
 #

@@ -20,6 +20,13 @@ ends with '.default'.
 If the profile-directory does not contain a directory named 'chrome'
 already, you'll need to create it.
 
+Since of firefox version 69, loading userChrome.css is disabled by default.
+To re-enable it, type "about:config" in the adressbar, confirm you
+understand the risks, search for "toolkit.legacyUserProfileCustomizations.stylesheets"
+and click on the symbol to toggle the false/true value, so it's true.
+
+Or use a './user.js' (see file in this folder), to set that config.
+
 
 Inspect window-elements
 -----------------------
@@ -38,46 +45,93 @@ Now, the window-inspector can be opened with Ctrl+Shift+Alt+i
 
 */
 
+
 /* Declare namespace, so Firefox knows how to interpret this file: */
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
 
-toolbox {
-  height: 0;
-  min-height: 0;
+
+/*
+#navigator-toolbox {
+	height: 0.1rem;
   overflow: hidden;
 }
 
-#titlebar-close {
+
+#navigator-toolbox:hover {
+	height: auto;
+  overflow: visible;
+}
+
+
+box
+  toolbox#navigator-toolbox
+    vbox#titlebar
+    toolbar#nav-bar
+      hbox#nav-bar-customization-target
+        toolbarbutton#forward-button
+        toolbarbutton#backward-button
+        toolbaritem#stop-reload-button
+        toolbarbutton#home-button
+        toolbarspring
+        toolbaritem#urlbar-container
+          toolbartabstop
+
+          hbox#urlbar
+
+        toolbarspring
+        toolbarbutton#save-to-pocket
+        ... toolbarbuttons ...
+
+  #navigator-toolbox
+    #titlebar,
+  #navigator-toolbox
+      toolbarbutton,
+  #navigator-toolbox
+      toolbarspring,
+  #navigator-toolbox
+      #stop-reload-button
+        toolbaritem#urlbar-container
+          toolbartabstop
+
+          hbox#urlbar
+
+#urlbar:not([focused="true"]) {
+*/
+  #navigator-toolbox
+    #titlebar,
+  #navigator-toolbox
+      toolbarbutton,
+  #navigator-toolbox
+      toolbarspring,
+  #navigator-toolbox
+      #stop-reload-button {
+        display: none;
+      }
+
+:root {
+  --urlbar-container-height: 1px;
+}
+
+#nav-bar,
+#urlbar-container[breakout],
+#urlbar-container {
+  height: 1px;
+  min-height: 1px !important;
+}
+#urlbar:is([focused="true"]) {
+height: auto;
+overflow: visible;
+}
+#urlbar {
+height: 1px;
+overflow: hidden;
+}
+/*
+New tab/page "Anpassen"-button (english: Customize):
+*/
+body.activity-stream div#root button.personalize-button {
   display: none;
 }
 
 
-/*
-
-Manual adjustments
-==================
-
-For personal memory, as done in version 63.0 (Quantum).
-
-
-Menu -> Edit -> Preferences
----------------------------
-
-- Set homepage to ~/.mozilla/firefox/default.html and provide the file with this content:
-    <style>
-    body {
-        background: #000;
-    }
-    </style>
-
-- Set default colors to bg:black col:white
-
-
-Menu -> View -> Toolbars -> Customize...
------------------------------------------
-
-- Disable title-bar display
-
-
-
-*/
+/*****************************************************************************************/

@@ -14,3 +14,13 @@ function load(url, from, to) {
     XHRt.send();
     return XHRt;
 }
+
+
+function loadJSON(url callback) {
+  var xobj = new XMLHttpRequest()
+  xobj.overrideMimeType("application/json")
+  xobj.open('GET', url, true)
+  xobj.onreadystatechange = () => doWithText(xobj.responseText)
+  xobj.send(null)
+}
+
