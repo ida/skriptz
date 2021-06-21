@@ -108,9 +108,17 @@ box
         display: none;
       }
 
-:root {
-  --urlbar-container-height: 1px;
-}
+  #navigator-toolbox:hover
+    #titlebar,
+  #navigator-toolbox:hover
+      toolbarbutton,
+  #navigator-toolbox:hover
+      toolbarspring,
+  #navigator-toolbox:hover
+      #stop-reload-button {
+        display: block;
+      }
+
 
 #nav-bar,
 #urlbar-container[breakout],
