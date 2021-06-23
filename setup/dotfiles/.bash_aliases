@@ -9,7 +9,11 @@ doing() {
 
 test ! -f ~/DOING.txt && touch ~/DOING.txt || (
 
-  if [[ $@ = '' ]] ; then cat ~/DOING.txt; else append "$@" ~/DOING.txt; fi
+  if [[ $@ != '' ]] ; then append "$@" ~/DOING.txt; fi
+
+  clear
+
+  cat ~/DOING.txt
 
 )
 
@@ -17,7 +21,11 @@ test ! -f ~/DOING.txt && touch ~/DOING.txt || (
 doo() {
 test ! -f ~/DOING.txt && touch ~/DOING.txt || (
 
-  if [[ $@ = '' ]] ; then cat ~/DOING.txt; else prepend "$@" ~/DOING.txt; fi
+  if [[ $@ != '' ]] ; then prepend "$@" ~/DOING.txt; fi
+
+  clear
+
+  cat ~/DOING.txt
 
 )
 
@@ -105,10 +113,12 @@ pushToWhateverIsAvailable() {
 git push origin master &> /dev/null
 if [[ $? != 0 ]]; then git push origin main; fi
 }
+readyou() { # Generate a README from package.json:
+echo readyou
+}
 replace() {
 # What: Replace one string with another in
-# all child-files of the current det
-    :rectory.
+# all child-files of the current directory.
 # Usage:
 # $ replace 'Replace me' 'With this'||
     regex=s/$1/$2/g
@@ -183,6 +193,7 @@ alias chb='git checkout -b'
 alias chm='git checkout master'
 alias chf='git checkout forumail'
 alias rs='git reset --hard'
+alias rsf='git checkout HEAD --'
 alias lo='git log'
 alias co='git commit -m'
 alias coa='git commit -am'
