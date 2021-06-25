@@ -126,19 +126,24 @@ box
   height: 1px;
   min-height: 1px !important;
 }
+  #navigator-toolbox:hover
+#nav-bar,
+  #navigator-toolbox:hover
+#urlbar-container[breakout],
+  #navigator-toolbox:hover
+#urlbar-container,
+
+
+  #navigator-toolbox:hover
+#urlbar,
 #urlbar:is([focused="true"]) {
 height: auto;
+  min-height: 40px !important;
 overflow: visible;
 }
 #urlbar {
 height: 1px;
 overflow: hidden;
-}
-/*
-New tab/page "Anpassen"-button (english: Customize):
-*/
-body.activity-stream div#root button.personalize-button {
-  display: none;
 }
 
 
