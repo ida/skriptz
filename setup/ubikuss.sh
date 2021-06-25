@@ -1,3 +1,7 @@
+# Remove link-icons to trash and home-folder(set to true, to undo):
+gsettings set org.gnome.shell.extensions.desktop-icons show-trash false
+gsettings set org.gnome.shell.extensions.desktop-icons show-home false
+
 # Install git and ubuntu-restricted-extras(video-codecs):
 wget -qO- https://raw.githubusercontent.com/ida/skriptz/master/setup/installs/install_system_packages.sh | bash -s git ubuntu-restricted-extras
 

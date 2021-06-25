@@ -64,6 +64,20 @@ getLastNthLineOfFile(){
     tail -$1 $2 | head -1
 
 }
+getValueOfJsonFile(){ # Usage: getValueOfJsonFile version package.json
+
+    versionline=$(grep $1 $2)
+
+    IFS='"' read -ra arrayname <<< "$versionline"
+
+    for index in "${!arrayname[@]}"; do
+        if [[ $index == 3 ]] ; then
+            echo "${arrayname[index]}"
+        fi
+    done
+
+
+}
 getVersionOfPackageJson(){
 
     versionline=$(grep version package.json)
@@ -113,8 +127,42 @@ pushToWhateverIsAvailable() {
 git push origin master &> /dev/null
 if [[ $? != 0 ]]; then git push origin main; fi
 }
-readyou() { # Generate a README from package.json:
-echo readyou
+readyou() { # Generate a READYOU.md from package.json:
+
+    wallju=$(getValueOfJsonFile name package.json)
+    echo "# $wallju" > READYOU.md
+    echo "" >> READYOU.md
+
+    wallju=$(getValueOfJsonFile description package.json)
+    echo "$wallju" >> READYOU.md
+    echo "" >> READYOU.md
+    echo "" >> READYOU.md
+
+    wallju=$(getValueOfJsonFile license package.json)
+    echo "# License" >> READYOU.md
+    echo "" >> READYOU.md
+    echo "$wallju" >> READYOU.md
+    echo "" >> READYOU.md
+    echo "" >> READYOU.md
+
+    wallju=$(getValueOfJsonFile repository package.json)
+    echo "# Contact" >> READYOU.md
+    echo "" >> READYOU.md
+    echo "For questions, suggestions and bug-reports, please open an issue:" >> READYOU.md
+    echo "" >> READYOU.md
+    echo "$wallju"/issues/new >> READYOU.md
+    echo "" >> READYOU.md
+    echo "" >> READYOU.md
+
+    wallju=$(getValueOfJsonFile repository package.json)
+    echo "# Repository" >> READYOU.md
+    echo "" >> READYOU.md
+    echo "$wallju" >> READYOU.md
+    echo "" >> READYOU.md
+    echo "" >> READYOU.md
+
+
+
 }
 replace() {
 # What: Replace one string with another in

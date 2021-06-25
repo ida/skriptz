@@ -7,6 +7,7 @@ strStartswithStr () { if [[ "$1" = "$2"* ]]; then return 1; else return 0; fi }
 strContainsStr () { if [[ "$1" = *"$2"* ]]; then return 1; else return 0; fi }
 strEndswithStr () { if [[ "$1" = *"$2" ]]; then return 1; else return 0; fi }
 now() { now="$(date +%y%m%d%H%M%S)"; echo "${now}"; }
+readlines() { while read line; do echo "$line"; done < $1 }
 splitStringIntoArray() { IFS=', ' read -a $1 <<< $2; }
 # splitStringIntoArray arrayname "${string}"
 ###############################################################################
