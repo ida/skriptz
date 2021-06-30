@@ -1,11 +1,11 @@
 // darktheme for webinspector:
 user_pref("devtools.theme", "dark");
+// show styles inherited from browser in webinspector:
+user_pref("devtools.inspector.showUserAgentStyles", true);
 // allow installation of unsecure add-ons:
 user_pref("xpinstall.signatures.required", false);
 // make DuckDuckGo default search engine:
 user_pref("browser.urlbar.placeholderName", "DuckDuckGo");
-// allow add-on https://addons.mozilla.org/en-US/firefox/addon/hide-tab to hide tabs:
-user_pref("extensions.webextensions.tabhide.enable", true);
 // localhost when opening ff:
 user_pref("browser.startup.homepage", "localhost:3000");
 // no fluff in new tab-pages:

@@ -1,6 +1,11 @@
 " Good overview:
 " http://www.worldtimzone.com/res/vi.html
 
+
+" Remove trailing spaces in js-files right before saving:
+autocmd BufWritePre *.js :%s/\s\+$//e
+
+
 " KEY-MAPPINGS
 
 " http://learnvimscriptthehardway.stevelosh.com/chapters/04.html

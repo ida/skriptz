@@ -40,14 +40,15 @@ cat ~/DOING.txt
 
 donn() {
 # echo Take last line of DOING.txt, add it to CHANGELOG, commit changes with last line as commit-message. Rmove last line of DOING.txt.
-lastLine=$(getLastNthLineOfFile 1 DOING.txt)
+lastLine=$(getLastNthLineOfFile 1 ~/DOING.txt)
 echo lastLine is $lastLine
-insertAttNthLineToFile "* $lastLine" 3 CHANGELOG.md
-insertAttNthLineToFile "..........." 3 CHANGELOG.md
-insertAttNthLineToFile "..........." 3 CHANGELOG.md
+#insertAttNthLineToFile "* $lastLine" 3 CHANGELOG.md
+#insertAttNthLineToFile "..........." 3 CHANGELOG.md
+#insertAttNthLineToFile "..........." 3 CHANGELOG.md
 git add .
 git commit -m "$lastLine"
 removeLastLine ~/DOING.txt
+cat ~/DOING.txt
 }
 fn() {
 # Search for files whose names contain the passed searchterm.
@@ -186,6 +187,8 @@ vimAndSetScreenTitleToFileName() {
     setScreenWindowTitleToFilename $1
     vim $1
 }
+alias ly='lynx localhost:3000'
+alias ff='firefox'
 alias ff='firefox'
 alias dg='devgen'
 alias sq='devgen squash'
@@ -235,7 +238,7 @@ alias push=pushToWhateverIsAvailable
 alias puff='git push origin forumail'
 alias st='git status'
 alias sd='git status'
-alias di='git diff'
+alias di='clear; git diff'
 alias ch='git checkout'
 alias chb='git checkout -b'
 alias chm='git checkout master'
