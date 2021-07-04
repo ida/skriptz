@@ -1,3 +1,5 @@
-@supercharge/request-ip -> get client ip-address
-chokidar -> listen to anything happening to all files of a directory
+git-emit -> event listeners for githooks!
+hashish -> modify dicts sanely
+@supercharge/request-ip -> get client ip-address, works like a charme.
+chokidar -> listen to anything happening to all files of a directory, works like a charme.
 fs-extra -> extend and optimze fs-module

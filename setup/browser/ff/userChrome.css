@@ -123,8 +123,8 @@ box
 #nav-bar,
 #urlbar-container[breakout],
 #urlbar-container {
-  height: 1px;
-  min-height: 1px !important;
+  height: 0px;
+  min-height: 0px !important;
 }
   #navigator-toolbox:hover
 #nav-bar,

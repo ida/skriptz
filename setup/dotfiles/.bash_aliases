@@ -50,6 +50,9 @@ git commit -m "$lastLine"
 removeLastLine ~/DOING.txt
 cat ~/DOING.txt
 }
+endswith () {
+    if [ "$1" = *"$2" ]; then exit 0; else exit 1; fi
+}
 fn() {
 # Search for files whose names contain the passed searchterm.
 # Usage: `fn somesearchterm`
@@ -187,6 +190,10 @@ vimAndSetScreenTitleToFileName() {
     setScreenWindowTitleToFilename $1
     vim $1
 }
+unpack() {
+    endswith $1 .tar.bz2
+    if [ $? = 0 ]; then tar -xjvf $1 ; fi
+}
 alias ly='lynx localhost:3000'
 alias ff='firefox'
 alias ff='firefox'
@@ -201,7 +208,7 @@ alias .....='....;..'
 alias ......='.....;..'
 alias ca='cat'
 alias cl='clear'
-alias he='head -n42'
+alias he='clear; head -n42'
 alias l='ls -l'
 alias rmf=removeFirstLine
 alias rml=removeLastLine

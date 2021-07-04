@@ -6,7 +6,7 @@ export NVM_DIR=$HOME/.nvm
 test ! $(command -v nvm) && . $NVM_DIR/nvm.sh
 test ! $(command -v npm) && nvm use 12
 
-
+#export TAIKO_BROWSER_PATH=/home/user/programs/firefox-nightly/firefox/firefox
 
 
 
