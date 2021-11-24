@@ -1,3 +1,7 @@
+// Switch display of topbar with F11.
+// Similar to fullscreen, but window-size remains.
+// user_pref("full-screen-api.ignore-widgets", "true")
+
 // darktheme for webinspector:
 user_pref("devtools.theme", "dark");
 // show styles inherited from browser in webinspector:
@@ -6,9 +10,9 @@ user_pref("devtools.inspector.showUserAgentStyles", true);
 user_pref("xpinstall.signatures.required", false);
 // make DuckDuckGo default search engine:
 user_pref("browser.urlbar.placeholderName", "DuckDuckGo");
-// localhost when opening ff:
+// localhost in new window:
 user_pref("browser.startup.homepage", "localhost:3000");
-// no fluff in new tab-pages:
+// no fluff in new tabs:
 user_pref("browser.newtabpage.activity-stream.feeds.section.topstories", false);
 user_pref("browser.newtabpage.activity-stream.feeds.topsites", false);
 user_pref("browser.newtabpage.activity-stream.showSearch", false);

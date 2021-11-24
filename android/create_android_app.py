@@ -92,7 +92,7 @@ public class MainActivity extends Activity {
     mywebview = (WebView)findViewById(R.id.webView);
     WebSettings webSettings = mywebview.getSettings();
     webSettings.setJavaScriptEnabled(true);
-    mywebview.loadUrl("https://dashing-four-crest.glitch.me");
+    mywebview.loadUrl("https://example.org");
     mywebview.setWebViewClient(new WebViewClient());
   }
 

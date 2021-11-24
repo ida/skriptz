@@ -1,26 +1,35 @@
-1. Create a directory, add a file named 'manifest.json' with this content:
+Create an extension (add-on) for Firefox
+========================================
 
-{
 
-  "manifest_version": 2,
-  "name": "sharpcuts",
-  "version": "0.1",
+1. Create a directory and in it add a file named 'manifest.json' with this content:
 
-  "content_scripts": [
     {
-      "matches": ["*://*/*"],
-      "js": ["main.js"]
+
+      "manifest_version": 2,
+      "name": "sharpcuts",
+      "version": "0.1",
+
+      "content_scripts": [
+        {
+          "matches": ["*://*/*"],
+          "js": ["main.js"]
+        }
+      ],
+
+
+      "browser_specific_settings": {
+        "gecko": {
+          "id": "some-name@example.org"
+        }
+      }
+
     }
-  ],
 
 
-  "browser_specific_settings": {
-    "gecko": {
-      "id": "some-name@example.org"
-    }
-  }
+This injects a script named "main.js", which is expected to be in the directory, too,
+and is the place where you can add your scripting magic, for whatever you're up to do.
 
-}
 
 
 2. From within the extension directory, do:

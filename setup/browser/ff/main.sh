@@ -8,10 +8,10 @@ profileDirectoryName=$(echo "${profileDirectoryName//$pattern/}")
 profileDirectoryName=$(echo "${profileDirectoryName//1/}")
 profileDirectoryPath=$profileDirectoriesPath/$profileDirectoryName
 
-# Copy preferences into profile:
+# Copy preferences-config into profile:
 test ! -f $profileDirectoryPath/user.js &&
-cp user.js $profileDirectoryPath
+cp profile/user.js $profileDirectoryPath
 
 # Install addon (will open firefox and ask to confirm install):
-test ! -f $profileDirectoryPath/extensions/sharpcuts@example.org.xpi &&
-firefox -install -extensions extensions/sharpcuts@example.org.xpi
+# test ! -f $profileDirectoryPath/extensions/sharpcuts@example.org.xpi &&
+# firefox -install -extensions extensions/sharpcuts@example.org.xpi

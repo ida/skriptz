@@ -51,17 +51,22 @@ Now, the window-inspector can be opened with Ctrl+Shift+Alt+i
 
 
 /*
-#navigator-toolbox {
-	height: 0.1rem;
-  overflow: hidden;
-}
 
 
-#navigator-toolbox:hover {
-	height: auto;
-  overflow: visible;
-}
+These styles were created while using FF vs ~ 91, still works with vs 94.
 
+
+This is what they do:
+
+- Hide entire topbar
+
+- Show topbar when hovering over top edge of window
+
+- Don't break the possibility to focus the addressbar with Ctrl+L
+
+
+
+Complete element-tree of topbar for reference:
 
 box
   toolbox#navigator-toolbox
@@ -95,8 +100,8 @@ box
 
           hbox#urlbar
 
-#urlbar:not([focused="true"]) {
 */
+
   #navigator-toolbox
     #titlebar,
   #navigator-toolbox

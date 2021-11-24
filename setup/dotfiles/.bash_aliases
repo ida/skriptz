@@ -172,7 +172,7 @@ replace() {
 # What: Replace one string with another in
 # all child-files of the current directory.
 # Usage:
-# $ replace 'Replace me' 'With this'||
+# $ replace 'Replace me' 'With this'
     regex=s/$1/$2/g
     find ./ -type f -exec sed -i "$regex" {} \;
 }
@@ -181,6 +181,12 @@ removeFirstLine() {
 }
 removeLastLine() {
     sed -i '$d' $1
+}
+setDarkSystemTheme() {
+    gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
+}
+setLightSystemTheme() {
+    gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-default'
 }
 setScreenWindowTitleToFilename() {
     filename=$(basename $1)
@@ -195,7 +201,6 @@ unpack() {
     if [ $? = 0 ]; then tar -xjvf $1 ; fi
 }
 alias ly='lynx localhost:3000'
-alias ff='firefox'
 alias ff='firefox'
 alias dg='devgen'
 alias sq='devgen squash'
