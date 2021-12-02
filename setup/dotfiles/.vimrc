@@ -8,6 +8,8 @@ set omnifunc=syntaxcomplete#Complete
 
 " Remove trailing spaces in js-files right before saving:
 autocmd BufWritePre *.js :%s/\s\+$//e
+" Also for Python scripts:
+autocmd BufWritePre *.py :%s/\s\+$//e
 
 
 " KEY-MAPPINGS
@@ -90,7 +92,7 @@ set tabstop=4       " Especially when reading.
 set expandtab       " Force tabs to always be spaces. 
 set smartindent     " Preserve indent when breaking the line.
 
-" Two spaces indents for js- and html-files:
+" Two spaces indents for css, html, js and json-files:
 autocmd Filetype html setlocal ts=2 sts=2 sw=2
 autocmd Filetype javascript setlocal ts=2 sts=2 sw=2
 autocmd Filetype json setlocal ts=2 sts=2 sw=2
@@ -104,7 +106,7 @@ syntax on
 
 " Make less-files behave like js-files for syntax-highlighting:
 au BufNewFile,BufRead *.less set filetype=javascript
-" Make sass-files behave like css-files, because:
+" Make sass-files behave like css-files:
 au BufNewFile,BufRead *.scss set filetype=css
 
 

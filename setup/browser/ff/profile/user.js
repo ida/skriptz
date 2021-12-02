@@ -1,3 +1,8 @@
+user_pref("devtools.chrome.enabled", true);
+user_pref("devtools.debugger.remote-enabled", true);
+// This may be needed so the above take effect on a very first start of a profile:
+//user_pref("devtools.everOpened", true);
+
 // Switch display of topbar with F11.
 // Similar to fullscreen, but window-size remains.
 // user_pref("full-screen-api.ignore-widgets", "true")

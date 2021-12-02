@@ -39,3 +39,11 @@ and is the place where you can add your scripting magic, for whatever you're up 
 3. In firefox about:config set xpinstall.signatures.required to false.
 
 4. In firefox Strg+Shift+A click gear symbol, "Install from file", select zip.
+
+
+
+Debug an extension
+==================
+
+Open 'about:debugging' in firefox, click 'temporary addon',
+select manifest.json of addon.

@@ -185,12 +185,20 @@ removeLastLine() {
 setDarkSystemTheme() {
     gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
 }
-setLightSystemTheme() {
+setLiteSystemTheme() {
     gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-default'
 }
 setScreenWindowTitleToFilename() {
     filename=$(basename $1)
     echo -e '\033k'$filename'\033\\'
+}
+switchSystemTheme() {
+    theme=$(gsettings get org.gnome.desktop.interface gtk-theme)
+    if [ $theme = "'Adwaita-dark'" ]; then
+        setLiteSystemTheme
+    else
+        setDarkSystemTheme
+    fi
 }
 vimAndSetScreenTitleToFileName() {
     setScreenWindowTitleToFilename $1
@@ -218,11 +226,12 @@ alias l='ls -l'
 alias rmf=removeFirstLine
 alias rml=removeLastLine
 alias rf='rm -rf'
+alias sw='switchSystemTheme'
 alias vi='vim'
 alias v=vimAndSetScreenTitleToFileName
 alias :wq='exit'
 
-alias py='python'
+alias py='python3.8 -B' # -B == no __pycache__ dirs
 alias psy='ps aux|grep python'
 
 alias scd='screen -dRR'

@@ -1,5 +1,10 @@
 // Contains prettifyDict() and helper-funcs for it.
 
+// But first a basic to remember:
+function copyDict(dict) {
+  return { ...dict }
+}
+
 
 /**
 Evaluate longest key and prepend missing spaces to other keys

@@ -41,7 +41,9 @@ You can enable an inspector for the browser-window, like this:
 
 Now, the window-inspector can be opened with Ctrl+Shift+Alt+i
 
+Or start firefox of the commandline like this:
 
+    firefox --jsdebugger
 
 */
 
@@ -100,7 +102,11 @@ box
 
           hbox#urlbar
 
-*/
+***********************************************************/
+
+
+
+#for-the-following-two-rules-we-can-also-use-display-none-or-block-instead,
 
   #navigator-toolbox
     #titlebar,
@@ -110,7 +116,8 @@ box
       toolbarspring,
   #navigator-toolbox
       #stop-reload-button {
-        display: none;
+height: 1px;
+overflow: hidden;
       }
 
   #navigator-toolbox:hover
@@ -121,8 +128,10 @@ box
       toolbarspring,
   #navigator-toolbox:hover
       #stop-reload-button {
-        display: block;
+height: auto;
+overflow: visible;
       }
+
 
 
 #nav-bar,
@@ -131,16 +140,16 @@ box
   height: 0px;
   min-height: 0px !important;
 }
+
   #navigator-toolbox:hover
 #nav-bar,
   #navigator-toolbox:hover
 #urlbar-container[breakout],
   #navigator-toolbox:hover
 #urlbar-container,
-
-
   #navigator-toolbox:hover
 #urlbar,
+
 #urlbar:is([focused="true"]) {
 height: auto;
   min-height: 40px !important;
@@ -152,4 +161,68 @@ overflow: hidden;
 }
 
 
+
+/**********************************************************
+
+
+box
+  toolbox#navigator-toolbox
+
+    vbox#titlebar
+
+    toolbar#nav-bar
+      toolbartabstop
+
+      hbox#nav-bar-customization-target
+      #nav-bar-customization-target > toolbarbutton,
+      #nav-bar-customization-target > toolbaritem:not(#urlbar-container) {display:none}
+
+        toolbarbutton#back-button
+        toolbarbutton#forward-button
+        toolbaritem#stop-reload-button
+        toolbarspring
+        toolbaritem#urlbar-container
+
+        #urlbar-container
+          toolbartabstop
+          hbox#urlbar
+            hbox#urlbar-background
+
+            hbox#urlbar-input-container /* must remain accessible /
+
+            vbox.urlbarView
+
+              html:div.urlbarView-body-outer /* url-bar dropdown-previews /
+              hbox.search-one-offs
+
+          toolbartabstop
+          toolbarspring
+          toolbarbutton#save-to-pocket-button
+          toolbarbutton#downloads-button
+          toolbarbutton#library-button
+
+        toolbarbutton
+
+      toolbarbutton
+      toolbaritem
+      #window-controls
+
+    #PersonalToolbar
+
+hbox#browser
+
+
+
+#urlbar gets these inline-styles:
+
+element {
+  --urlbar-height: 32.00px;
+  --urlbar-toolbar-height: 40.00px;
+}
+
+#urlbar[breakout] {
+  width: 100%;
+}
+
 /*****************************************************************************************/
+
