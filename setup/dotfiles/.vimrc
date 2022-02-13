@@ -6,12 +6,6 @@ filetype plugin on
 set omnifunc=syntaxcomplete#Complete
 
 
-" Remove trailing spaces in js-files right before saving:
-autocmd BufWritePre *.js :%s/\s\+$//e
-" Also for Python scripts:
-autocmd BufWritePre *.py :%s/\s\+$//e
-
-
 " KEY-MAPPINGS
 
 " http://learnvimscriptthehardway.stevelosh.com/chapters/04.html
@@ -98,6 +92,30 @@ autocmd Filetype javascript setlocal ts=2 sts=2 sw=2
 autocmd Filetype json setlocal ts=2 sts=2 sw=2
 autocmd Filetype css setlocal ts=2 sts=2 sw=2
 
+" Remove trailing spaces in js-files right before saving:
+autocmd BufWritePre *.js :%s/\s\+$//e
+" Also for Python scripts:
+autocmd BufWritePre *.py :%s/\s\+$//e
+
+
+
+
+" COPY AND PASTE
+
+" Thanks to sikill:
+" https://coderwall.com/p/if9mda/automatically-set-paste-mode-in-vim-when-pasting-in-insert-mode
+
+" 'set paste' on pasting and 'set nopaste' after pasting:
+let &t_SI .= "\<Esc>[?2004h"
+let &t_EI .= "\<Esc>[?2004l"
+
+inoremap <special> <expr> <Esc>[200~ XTermPasteBegin()
+
+function! XTermPasteBegin()
+  set pastetoggle=<Esc>[201~
+  set paste
+  return ""
+endfunction
 
 
 " SYNTAX-HIGHLIGHTNING
