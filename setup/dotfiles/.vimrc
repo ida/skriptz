@@ -1,6 +1,7 @@
 " Good overview:
 " http://www.worldtimzone.com/res/vi.html
 
+
 " Enable suggesting language-specific autocompletions:
 filetype plugin on
 set omnifunc=syntaxcomplete#Complete
@@ -101,13 +102,22 @@ autocmd BufWritePre *.py :%s/\s\+$//e
 
 
 " COPY AND PASTE
+" Do ':set paste' on pasting and ':set nopaste' after pasting.
+" https://unix.stackexchange.com/questions/199203/why-does-vim-indent-pasted-code-incorrectly
+function! WrapForScreen(s)
+  if exists('$TMUX') || match($TERM, "screen")==-1
+    return a:s
+  endif
 
-" Thanks to sikill:
-" https://coderwall.com/p/if9mda/automatically-set-paste-mode-in-vim-when-pasting-in-insert-mode
+  let screen_start = "\<Esc>P"
+  let screen_end = "\<Esc>\\"
 
-" 'set paste' on pasting and 'set nopaste' after pasting:
-let &t_SI .= "\<Esc>[?2004h"
-let &t_EI .= "\<Esc>[?2004l"
+  return screen_start . a:s . screen_end
+endfunction
+
+
+let &t_SI .= WrapForScreen("\<Esc>[?2004h")
+let &t_EI .= WrapForScreen("\<Esc>[?2004l")
 
 inoremap <special> <expr> <Esc>[200~ XTermPasteBegin()
 

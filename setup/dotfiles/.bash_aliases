@@ -231,6 +231,8 @@ alias vi='vim'
 alias v=vimAndSetScreenTitleToFileName
 alias :wq='exit'
 
+alias nds='nodemon start'
+alias nps='npm start'
 alias py='python3.8 -B' # -B == no __pycache__ dirs
 alias psy='ps aux|grep python'
 
