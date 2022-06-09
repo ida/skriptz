@@ -11,19 +11,23 @@ which is no content, e.g the reload-button, tabs or the address-bar.
 Usage
 -----
 
-Put this file with the name 'userChrome.css' in your browser-profile's
-'chrome'-directory.
+Put a file with the name 'userChrome.css' in your browser-profile's
+'chrome'-directory. Its first line must be:
 
-The profile-directory is located in '~/.mozilla/firefox' and its name
+    @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+The profile-folder is located in '~/.mozilla/firefox' and its name
 ends with '.default'.
 
-If the profile-directory does not contain a directory named 'chrome'
+If the profile-folder does not contain a directory named 'chrome'
 already, you'll need to create it.
 
 Since of firefox version 69, loading userChrome.css is disabled by default.
+
 To re-enable it, type "about:config" in the adressbar, confirm you
 understand the risks, search for "toolkit.legacyUserProfileCustomizations.stylesheets"
 and click on the symbol to toggle the false/true value, so it's true.
+The toggle-symbol looks like two arrows, one to the right and one to the left.
 
 Or use a './user.js' (see file in this folder), to set that config.
 
@@ -31,139 +35,19 @@ Or use a './user.js' (see file in this folder), to set that config.
 Inspect window-elements
 -----------------------
 
-You can enable an inspector for the browser-window, like this:
+Too see the elements of the browser-window
+you can enable an inspector for it, like this:
 
-  - Open webinspector with Ctrl+Shift+i
+  - Open webinspector with F12
   - Open webinspector's settings with F1
   - Where it says 'Advanced settings', check boxes for:
     - 'Enable browser chrome and add-on debugging toolboxes'
     - 'Enable remote debugging'
 
-Now, the window-inspector can be opened with Ctrl+Shift+Alt+i
+Now the window-inspector can be opened with Ctrl+Shift+Alt+i
 
-Or start firefox of the commandline like this:
-
-    firefox --jsdebugger
-
-*/
-
-
-/* Declare namespace, so Firefox knows how to interpret this file: */
-@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
-
-
-/*
-
-
-These styles were created while using FF vs ~ 91, still works with vs 94.
-
-
-This is what they do:
-
-- Hide entire topbar
-
-- Show topbar when hovering over top edge of window
-
-- Don't break the possibility to focus the addressbar with Ctrl+L
-
-
-
-Complete element-tree of topbar for reference:
-
-box
-  toolbox#navigator-toolbox
-    vbox#titlebar
-    toolbar#nav-bar
-      hbox#nav-bar-customization-target
-        toolbarbutton#forward-button
-        toolbarbutton#backward-button
-        toolbaritem#stop-reload-button
-        toolbarbutton#home-button
-        toolbarspring
-        toolbaritem#urlbar-container
-          toolbartabstop
-
-          hbox#urlbar
-
-        toolbarspring
-        toolbarbutton#save-to-pocket
-        ... toolbarbuttons ...
-
-  #navigator-toolbox
-    #titlebar,
-  #navigator-toolbox
-      toolbarbutton,
-  #navigator-toolbox
-      toolbarspring,
-  #navigator-toolbox
-      #stop-reload-button
-        toolbaritem#urlbar-container
-          toolbartabstop
-
-          hbox#urlbar
-
-***********************************************************/
-
-
-
-#for-the-following-two-rules-we-can-also-use-display-none-or-block-instead,
-
-  #navigator-toolbox
-    #titlebar,
-  #navigator-toolbox
-      toolbarbutton,
-  #navigator-toolbox
-      toolbarspring,
-  #navigator-toolbox
-      #stop-reload-button {
-height: 1px;
-overflow: hidden;
-      }
-
-  #navigator-toolbox:hover
-    #titlebar,
-  #navigator-toolbox:hover
-      toolbarbutton,
-  #navigator-toolbox:hover
-      toolbarspring,
-  #navigator-toolbox:hover
-      #stop-reload-button {
-height: auto;
-overflow: visible;
-      }
-
-
-
-#nav-bar,
-#urlbar-container[breakout],
-#urlbar-container {
-  height: 0px;
-  min-height: 0px !important;
-}
-
-  #navigator-toolbox:hover
-#nav-bar,
-  #navigator-toolbox:hover
-#urlbar-container[breakout],
-  #navigator-toolbox:hover
-#urlbar-container,
-  #navigator-toolbox:hover
-#urlbar,
-
-#urlbar:is([focused="true"]) {
-height: auto;
-  min-height: 40px !important;
-overflow: visible;
-}
-#urlbar {
-height: 1px;
-overflow: hidden;
-}
-
-
-
-/**********************************************************
-
+Here are all elements down to the url-bar, as inspected in
+firefox version 71:
 
 box
   toolbox#navigator-toolbox
@@ -174,8 +58,6 @@ box
       toolbartabstop
 
       hbox#nav-bar-customization-target
-      #nav-bar-customization-target > toolbarbutton,
-      #nav-bar-customization-target > toolbaritem:not(#urlbar-container) {display:none}
 
         toolbarbutton#back-button
         toolbarbutton#forward-button
@@ -200,29 +82,66 @@ box
           toolbarbutton#save-to-pocket-button
           toolbarbutton#downloads-button
           toolbarbutton#library-button
-
         toolbarbutton
-
       toolbarbutton
       toolbaritem
       #window-controls
-
     #PersonalToolbar
-
 hbox#browser
 
 
+*/
 
-#urlbar gets these inline-styles:
 
-element {
-  --urlbar-height: 32.00px;
-  --urlbar-toolbar-height: 40.00px;
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+
+  #navigator-toolbox
+    #titlebar,
+  #navigator-toolbox
+      toolbarbutton,
+  #navigator-toolbox
+      toolbarspring,
+  #navigator-toolbox
+      #stop-reload-button {
+        display: none;
+      }
+
+  #navigator-toolbox:hover
+    #titlebar,
+  #navigator-toolbox:hover
+      toolbarbutton,
+  #navigator-toolbox:hover
+      toolbarspring,
+  #navigator-toolbox:hover
+      #stop-reload-button {
+        display: block;
+      }
+
+
+#nav-bar,
+#urlbar-container[breakout],
+#urlbar-container {
+  height: 0px;
+  min-height: 0px !important;
 }
+  #navigator-toolbox:hover
+#nav-bar,
+  #navigator-toolbox:hover
+#urlbar-container[breakout],
+  #navigator-toolbox:hover
+#urlbar-container,
 
-#urlbar[breakout] {
-  width: 100%;
+
+  #navigator-toolbox:hover
+#urlbar,
+#urlbar:is([focused="true"]) {
+height: auto;
+  min-height: auto !important;
+overflow: visible;
 }
-
-/*****************************************************************************************/
+#urlbar {
+height: 1px;
+overflow: hidden;
+}
 
