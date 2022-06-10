@@ -41,7 +41,6 @@ cat ~/DOING.txt
 donn() {
 # echo Take last line of DOING.txt, add it to CHANGELOG, commit changes with last line as commit-message. Rmove last line of DOING.txt.
 lastLine=$(getLastNthLineOfFile 1 ~/DOING.txt)
-echo lastLine is $lastLine
 #insertAttNthLineToFile "* $lastLine" 3 CHANGELOG.md
 #insertAttNthLineToFile "..........." 3 CHANGELOG.md
 #insertAttNthLineToFile "..........." 3 CHANGELOG.md
@@ -125,7 +124,13 @@ prepend() {
 # prepend "some string" file.txt
 
 # If file does not exist or is empty, write str, otherwise prepend str:
-if [[ ! -f $2 ]] || [[ $( <"$2" ) == '' ]]; then echo $1 > $2; else sed -i 1i"$1" $2; fi
+#if [[ ! -f $2 ]] || [[ $( <"$2" ) == '' ]]; then echo $1 > $2; else sed -i 1i"$1" $2; fi
+# Usage: prepend some long string file.txt
+	array=( "$@" )
+	lastArg="${@: -1}" # bash only
+	unset "array[${#array[@]}-1]" # remove last item
+    array="${array[@]}"
+if [[ ! -f $lastArg ]] || [[ $( <"$lastArg" ) == '' ]]; then echo $array > $lastArg; else sed -i 1i"$array" $lastArg; fi
 }
 pushToWhateverIsAvailable() {
 git push origin master &> /dev/null
@@ -235,6 +240,8 @@ alias nds='nodemon start'
 alias nps='npm start'
 alias py='python3.8 -B' # -B == no __pycache__ dirs
 alias psy='ps aux|grep python'
+
+alias nd='nodemon start'
 
 alias scd='screen -dRR'
 alias scl='screen -ls'

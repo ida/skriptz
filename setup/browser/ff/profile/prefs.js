@@ -1,0 +1,13 @@
+user_pref("full-screen-api.ignore-widgets", "true")
+user_pref("devtools.theme", "dark");
+user_pref("devtools.inspector.showUserAgentStyles", true);
+user_pref("xpinstall.signatures.required", false);
+user_pref("browser.urlbar.placeholderName", "DuckDuckGo");
+user_pref("browser.startup.homepage", "localhost:3000");
+user_pref("browser.newtabpage.activity-stream.feeds.section.topstories", false);
+user_pref("browser.newtabpage.activity-stream.feeds.topsites", false);
+user_pref("browser.newtabpage.activity-stream.showSearch", false);
+user_pref("browser.toolbars.bookmarks.visibility", "never");
+user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
+user_pref("devtools.chrome.enabled", true);
+user_pref("devtools.debugger.remote-enabled", true);

@@ -22,22 +22,22 @@ test -d $SDK_PATH && exit 0 || (
     echo 'Installing Android and Android-App-build-tools...'
 
     # Install Android 4:
-    curl -O https://dl.google.com/android/repository/android-16_r05.zip
-    unzip android-16_r05.zip
-    mkdir $SDK_PATH/platforms
-    mv android-4.1.2 $SDK_PATH/platforms/android-16
+    #curl -O https://dl.google.com/android/repository/android-16_r05.zip
+    #unzip android-16_r05.zip
+    #mkdir $SDK_PATH/platforms
+    #mv android-4.1.2 $SDK_PATH/platforms/android-16
 
     # Install Android 6:
-    # curl -O https://dl.google.com/android/repository/android-23_r02.zip
-    # unzip android-23_r02.zip
-    #mkdir $SDK_PATH/platforms
-    #mv android-6.0 $SDK_PATH/platforms/android-24
+    curl -O https://dl.google.com/android/repository/android-23_r02.zip
+    unzip android-23_r02.zip
+    mkdir $SDK_PATH/platforms
+    mv android-6.0 $SDK_PATH/platforms/android-24
 
-    # Install tools for building an Android app file (.apk) vs 30, for vs 25 simply switch numbers :
+    # Install tools for building an Android app file (.apk) vs 30 (for vs 25 simply switch numbers):
     curl -O https://dl.google.com/android/repository/build-tools_r30-linux.zip
     unzip build-tools_r30-linux.zip
     mkdir -p $SDK_PATH/build-tools
     mv android-11 $SDK_PATH/build-tools/30.0.0
 
 
-) # End of SDK_PATH does not exist already.
+) # End of "SDK_PATH does not exist already".

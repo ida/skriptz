@@ -1,4 +1,4 @@
-*under construction*
+*under construction* It takes ~ 5 seconds to build an APK-file, which has a size of ridiculous 12KB.
 
 
 Create and build an Android app from the commandline like this:

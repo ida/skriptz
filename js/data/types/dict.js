@@ -5,6 +5,13 @@ function copyDict(dict) {
   return { ...dict }
 }
 
+// And another one, not tested, yet:
+function isDict(value) {
+  try {
+    Object.keys(value) && ! typeof value != 'Array'
+  }
+}
+
 
 /**
 Evaluate longest key and prepend missing spaces to other keys
@@ -36,7 +43,7 @@ function longifyKeys(dict, space='&nbsp;') {
 For example passing this dict:<pre>{ "aKey": "aValue", "anotherKey": "anotherValue" }</pre>
 Would return:<pre>"
         aKey: aValue
-      
+
   anotherKey: anotherValue
 
 "</pre>

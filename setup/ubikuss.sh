@@ -1,9 +1,16 @@
+# Disable unattended upgrades on Ubuntu:
+# https://ostechnix.com/how-to-disable-unattended-upgrades-on-ubuntu
+sudo dpkg-reconfigure unattended-upgrades
+
 # Remove link-icons to trash and home-folder(set to true, to undo):
 gsettings set org.gnome.shell.extensions.desktop-icons show-trash false
 gsettings set org.gnome.shell.extensions.desktop-icons show-home false
 
 # Install git and ubuntu-restricted-extras(video-codecs):
 wget -qO- https://raw.githubusercontent.com/ida/skriptz/master/setup/installs/install_system_packages.sh | bash -s git ubuntu-restricted-extras
+
+# Install extension to move top-bar to bottom:
+# https://tipsonubuntu.com/2020/04/17/enable-single-bottom-panel-ubuntu-20-04-lts/
 
 # Clone and source dotfiles:
 mkdir -p ~/repos/github/ida
