@@ -1,6 +1,5 @@
 # Disable unattended upgrades on Ubuntu:
-# https://ostechnix.com/how-to-disable-unattended-upgrades-on-ubuntu
-sudo dpkg-reconfigure unattended-upgrades
+# sudo vi /etc/apt/apt.conf.d/20auto-upgrades
 
 # Remove link-icons to trash and home-folder(set to true, to undo):
 gsettings set org.gnome.shell.extensions.desktop-icons show-trash false
@@ -12,7 +11,7 @@ wget -qO- https://raw.githubusercontent.com/ida/skriptz/master/setup/installs/in
 # Install extension to move top-bar to bottom:
 # https://tipsonubuntu.com/2020/04/17/enable-single-bottom-panel-ubuntu-20-04-lts/
 
-# Clone and source dotfiles:
+# Copy and source dotfiles:
 mkdir -p ~/repos/github/ida
 cd ~/repos/github/ida
 git clone https://github.com/ida/skriptz.git
@@ -21,6 +20,6 @@ cp skriptz/setup/dotfiles/.[!.]* ~
 
 # Configure git:
 git config --global user.name "ida"
-git config --global user.email "1715762+ida@users.noreply.github.com"
+#git config --global user.email "mail@example.org"
 git config --global credential.helper "cache --timeout=36000" 
 git config --global core.excludesfile ~/.gitignore_global

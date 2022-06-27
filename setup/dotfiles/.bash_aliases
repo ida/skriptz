@@ -213,8 +213,33 @@ unpack() {
     endswith $1 .tar.bz2
     if [ $? = 0 ]; then tar -xjvf $1 ; fi
 }
+
+alias ali='cat ~/.bash_aliases'
+alias alli='cat ~/.bash_aliases | less'
+alias src='. ~/.bashrc; . ~/.bash_aliases'
+
+alias bb='./bin/buildout'
+alias bi='./bin/instance fg'
+alias bil='bi > instance_output.txt 2>&1'
+alias bo='buildout -o'
+alias bol='buildout  > build_output.txt 2>&1 ; cat build_output.txt'
+alias boi='bo; bi'
+alias boo='buildout -O'
+alias bu='bo -U'
+alias bui='bu; bi'
+
+alias scd='screen -dRR'
+alias scl='screen -ls'
+alias scr='screen -r'
+alias scs='screen -S'
+sck() {
+    screen -X -S $1 quit
+}
+
 alias ly='lynx localhost:3000'
 alias ff='firefox'
+alias ffp='firefox -P'
+alias nojs='firefox -P nojs &'
 alias dg='devgen'
 alias sq='devgen squash'
 alias ap='append'
@@ -237,30 +262,10 @@ alias v=vimAndSetScreenTitleToFileName
 alias :wq='exit'
 
 alias nds='nodemon start'
+alias npr='npm run'
 alias nps='npm start'
 alias py='python3.8 -B' # -B == no __pycache__ dirs
 alias psy='ps aux|grep python'
-
-alias nd='nodemon start'
-
-alias scd='screen -dRR'
-alias scl='screen -ls'
-alias scr='screen -r'
-alias scs='screen -S'
-sck() {
-    screen -X -S $1 quit
-}
-
-
-alias bb='./bin/buildout'
-alias bi='./bin/instance fg'
-alias bil='bi > instance_output.txt 2>&1'
-alias bo='buildout -o'
-alias bol='buildout  > build_output.txt 2>&1 ; cat build_output.txt'
-alias boi='bo; bi'
-alias boo='buildout -O'
-alias bu='bo -U'
-alias bui='bu; bi'
 
 alias br='git branch'
 alias pull='git pull --rebase origin master'
@@ -288,7 +293,6 @@ alias pop='git stash pop'
 alias tag='git tag'
 alias tagg='git tag -a `date +%y%m%d%H%M%S` -m "Create annotated tag."'
 alias tagp='git push origin --tags'
-
-alias ali='cat ~/.bash_aliases'
-alias alli='cat ~/.bash_aliases | less'
-alias src='. ~/.bashrc; . ~/.bash_aliases'
+# List all remote branches: git remote show original
+# To get a remote branch, first update git-tree: git fetch
+# Then switch to branch: git checkout branchname
