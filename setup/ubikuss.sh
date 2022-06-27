@@ -20,6 +20,7 @@ cp skriptz/setup/dotfiles/.[!.]* ~
 
 # Configure git:
 git config --global user.name "ida"
-#git config --global user.email "mail@example.org"
-git config --global credential.helper "cache --timeout=36000" 
+git config --global user.email $GIT_MAIL
+git config --global url."https://api:$GIT_TOKEN@github.com/".insteadOf "https://github.com/"
+#git config --global credential.helper "cache --timeout=36000"
 git config --global core.excludesfile ~/.gitignore_global
