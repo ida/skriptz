@@ -187,6 +187,9 @@ removeFirstLine() {
 removeLastLine() {
     sed -i '$d' $1
 }
+removeSwapFiles() {
+    find . -type f -name "*.sw[klmnop]" -delete
+}
 setDarkSystemTheme() {
     gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
 }
@@ -240,6 +243,7 @@ alias ly='lynx localhost:3000'
 alias ff='firefox'
 alias ffp='firefox -P'
 alias nojs='firefox -P nojs &'
+alias difx='diff -x ".git" -r'
 alias dg='devgen'
 alias sq='devgen squash'
 alias ap='append'
@@ -255,6 +259,7 @@ alias he='clear; head -n42'
 alias l='ls -l'
 alias rmf=removeFirstLine
 alias rml=removeLastLine
+alias rmsw=removeSwapFiles
 alias rf='rm -rf'
 alias sw='switchSystemTheme'
 alias vi='vim'
@@ -268,6 +273,7 @@ alias py='python3.8 -B' # -B == no __pycache__ dirs
 alias psy='ps aux|grep python'
 
 alias br='git branch'
+alias brd='git branch -D'
 alias pull='git pull --rebase origin master'
 alias push=pushToWhateverIsAvailable
 alias puff='git push origin forumail'
