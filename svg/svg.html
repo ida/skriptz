@@ -1,0 +1,38 @@
+<!doctype html><html><head><script>setTimeout(()=>{location.href=location.href},
+4444)</script><style>html { height: 100%; }
+body {
+  height: 95%;
+/*
+  margin: 0;
+  background: #000;
+  color: #fff;
+*/
+}
+svg {
+  width: 100%;
+  height: 95%;
+  fill: transparent;
+outline: 1px dotted;
+}
+path {
+  stroke: green;
+}
+</style></head><body><svg xmlns="http://www.w3.org/2000/svg">
+  <!-- Quadrate
+  <path d="M 10 10 l 100 0 l 0 100 l -100 0 l 0 -100" />
+  <path d="m 100 100 l 100 0 l 0 100 l -100 0 l 0 -100" />
+  <path d="m 190 190 l 100 0 l 0 100 l -100 0 l 0 -100" />
+  <path d="m 280 280 l 100 0 l 0 100 l -100 0 l 0 -100" />
+  <path d="m 370 370 l 100 0 l 0 100 l -100 0 l 0 -100" />
+  -->
+
+  <circle cx="277" cy="277" r="27" fill="red"/>
+</svg><script>
+  const infoEle = document.createElement('div')
+  infoEle.textContent = 'No infos, yet.'
+  document.body.insertBefore(infoEle, document.body.firstChild)
+  const inform = msg => infoEle.textContent += ' ' + msg
+  const svgEle = document.querySelector('svg')
+//  infoEle.textContent = 'Info: ' + svgEle
+  inform('Attention please!')
+</script></body></html>

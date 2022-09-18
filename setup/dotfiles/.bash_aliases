@@ -39,7 +39,9 @@ cat ~/DOING.txt
 }
 
 donn() {
-# echo Take last line of DOING.txt, add it to CHANGELOG, commit changes with last line as commit-message. Rmove last line of DOING.txt.
+# Take last line of DOING.txt, add it to CHANGELOG, 
+# commit changes with last line as commit-message. 
+# Remove last line of DOING.txt.
 lastLine=$(getLastNthLineOfFile 1 ~/DOING.txt)
 #insertAttNthLineToFile "* $lastLine" 3 CHANGELOG.md
 #insertAttNthLineToFile "..........." 3 CHANGELOG.md
@@ -302,3 +304,5 @@ alias tagp='git push origin --tags'
 # List all remote branches: git remote show original
 # To get a remote branch, first update git-tree: git fetch
 # Then switch to branch: git checkout branchname
+# Push a branch to remote: git push origin branchname
+# Delete a remote branch: git push origin :branchname
