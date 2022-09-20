@@ -1,6 +1,28 @@
-https://github.com/nexe/nexe -> create single executable of node.js apps
-git-emit -> event listeners for githooks!
-hashish -> modify dicts sanely
-@supercharge/request-ip -> get client ip-address, works like a charme.
-chokidar -> listen to anything happening to all files of a directory, works like a charme.
+filter-console -> Surpress certain log-messages with mighty filters.
+
+Note: This is an ESM (import method), if used in CJS (require-method),
+      it needs to be imported within an asynchronous function:
+
+      (async () => {
+          
+          const filterConsole = await import('filter-console')
+      
+      })();
+
+
+chokidar -> listen to add/change/delete-events of all files of a directory
+
+@supercharge/request-ip -> get client ip-address
+
 fs-extra -> extend and optimze fs-module
+
+
+
+not tested:
+
+https://github.com/nexe/nexe -> create single executable of node.js apps
+
+git-emit -> event listeners for githooks!
+
+hashish -> modify dicts sanely
+
