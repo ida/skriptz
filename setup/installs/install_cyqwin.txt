@@ -1,0 +1,41 @@
+Install Cygwin
+==============
+
+# See its homepage in the webz.
+# Todo: document which packages need to be selected before install,
+# at least we need wget...
+
+
+
+Access Window-files
+===================
+
+cd /cygdrive/c/
+
+
+
+Install packages after cygwin was installed
+===========================================
+
+# Forgot to add ZIP to the selected pckgs on cygwin-installation.
+
+# https://stackoverflow.com/a/28857280
+
+    wget rawgit.com/transcode-open/apt-cyg/master/apt-cyg
+
+    install apt-cyg
+
+    apt-cyg update
+
+# ZIP is not installed on Windows
+
+    wget https://www.7-zip.org/a/7z2201-x64.exe
+
+# Then doubleclick file and an installation-window opens.
+
+# Now close (cygwin)terminal and restart it!
+
+    apt-cyg install zip
+    apt-cyg install unzip
+
+

@@ -8,13 +8,16 @@ function addDownloadButton(containerEle, downloadContent, fileName='test.txt') {
   function provideFileExport(containerEle, downloadContent) {
     var exportButton = document.createElement('a')
     exportButton.id = 'download'
-    exportButton.textContent = 'Download' + downloadFileName
-    exportButton.setAttribute('download', downloadFileName)
+    exportButton.textContent = 'Download ' + fileName
+    exportButton.setAttribute('download', fileName)
     setContentToDownload(exportButton, downloadContent)
     containerEle.appendChild(exportButton)
+    return exportButton
   }
   function setContentToDownload(button, downloadContent) {
     button.href = 'data:application/octet-stream;charset=utf-8,'
                 + encodeURIComponent(downloadContent)
   }
+  var button = provideFileExport(containerEle, downloadContent)
+  setContentToDownload(button, downloadContent)
 }

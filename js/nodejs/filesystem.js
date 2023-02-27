@@ -51,6 +51,23 @@ function readObjectOfFile(filePath) {
   let content = filesystem.readFileSync(filePath, 'utf-8')
   let object = JSON.parse(content)
   return object
+
+}
+function removeDirectory(filePath) {
+  var files = []
+  if( fs.existsSync(path) ) {
+    files = fs.readdirSync(path)
+    files.forEach(function(file,index){
+      var curPath = path + "/" + file
+      if(fs.lstatSync(curPath).isDirectory()) {
+        removeDirectory(curPath)
+      }
+      else {
+        fs.unlinkSync(curPath)
+      }
+    });
+    fs.rmdirSync(path)
+  }
 }
 function writeFile(filePath, string) {
   createParents(filePath)

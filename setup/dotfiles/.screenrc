@@ -1,12 +1,19 @@
+# Type ctrl+a and spacebar to show windowlist:
+bind ' ' windowlist -b
+
+# Add a statusbar at bottom with filenames etc:
 caption always "%{= kc}%{= kw}%?%-Lw%?%{+b kw}%n*%t%f %?(%u)%?%{= kw}%?%+Lw%? %-12=%{= .m}%y%m%d.%c"
+
+# Same as above but with with user- and computer-name in front
+# (needed when switching users and working on remote, todo: distinct case):
 #caption always "%{= kc}%H %{= kw}%?%-Lw%?%{+b kw}%n*%t%f %?(%u)%?%{= kw}%?%+Lw%? %-12=%{= .m}%y%m%d.%c"
+
+# Reference for what the used variables above mean:
 # Compname:                     %{= kc}%H 
 # Windowlist:                   %{= kw}%?%-Lw%?%{+b kw}%n*%t%f %?(%u)%?
 # Right align for date'n'time:  %{= kw}%?%+Lw%?
 # Format date'n'time:           %-21=%{= .m}
 # Date'n'time:                  %D %d.%m.%Y %0c
 
-# Use Strg+a and space instead of Strg+a and " to see list of screens:
-bind ' ' windowlist i-b
-
+# Get more infos about screen on:
 # http://www.softpanorama.org/Utilities/Screen/screenrc_examples.shtml#Sven_Guckes_

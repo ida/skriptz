@@ -259,6 +259,7 @@ alias ca='cat'
 alias cl='clear'
 alias he='clear; head -n42'
 alias l='ls -l'
+alias ll='ls -lA'
 alias rmf=removeFirstLine
 alias rml=removeLastLine
 alias rmsw=removeSwapFiles
