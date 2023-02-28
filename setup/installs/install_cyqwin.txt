@@ -39,3 +39,6 @@ Install packages after cygwin was installed
     apt-cyg install unzip
 
 
+# Similar to the 'build-essentials'-bundle for linux:
+
+    apt-cyg install make gcc-core gcc-g++ patch bzip2 perl tar xz
