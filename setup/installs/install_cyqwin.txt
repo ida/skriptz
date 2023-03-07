@@ -1,10 +1,12 @@
 Install Cygwin
 ==============
 
-# See its homepage in the webz.
-# Todo: document which packages need to be selected before install,
-# at least we need wget...
-
+# See its homepage, after downloading and opening the installer
+# you are asked many questions, confirm preselected choice.
+# At one point comes a table like view, where youo are supposed
+# to choose system packages you want to have installed.
+# Choose/enable(click on plus sign of folder, select version,
+# click checkbox, so it is selected) 'wget'
 
 
 Access Window-files
@@ -23,7 +25,7 @@ Install packages after cygwin was installed
 
     wget rawgit.com/transcode-open/apt-cyg/master/apt-cyg
 
-    install apt-cyg
+    install apt-cyg /bin
 
     apt-cyg update
 
