@@ -19,8 +19,6 @@ cd /cygdrive/c/
 Install packages after cygwin was installed
 ===========================================
 
-# Forgot to add ZIP to the selected pckgs on cygwin-installation.
-
 # https://stackoverflow.com/a/28857280
 
     wget rawgit.com/transcode-open/apt-cyg/master/apt-cyg
@@ -29,18 +27,31 @@ Install packages after cygwin was installed
 
     apt-cyg update
 
-# ZIP is not installed on Windows
-
-    wget https://www.7-zip.org/a/7z2201-x64.exe
-
-# Then doubleclick file and an installation-window opens.
-
 # Now close (cygwin)terminal and restart it!
 
-    apt-cyg install zip
-    apt-cyg install unzip
+    apt-cyg install \
+    zip\
+    unzip\
+    git\
+    python3\
 
 
 # Similar to the 'build-essentials'-bundle for linux:
 
     apt-cyg install make gcc-core gcc-g++ patch bzip2 perl tar xz
+
+
+#
+#   Troubleshoots
+#
+# python executable not available, although apt-cyg claims it is installed:
+#
+# type 'python' and enter, the ms-app-store will open with python installer.
+#
+#
+# zip is not installed:
+#
+#    wget https://www.7-zip.org/a/7z2201-x64.exe
+#
+# Then doubleclick file and an installation-window opens.
+
